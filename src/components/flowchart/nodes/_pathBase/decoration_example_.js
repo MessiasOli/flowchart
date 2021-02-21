@@ -1,0 +1,1 @@
+import { IDecoration } from "../_interface/IDecoration";
