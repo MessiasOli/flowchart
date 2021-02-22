@@ -1,5 +1,5 @@
-export var INode = {
-    Node: function(nameClass) {
+export class INode {
+    constructor(nameClass) {
         this.decorate = () => { throw errorMsg( nameClass, 'renderMe()') }
         this.remover = () => { throw errorMsg( nameClass, 'remover()') }
     }

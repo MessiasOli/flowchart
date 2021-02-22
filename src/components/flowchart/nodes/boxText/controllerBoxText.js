@@ -2,10 +2,10 @@
 import { IController } from "../_interface/IController";
 import { BoxText } from "./modelBoxText";
 
-class ControllerBoxText {
+class ControllerBoxText extends IController {
   constructor() {
-    IController.Controller.apply(this, ["ControllerBoxText"]);
-    console.log("Controller criado!")
+    super("ControllerBoxText");
+    console.log(`ControllerBoxText criado!`)
     
     this.setNewNode = () => {
       console.log("Criando novo BoxText");

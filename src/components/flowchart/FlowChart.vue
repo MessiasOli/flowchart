@@ -130,6 +130,7 @@ export default {
 <style src="./nodes/boxText/boxText.css"></style>
 
 <style>
+
 #svg {
   background-color: rgb(218, 232, 233);
   border-radius: 5px;
@@ -142,6 +143,21 @@ export default {
   top: 100px;
   left: 50px;
 }
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(240, 240, 240);
+  position: absolute;
+  top: 120px;
+  left: 100px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px #2228;
+  max-width: 0;
+  max-height: 0;
+  transition-duration: 0.5s;
+}
+
 #btn-plus2 {
   position: fixed;
   top: 150px;
@@ -159,20 +175,6 @@ export default {
 
 #btn-plus:hover {
   box-shadow: 1px 1px 1px #fff;
-}
-
-.toolbar {
-  display: flex;
-  flex-direction: column;
-  background-color: rgb(240, 240, 240);
-  position: absolute;
-  top: 120px;
-  left: 100px;
-  border-radius: 5px;
-  box-shadow: 1px 1px 1px #2228;
-  max-width: 0;
-  max-height: 0;
-  transition-duration: 0.5s;
 }
 
 .toolbar div {

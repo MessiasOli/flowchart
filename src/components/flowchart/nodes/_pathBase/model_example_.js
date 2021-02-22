@@ -1,5 +1,5 @@
 import { INode } from "../_interface/INode";
-import { NodeModel } from "../model/_NodeModel";
+import { NodeModel } from "../model/NodeModel";
 import * as d3 from "d3";
 
 class _example_ {

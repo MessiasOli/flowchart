@@ -1,13 +1,12 @@
-import { INode } from "../_interface/INode";
-import { NodeModel } from "../_model/_NodeModel";
+import { NodeModel } from "../_model/NodeModel";
 import { DecorationBoxText } from "./decorationBoxText"
 
-class BoxText {
+class BoxText extends NodeModel {
   constructor() {
-    NodeModel.call(this);
-    INode.Node.apply(this, ["BoxText"]);
+    super("BoxText");
+    this.decorator = new DecorationBoxText();
+    
     this.contador = 0;
-
     this.x = 500;
     this.y = 100;
     this.height = 250;
@@ -25,7 +24,7 @@ class BoxText {
     };
 
     this.decorate = async function() {
-      await DecorationBoxText.init(this)
+      await this.decorator.init(this)
     };
 
     this.move = function (x, y){
@@ -35,6 +34,5 @@ class BoxText {
   }
 }
 
-BoxText.prototype = Object.create(NodeModel.prototype);
 
 export { BoxText };

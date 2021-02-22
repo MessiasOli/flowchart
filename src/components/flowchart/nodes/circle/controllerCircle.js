@@ -2,10 +2,10 @@
 import { IController } from "../_interface/IController";
 import { Circle } from "./modelCircle";
 
-class ControllerCircle {
+class ControllerCircle extends IController {
   constructor() {
-    IController.Controller.apply(this, ["ControllerCircle"]);
-    console.log("Controller criado!")
+    super("ControllerCircle")
+    console.log("ControllerCircle criado!")
 
     this.setNewNode = () => {
       console.log("Criando novo Circle");

@@ -1,14 +1,13 @@
-import { INode } from "../_interface/INode";
-import { NodeModel } from "../_model/_NodeModel";
+import { NodeModel } from "../_model/NodeModel";
 import { DecorationCircle } from "./decorationCircle"
 
-class Circle {
+class Circle extends NodeModel{
   constructor() {
-    NodeModel.call(this);
-    INode.Node.apply(this, ["Circle"]);
+    super("Circle")
+    this.decorator = new DecorationCircle()
 
     this.decorate = async function() {
-      await DecorationCircle.init(this)
+      await this.decorator.init(this)
     };
   }
 }
