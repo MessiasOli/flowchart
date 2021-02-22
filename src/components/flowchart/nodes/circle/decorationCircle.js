@@ -22,7 +22,6 @@ class DecorationCircle extends DecorationModel {
           .classed("circle", true)
           .style("fill", d3.schemeCategory10[100 % 10])
           .call(this.setDrag(node))
-          .on("click", this.cliked)
       
       return svg
     }
@@ -37,23 +36,12 @@ class DecorationCircle extends DecorationModel {
       return drag;
     }
   
-    this.clicked = function(event, d){
-      if (event.defaultPrevented) return; // dragged
-      d3.select(this).transition()
-          .attr("fill", "black")
-          .attr("r", 32 * 2)
-        .transition()
-          .attr("r", 32)
-          .attr("fill", d3.schemeCategory10[d.index % 10]);
-    }
-  
     this.dragstarted = function() {
       SingletonFlowchart.clicked = true
-      d3.select(`#${SingletonFlowchart.selected}`).attr("stroke",null)
       SingletonFlowchart.selected = this.id
   
       d3.select(this)
-        .attr("stroke", "black")
+        .style("stroke", "black")
         .attr("cursor", "grabbing")
     }
   
@@ -65,6 +53,7 @@ class DecorationCircle extends DecorationModel {
     this.dragended = function() {
       this.cursor = "grab"
       d3.select(this)
+        .style("stroke", "none")
         .attr("cursor", "grab")
     }
   }

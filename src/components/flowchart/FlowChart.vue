@@ -31,6 +31,10 @@
         BoxText
       </md-button>
 
+      <md-button @click="addConnecion()"><md-icon><img src="../../assets/connection.svg" alt="" srcset=""/></md-icon>
+        Connection
+      </md-button>
+
     </div>
     <div id="canvas"></div>
   </div>
@@ -50,6 +54,7 @@ export default {
       typesController: new Types(),
       ctrCircle: null,
       ctrBoxText: null,
+      ctrConnection: null,
     };
   },
   watch: {},
@@ -62,9 +67,13 @@ export default {
       this.ctrBoxText.setNewNode();
     },
 
+    addConnecion() {
+      this.ctrConnection.setNewNode();
+    },
+
     removeNode() {
       let selection = SingletonFlowchart.selected
-      d3.select(`#${selection}`).remove()
+      d3.selectAll(`#${selection}`).remove()
     },
 
     editNode() {
@@ -72,9 +81,6 @@ export default {
     },
 
     unSelected(){
-      if(!SingletonFlowchart.nodeClicked){
-        SingletonFlowchart.selected && d3.select(`#${SingletonFlowchart.selected}`).attr("stroke",null)
-      }
       this.toolbarClosed = false;
       this.openToolbar()
     },
@@ -92,6 +98,7 @@ export default {
     initializaControllers(){
       this.ctrCircle = GetNewController(this.typesController.CircleController);
       this.ctrBoxText = GetNewController(this.typesController.BoxTextController);
+      this.ctrConnection = GetNewController(this.typesController.ConnectionController);
     },
 
     setShortCuts(){
@@ -136,6 +143,10 @@ export default {
   border-radius: 5px;
   width: 800px;
   height: 500px;
+}
+
+.selected{
+  border: 3px solid #222;
 }
 
 #btn-plus1 {

@@ -8,3 +8,7 @@
 .BoxText:hover{
   fill: orange;
 }
+
+.selected{
+  stroke-linecap:butt;
+}

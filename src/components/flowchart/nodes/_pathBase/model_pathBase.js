@@ -1,10 +1,9 @@
 import { NodeModel } from "../_model/NodeModel";
-import { DecorationBoxText } from "./decorationBoxText"
 
-class BoxText extends NodeModel {
+class _pathBase extends NodeModel {
   constructor() {
-    super("BoxText");
-    this.decorator = new DecorationBoxText();
+    super("_pathBase");
+    this.decorator = new Decoration_pathBase();
     
     this.contador = 0;
     this.x = 500;
@@ -26,8 +25,13 @@ class BoxText extends NodeModel {
     this.decorate = async function() {
       await this.decorator.init(this)
     };
+
+    this.move = function (x, y){
+      this.x = x
+      this.y = y
+    }
   }
 }
 
 
-export { BoxText };
+export { _pathBase };

@@ -8,12 +8,10 @@ export class DecorationModel extends IDecoration {
 
     this.dragstarted = function() {
       SingletonFlowchart.clicked = true;
-
-      d3.select(`#${SingletonFlowchart.selected}`).attr("stroke", null);
       SingletonFlowchart.selected = this.id;
 
       d3.select(this)
-        .attr("stroke", "black")
+        .style("stroke", 'black');
     };
 
     this.dragged = function(event, d) {
@@ -23,6 +21,12 @@ export class DecorationModel extends IDecoration {
         .raise()
         .attr("x", (d.x = event.x))
         .attr("y", (d.y = event.y));
+    };
+
+    this.dragended = function() {
+      this.cursor = "grab"
+      d3.select(this)
+      .style("stroke", 'none');
     };
   }
 }
