@@ -5,6 +5,7 @@ class Circle extends NodeModel{
   constructor() {
     super("Circle")
     this.decorator = new DecorationCircle()
+    this.radius = 20
 
     this.decorate = async function() {
       await this.decorator.init(this)

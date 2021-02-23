@@ -48,7 +48,6 @@ class DecorationConnection extends DecorationModel {
 
     this.dragstarted = function() {
       SingletonFlowchart.clicked = true
-      // d3.select(`#${SingletonFlowchart.selected}`).attr("stroke",null)
       SingletonFlowchart.selected = this.id
   
       d3.select(this)

@@ -9,7 +9,6 @@ class DecorationCircle extends DecorationModel {
 
     this.init = async function(node) {
       let svg = SingletonFlowchart.svg
-      let radius = 32
   
        await svg
          .data([{ x: 500, y: 300, index: Math.trunc((Math.random()*100))}, { x: 400, y: 200, index: Math.random(0,10) }])
@@ -17,7 +16,7 @@ class DecorationCircle extends DecorationModel {
           .attr("id" ,"circle-"+node.id)
           .attr("cx",  d => d.x)
           .attr("cy", d => d.y)
-          .attr("r", radius)
+          .attr("r", node.radius)
           .attr("cursor", "grab")
           .classed("circle", true)
           .style("fill", d3.schemeCategory10[100 % 10])
