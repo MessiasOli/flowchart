@@ -11,6 +11,7 @@ class BoxText extends NodeModel {
     this.y = 100;
     this.height = 40;
     this.width = 100;
+    this.connectionPack = new Array();
 
     this.addCount = () => ++this.contador;
     this.removeCount = () => --this.contador;

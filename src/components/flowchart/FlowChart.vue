@@ -27,12 +27,12 @@
         Circulo
       </md-button>
 
-      <md-button @click="addBoxText()"><md-icon><img src="../../assets/boxText.svg" alt="" srcset=""/></md-icon>
-        BoxText
+      <md-button @click="addLine()"><md-icon><img src="../../assets/line.svg" alt="" srcset=""/></md-icon>
+        Linha
       </md-button>
 
-      <md-button @click="addConnecion()"><md-icon><img src="../../assets/connection.svg" alt="" srcset=""/></md-icon>
-        Connection
+      <md-button @click="addBoxText()"><md-icon><img src="../../assets/boxText.svg" alt="" srcset=""/></md-icon>
+        BoxText
       </md-button>
 
     </div>
@@ -52,9 +52,9 @@ export default {
     return {
       toolbarClosed: true,
       typesController: new Types(),
-      ctrCircle: null,
       ctrBoxText: null,
-      ctrConnection: null,
+      ctrCircle: null,
+      ctrLine: null,
     };
   },
   watch: {},
@@ -67,8 +67,8 @@ export default {
       this.ctrBoxText.setNewNode();
     },
 
-    addConnecion() {
-      this.ctrConnection.setNewNode();
+    addLine() {
+      this.ctrLine.setNewNode();
     },
 
     removeNode() {
@@ -96,9 +96,9 @@ export default {
     },
 
     initializaControllers(){
-      this.ctrCircle = GetNewController(this.typesController.CircleController);
       this.ctrBoxText = GetNewController(this.typesController.BoxTextController);
-      this.ctrConnection = GetNewController(this.typesController.ConnectionController);
+      this.ctrCircle = GetNewController(this.typesController.CircleController);
+      this.ctrLine = GetNewController(this.typesController.LineController);
     },
 
     setShortCuts(){
@@ -135,6 +135,7 @@ export default {
 </script>
 
 <style src="./nodes/boxText/boxText.css"></style>
+<style src="./nodes/connection/connection.css"></style>
 
 <style>
 
@@ -158,6 +159,7 @@ export default {
 .toolbar {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   background-color: rgb(240, 240, 240);
   position: absolute;
   top: 120px;

@@ -7,10 +7,11 @@ class ControllerConnection extends IController {
     super("ControllerConnection");
     console.log(`ControllerConnection criado!`)
     
-    this.setNewNode = () => {
+    this.setNewNode = (x,y) => {
       console.log("Criando novo Connection");
-      let conn = new Connection();
+      let conn = new Connection(x,y);
       conn.decorate();
+      return conn;
     }
   }
 }
