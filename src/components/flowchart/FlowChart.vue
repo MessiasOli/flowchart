@@ -73,6 +73,7 @@ export default {
 
     removeNode() {
       let selection = SingletonFlowchart.selected
+      console.log('Removendo selection :>> ', selection);
       d3.selectAll(`#${selection}`).remove()
     },
 

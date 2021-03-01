@@ -13,18 +13,6 @@ class BoxText extends NodeModel {
     this.width = 100;
     this.connectionPack = new Array();
 
-    this.addCount = () => ++this.contador;
-    this.removeCount = () => --this.contador;
-
-    this.mostrarMsg = function(msg) {
-      this.msg = msg;
-      console.log("Message 1: ", msg);
-    };
-
-    this.mostrarMsg2 = function() {
-      console.log("Message 2: ", this.msg2);
-    };
-
     this.decorate = async function() {
       await this.decorator.init(this)
     };

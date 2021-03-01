@@ -6,14 +6,14 @@ class DecorationConnection extends DecorationModel {
   constructor() {
     super("DecorationBoxText")
     console.log("DecorationBoxText Criado!");
-    this.dotP1 = { x: 0, y:0 }
     this.connectionNode = null
+    this.svg
   
     this.init = async function (node) {
-      let svg = SingletonFlowchart.svg
+      this.svg = d3.select(node.parentId)
       this.connectionNode = node
-
-        svg
+      console.log('node :>> ', node);
+        this.svg
           .selectAll(`.circle-${node.id}`)
           .data([{ x:node.x, y: node.y, id: node.id, node: this.connectionNode }])
           .join("circle")
@@ -23,57 +23,101 @@ class DecorationConnection extends DecorationModel {
           .attr("cursor", "pointer")
           .attr('r', 4)
       
-      return svg
+      return this.svg
     }
     
     this.move = function(line) {
       let id = this.connectionNode.id
 
-      d3.selectAll(`#Connection-${id}`).remove()
       d3.selectAll(`#dot-${id}`).remove()
-      
       // Primeiro ponto
-      SingletonFlowchart.svg
-        .selectAll(`.any`)
-        .data([{  
-          id: id, 
-          x: this.connectionNode.x, 
-          y: this.connectionNode.y, 
-          node: this.connectionNode 
-        }])
-        .join("circle")
-        .attr("id", `dot-${id}`)
-        .attr('cx', d => d.x)
-        .attr('cy', d => d.y)
-        .attr("cursor", "pointer")
-        .attr('r', 4)
-        .node()
+      this.createDot({
+        id: id, 
+        x: this.connectionNode.x, 
+        y: this.connectionNode.y, 
+        node: this.connectionNode 
+      }).node()
 
       // Reta
-      SingletonFlowchart.svg
+        this.svg
         .append("path")
         .classed("Connection", true)
-        .attr("id", `Connection-${id}`)
+        .attr("id", `dot-${id}`)
         .attr("d", line)
         .attr("stroke", "#444")
-        .attr("stroke-width", 3).node();
-      
+        .attr("stroke-width", 3)
+        .style("cursor", "pointer")
+        .style("fill", "none")
+        .on("click", ()=>{SingletonFlowchart.selected = 'dot-'+id})
+        .on("dblclick", (event, d) => this.createBreakPoint(event, d, id))
+        .node();
+
+        if(this.connectionNode.internalPoints.length > 0){
+          this.createDot({
+            id: id, 
+            x: this.connectionNode.internalPoints[0].x, 
+            y: this.connectionNode.internalPoints[0].y, 
+            node: this.connectionNode 
+          }).call(d3.drag()
+          .on("start", this.dragstarted)
+          .on("drag",(event, d) => this.dragged(event, d, 1)))
+        }
+
+        if(this.connectionNode.internalPoints.length > 1){
+          this.createDot({
+            id: id,
+            x: this.connectionNode.internalPoints[1].x, 
+            y: this.connectionNode.internalPoints[1].y, 
+            node: this.connectionNode 
+          }).call(d3.drag()
+          .on("start", this.dragstarted)
+          .on("drag",(event, d) => this.dragged(event, d, 2)))
+        }
+
       // Segundo ponto
-      SingletonFlowchart.svg
+      this.createDot({
+        id: id,
+        x: this.connectionNode.x1, 
+        y: this.connectionNode.y1, 
+        node: this.connectionNode 
+      }).call(this.setDrag())
+        .node()
+    }
+
+    this.createDot = function(coordinate){
+      return this.svg
         .selectAll(`.any`)
-        .data([{  
-          id: id, 
-          x: this.connectionNode.x1, 
-          y: this.connectionNode.y1, 
-          node: this.connectionNode 
-        }])
+        .data([coordinate])
         .join("circle")
-        .attr("id", `dot-${id}`)
+        .attr("id", d => `dot-${d.id}`)
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
         .attr("cursor", "pointer")
         .attr('r', 4)
-        .call(this.setDrag())
+    }
+
+    this.createBreakPoint = function(event, d, id){
+      SingletonFlowchart.clicked = true
+      SingletonFlowchart.selected = 'dot-'+this.connectionNode.id
+      let connClicked = d.connectionPack.filter(conections => conections.conn.id == id)[0]
+      let line = connClicked.conn.path;
+      
+      if (connClicked.conn.qtdInternalPoints == 2) 
+        return
+      
+      ++connClicked.conn.qtdInternalPoints;
+      this.createDot({
+        id: id,
+        x: event.offsetX, 
+        y: event.offsetY, 
+        node: this.connectionNode 
+      }).call(d3.drag()
+        .on("start", this.dragstarted)
+        .on("drag", (event, d) => this.draggedNewBreakPoint(event, d, connClicked.conn.qtdInternalPoints))
+      )
+        .node()
+
+      connClicked.conn.path = line
     }
   
     this.setDrag = function() {
@@ -86,19 +130,26 @@ class DecorationConnection extends DecorationModel {
       return drag;
     }
 
-    this.dragstarted = function(event, d) {
+    this.dragstarted = async function(event, d) {
       SingletonFlowchart.clicked = true
-      SingletonFlowchart.selected = d.id
+      await console.log('oi', d)
+      SingletonFlowchart.selected = 'dot-' + d.id
+      await console.log('oi')
     }
   
-    this.dragged = function(event, d) {
+    this.dragged = function(event, d, dot) {
       SingletonFlowchart.clicked = false
-      d.node.x1 = event.x
-      d.node.y1 = event.y
-      d.node.path = `M${ d.node.x },${ d.node.y }L${ d.node.x1 },${ d.node.y1 }`
 
-      d3.select(this).raise().attr("cx", d.x = event.x).attr("cy", d.y = event.y);
-      d.node.decorator.move(d.node.path)
+      if(!dot){
+        d.node.moveLastPoint({x: event.x, y: event.y})
+      }else{
+        d.node.pointOnPath({x: event.x, y: event.y}, dot)
+      }
+    }
+
+    this.draggedNewBreakPoint = async function(event, d, dot) {
+      SingletonFlowchart.clicked = false
+      d.node.pointOnPath({x: event.x, y: event.y}, dot)
     }
   }
 }

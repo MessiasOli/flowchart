@@ -6,7 +6,6 @@ import * as d3 from "d3";
 class DecorationBoxText extends DecorationModel {
   constructor() {
     super("DecorationBoxText");
-    console.log("DecorationBoxText Criado!");
     this.boxText = null
     this.transientConnection = null;
     this.ctrConnection = new ControllerConnection()
@@ -64,6 +63,7 @@ class DecorationBoxText extends DecorationModel {
         .data(connections)
         .join("circle")
         .attr("id", d => d.point +'-'+ node.id)
+        .classed("circleBox", true)
         .attr("cx", (d) => d.x)
         .attr("cy", (d) => d.y)
         .attr("cursor", "pointer")
@@ -76,14 +76,13 @@ class DecorationBoxText extends DecorationModel {
           .on("start", () => that.connected = true)
           .on("drag", (event) => {
             if(that.connected && !that.transientConnection){
-              that.transientConnection = that.ctrConnection.setNewNode(event.x, event.y)
+              that.transientConnection = that.ctrConnection.setNewNode(event.x, event.y, `#BoxText-${node.id}`)
             }
             that.connected = false
             that.transientConnection.moveTo({ x: event.x, y: event.y})
           }).on('end', (event, d) => {
-            that.boxText.connectionPack.push({ conn: that.transientConnection, dot: d.point })
+            !that.connected && that.boxText.connectionPack.push({ conn: that.transientConnection, dot: d.point })
             that.transientConnection = null;
-            console.log('that.boxText :>> ', that.boxText);
           }))
     };
 
@@ -99,10 +98,10 @@ class DecorationBoxText extends DecorationModel {
 
     this.dragstarted = function(event, d) {
       SingletonFlowchart.clicked = true;
-      SingletonFlowchart.selected = this.id;
+      SingletonFlowchart.selected = `BoxText-${d.id}`;
 
       d3.select(this).attr("cursor", "grabbing");
-      d3.selectAll(`#BoxText-${d.id} > circle`).remove();
+      d3.selectAll(`#BoxText-${d.id} > .circleBox`).remove();
     };
 
     this.dragged = async function(event, d) {
@@ -110,9 +109,11 @@ class DecorationBoxText extends DecorationModel {
       await d3.select(this).raise().attr("x", (d.x = event.x)).attr("y", (d.y = event.y));
       await d3.select(`#BoxText-${d.id} > text`).raise().attr("x", (d.x = event.x + d.width / 2)).attr("y", (d.y = event.y - 3));
       await d3.select(`#BoxText-${d.id} > .title`).raise().attr("x", (d.x = event.x)).attr("y", (d.y = event.y - 20));
-      await d.connectionPack.forEach(point => {
-        let dot = d.decorator.getPointPosition(d, point.dot)
-        point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y + 20})
+      
+      d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
+      d.connectionPack.forEach(point => {
+          let dot = d.decorator.getPointPosition(d, point.dot)
+          point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y + 20})
       });
     };
 

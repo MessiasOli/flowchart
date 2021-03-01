@@ -18,7 +18,9 @@ class DecorationLine extends DecorationModel {
           .attr("id", `Connection-${node.id}`)
           .attr("d", line)
           .attr("stroke", "#444")
-          .attr("stroke-width", 3).node();
+          .attr("stroke-width", 3)
+          .on("click", ()=>{SingletonFlowchart.selected = `Connection-${node.id}`})
+          .node();
 
           d3.select("#svg")
           .selectAll(`.circle-${node.id}`)

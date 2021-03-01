@@ -5,13 +5,16 @@ import { Connection } from "./modelConnection";
 class ControllerConnection extends IController {
   constructor() {
     super("ControllerConnection");
-    console.log(`ControllerConnection criado!`)
     
-    this.setNewNode = (x,y) => {
+    this.setNewNode = (x, y, ParentId) => {
       console.log("Criando novo Connection");
-      let conn = new Connection(x,y);
+      let conn = new Connection(x, y, ParentId);
       conn.decorate();
       return conn;
+    }
+
+    this.isAlive = function(node){
+      return document.querySelectorAll("#dot-" + node.id).length ? true : false
     }
   }
 }
