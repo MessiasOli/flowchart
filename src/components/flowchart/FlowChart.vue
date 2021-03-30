@@ -14,14 +14,16 @@
     >
       <md-icon>-</md-icon>
     </md-button>
-    <md-button
-      id="btn-plus3"
-      @click="editNode()"
-      class="md-fab md-mini md-plain"
-    >
-      <md-icon><img src="../../assets/edit.svg" alt="" srcset=""/></md-icon>
-    </md-button>
+
     <div class="toolbar">
+
+      <md-button @click="addInputBox()"><md-icon><img src="../../assets/inputBox.svg" alt="" srcset=""/></md-icon>
+        Caixa de Insumo
+      </md-button>
+
+      <md-button @click="addPercentageEntry()"><md-icon><img src="../../assets/percentageEntry.svg" alt="" srcset=""/></md-icon>
+        Porcentagem de Saída
+      </md-button>
 
       <md-button @click="addCircle()"><md-icon><img src="../../assets/circle.svg" alt="" srcset=""/></md-icon>
         Circulo
@@ -52,6 +54,8 @@ export default {
     return {
       toolbarClosed: true,
       typesController: new Types(),
+      ctrInputLine: null,
+      ctrPercentageEntry: null,
       ctrBoxText: null,
       ctrCircle: null,
       ctrLine: null,
@@ -59,6 +63,14 @@ export default {
   },
   watch: {},
   methods: {
+    addInputBox(){
+      this.ctrInputBox.setNewNode();
+    },
+
+    addPercentageEntry(){
+      this.ctrPercentageEntry.setNewNode();
+    },
+
     addCircle() {
       this.ctrCircle.setNewNode();
     },
@@ -97,6 +109,8 @@ export default {
     },
 
     initializaControllers(){
+      this.ctrInputBox = GetNewController(this.typesController.InputBoxController);
+      this.ctrPercentageEntry = GetNewController(this.typesController.PercentageEntry);
       this.ctrBoxText = GetNewController(this.typesController.BoxTextController);
       this.ctrCircle = GetNewController(this.typesController.CircleController);
       this.ctrLine = GetNewController(this.typesController.LineController);
