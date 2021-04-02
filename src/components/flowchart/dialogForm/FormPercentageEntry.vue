@@ -2,8 +2,8 @@
   <div>
     <form novalidate class="md-layout" @submit.prevent="">
       <md-field>
-        <label>Valor desejado</label>
-        <md-input v-model="value" type="number"></md-input>
+        <label>Valor de desvio (%)</label>
+        <md-input v-model="value" type="number" min="0" max="100"></md-input>
       </md-field>
     </form>
   </div>
@@ -26,11 +26,11 @@
 
     watch:{
       value(){
-        this.node.value = this.value;
+        this.node.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;
       }
     },
 
-    mounted(){ }
+    mounted(){}
   }
 </script>
 

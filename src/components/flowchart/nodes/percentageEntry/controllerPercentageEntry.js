@@ -7,10 +7,10 @@ class ControllerPercentageEntry extends IController {
     super("Controller_pathBase");
     console.log(`ControllerPercentageEntry criado!`)
     
-    this.setNewNode = () => {
+    this.setNewNode = (callback) => {
       console.log("Criando novo PercentageEntry");
       let percentageEntry = new PercentageEntry();
-      percentageEntry.decorate();
+      percentageEntry.decorate(callback);
     }
   }
 }

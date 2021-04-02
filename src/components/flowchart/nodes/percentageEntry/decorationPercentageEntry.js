@@ -6,28 +6,20 @@ import * as d3 from "d3"
 export class DecorationPercentageEntry extends DecorationModel {
   constructor() {
     super("DecorationPercentageEntry")
-    console.log("DecorationPercentageEntry Criado!");
+    this.node = null;
   
-    this.init = async function (node) {
+    this.init = async function (newNode, openDialog) {
       let svg = SingletonFlowchart.svg
+      this.node = newNode
   
        await svg
-          .data([node])
+          .data([newNode])
           .append("g")
           .classed("PercentageEntry", true)
-          .attr("id", `PercentageEntry-${node.id}`)
+          .attr("id", `PercentageEntry-${newNode.id}`)
           
 
-          let g = d3.select(`#PercentageEntry-${node.id}`)
-
-          g.append('text')
-          .attr("y", (d) => d.y + node.heightText)
-          .attr("x", (d) => d.x + node.width / 2)
-          .attr("cursor", "pointer")
-          .attr("text-anchor", "middle")
-          .style('stoke', COLORS.Black90)
-          .text(node.value)
-          .node();
+          let g = d3.select(`#PercentageEntry-${newNode.id}`)
 
           g.append("rect")
           .classed("PercentageEntry", true)
@@ -36,12 +28,21 @@ export class DecorationPercentageEntry extends DecorationModel {
           .attr("cursor", "grab")
           .attr("stroke", COLORS.Blue)
           .style("fill", '#0000')
-          .style("width", node.width)
-          .style("height", node.height)
+          .style("width", newNode.width)
+          .style("height", newNode.height)
           .call(this.setDrag())
           .node();
 
-      
+          g.append('text')
+          .attr("y", (d) => d.y + newNode.heightText)
+          .attr("x", (d) => d.xText())
+          .attr("cursor", "pointer")
+          .attr("text-anchor", "middle")
+          .style('stoke', COLORS.Black90)
+          .text(newNode.value)
+          .on('dblclick', () => openDialog(newNode))
+          .node();
+
       return svg
     }
   
@@ -70,8 +71,10 @@ export class DecorationPercentageEntry extends DecorationModel {
     this.dragged = async function (event, d) {
       const adjustY = 5;
       SingletonFlowchart.clicked = false;
-      await d3.select(this).raise().attr("x", (d.x = event.x)).attr("y", (d.y = event.y - adjustY));
-      await d3.select(`#PercentageEntry-${d.id} > text`).raise().attr("x", (d.x = event.x + d.width / 2)).attr("y", (d.y = event.y + d.heightText - adjustY));
+      d.x = event.x,
+      d.y = event.y
+      await d3.select(this).raise().attr("x", (d.x = event.x)).attr("y", (d.y - adjustY));
+      await d3.select(`#PercentageEntry-${d.id} > text`).raise().attr("x", (d.xText())).attr("y", (d.y + d.heightText - adjustY));
       
     }
 
@@ -80,6 +83,16 @@ export class DecorationPercentageEntry extends DecorationModel {
       d3.select(this)
         .attr("stroke", COLORS.Blue)
         .attr("cursor", "grab") 
-    };
+    }
+
+    this.setTextAndAdjustWidth = () => {
+      d3.select(`#PercentageEntry-${this.node.id} > text`)
+        .attr("x", this.node.xText())
+        .text(this.node.value)
+        .node()
+
+      d3.select(`#PercentageEntry-${this.node.id} > rect`)
+        .style("width", this.node.width)
+    }
   }
 }

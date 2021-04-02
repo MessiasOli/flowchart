@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form novalidate class="md-layout" @submit.prevent="validateArea">
+    <form novalidate class="md-layout" @submit.prevent="">
       <md-field>
         <label>Nome da área</label>
         <md-input v-model="title"></md-input>

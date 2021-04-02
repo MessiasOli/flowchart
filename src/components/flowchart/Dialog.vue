@@ -1,28 +1,34 @@
 <template>
   <div v-if="showDialog" @dragend="dragAndDrop" class="dialog">
+    
     <div draggable="true" class="header">
       <h2>{{ header || "Caixa de dialogo" }}</h2>
     </div>
+
     <div class="body">
       <FormArea v-if="node.type == types.Area" :node.sync="nodeEdited" />
       <FormInputBox v-if="node.type == types.InputBox" :node.sync="nodeEdited" />
+      <FormPercentageEntry v-if="node.type == types.PercentageEntry" :node.sync="nodeEdited" />
     </div>
+    
     <div class="footer">
       <md-button @click="saveNode" class="md-raised md-primary">Aceitar</md-button>
       <md-button @click="closeDialog" class="md-raised md-accent">Cancelar</md-button>
     </div>
+
   </div>
 </template>
 
 <script>
 import FormArea from "./dialogForm/FormArea";
 import FormInputBox from "./dialogForm/FormInputBox";
+import FormPercentageEntry from "./dialogForm/FormPercentageEntry";
 import { Types } from "./utils/typesNodes"
 
 
   export default {
     name: "Dialog",
-    components: { FormArea, FormInputBox },
+    components: { FormArea, FormInputBox, FormPercentageEntry},
 
     props: {
       node: {

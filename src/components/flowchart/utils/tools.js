@@ -1,4 +1,5 @@
 const NumberFormat = (num) => {
+  num = (num+"").replace(".", ",")
   num = num.toLocaleString('pt-br', {minimumFractionDigits: 2});
   if (num.includes(',')) {
     let decimal = num.split(',')
