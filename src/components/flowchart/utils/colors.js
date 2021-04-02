@@ -5,5 +5,6 @@ export const COLORS = {
   ClearBlue: "#41b5e6",
   Black: "#000",
   Black90: "#0009",
+  Black95: "#00000095",
   Black50: "#0005"
 }

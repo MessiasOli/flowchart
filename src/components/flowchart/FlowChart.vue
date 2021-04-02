@@ -17,76 +17,79 @@
 
     <div class="toolbar">
 
-      <md-button @click="addInputBox()"><md-icon><img src="../../assets/inputBox.svg" alt="" srcset=""/></md-icon>
+      <md-button @click="() => ctrInputBox.setNewNode()"><md-icon><img src="../../assets/inputBox.svg" alt="" srcset=""/></md-icon>
         Caixa de Insumo
       </md-button>
 
-      <md-button @click="addPercentageEntry()"><md-icon><img src="../../assets/percentageEntry.svg" alt="" srcset=""/></md-icon>
+      <md-button @click="() => ctrPercentageEntry.setNewNode()"><md-icon><img src="../../assets/percentageEntry.svg" alt="" srcset=""/></md-icon>
         Porcentagem de Saída
       </md-button>
 
-      <md-button @click="addCircle()"><md-icon><img src="../../assets/circle.svg" alt="" srcset=""/></md-icon>
+      <md-button @click="() => ctrArea.setNewNode(this.openDialog)"><md-icon><img src="../../assets/area.svg" alt="" srcset=""/></md-icon>
+        Area
+      </md-button>
+
+      <md-button @click="() => ctrCircle.setNewNode()"><md-icon><img src="../../assets/circle.svg" alt="" srcset=""/></md-icon>
         Circulo
       </md-button>
 
-      <md-button @click="addLine()"><md-icon><img src="../../assets/line.svg" alt="" srcset=""/></md-icon>
+      <md-button @click="() => ctrLine.setNewNode()"><md-icon><img src="../../assets/line.svg" alt="" srcset=""/></md-icon>
         Linha
       </md-button>
 
-      <md-button @click="addBoxText()"><md-icon><img src="../../assets/boxText.svg" alt="" srcset=""/></md-icon>
+      <md-button @click="() => ctrBoxText.setNewNode()"><md-icon><img src="../../assets/boxText.svg" alt="" srcset=""/></md-icon>
         BoxText
       </md-button>
 
     </div>
     <div id="canvas"></div>
+    <Dialog
+      :dialogVisible="showDialog"
+      :node="selectedNode"
+    />
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
 import { SingletonFlowchart } from "./nodes/_service/singletonFlowchart";
-import { Types, GetNewController } from "./nodes/_service/factoryController";
+import { GetNewController } from "./nodes/_service/factoryController";
+import { Types } from "./utils/typesNodes"
+import Dialog from './Dialog.vue';
 
 export default {
+  components: { Dialog },
   name: "FlowChart",
 
   data() {
     return {
       toolbarClosed: true,
-      typesController: new Types(),
+      typesNodes: new Types(),
+      showDialog: 0,
+      selectedNode: null,
       ctrInputLine: null,
       ctrPercentageEntry: null,
       ctrBoxText: null,
       ctrCircle: null,
       ctrLine: null,
+      ctrArea: null,
     };
   },
   watch: {},
   methods: {
-    addInputBox(){
-      this.ctrInputBox.setNewNode();
-    },
-
-    addPercentageEntry(){
-      this.ctrPercentageEntry.setNewNode();
-    },
-
-    addCircle() {
-      this.ctrCircle.setNewNode();
-    },
-
-    addBoxText() {
-      this.ctrBoxText.setNewNode();
-    },
-
-    addLine() {
-      this.ctrLine.setNewNode();
+    openDialog(node){
+      this.selectedNode = node
+      this.showDialog++;
+      console.log('node :>> ', node);
     },
 
     removeNode() {
       let selection = SingletonFlowchart.selected
-      console.log('Removendo selection :>> ', selection);
-      d3.selectAll(`#${selection}`).remove()
+      if(selection){
+        SingletonFlowchart.unSelectNode();
+        console.log('Removendo selection :>> ', selection);
+        d3.selectAll(`#${selection}`).remove()
+      }
     },
 
     editNode() {
@@ -95,6 +98,7 @@ export default {
 
     unSelected(){
       this.toolbarClosed = false;
+      SingletonFlowchart.unSelectNode();
       this.openToolbar()
     },
 
@@ -109,11 +113,12 @@ export default {
     },
 
     initializaControllers(){
-      this.ctrInputBox = GetNewController(this.typesController.InputBoxController);
-      this.ctrPercentageEntry = GetNewController(this.typesController.PercentageEntry);
-      this.ctrBoxText = GetNewController(this.typesController.BoxTextController);
-      this.ctrCircle = GetNewController(this.typesController.CircleController);
-      this.ctrLine = GetNewController(this.typesController.LineController);
+      this.ctrInputBox = GetNewController(this.typesNodes.InputBox);
+      this.ctrPercentageEntry = GetNewController(this.typesNodes.PercentageEntry);
+      this.ctrBoxText = GetNewController(this.typesNodes.BoxText);
+      this.ctrCircle = GetNewController(this.typesNodes.Circle);
+      this.ctrLine = GetNewController(this.typesNodes.Line);
+      this.ctrArea = GetNewController(this.typesNodes.Area);
     },
 
     setShortCuts(){

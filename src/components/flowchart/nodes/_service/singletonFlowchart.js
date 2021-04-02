@@ -7,5 +7,15 @@ export var SingletonFlowchart = {
     },
     svg: null,
     nodeClicked: false,
-    selected: null
+    selected: null,
+    clicked: null,
+
+    selectNode: function(id) {
+        this.clicked = true
+        SingletonFlowchart.selected = id
+    },
+    unSelectNode: function() {
+        this.clicked = false
+        SingletonFlowchart.selected = ``
+    }
 }

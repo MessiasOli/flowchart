@@ -1,5 +1,6 @@
 import { DecorationModel } from "../_model/DecorationModel";
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
+import { COLORS } from "../../utils/colors"
 import * as d3 from "d3"
 
 export class Decoration_pathBase extends DecorationModel {
@@ -13,13 +14,17 @@ export class Decoration_pathBase extends DecorationModel {
   
        await svg
           .data([node])
+          .append("g")
+          .attr("id", `Area-${node.id}`)
           .append("rect")
           .classed("_pathBase", true)
           .attr("id", `_pathBase-${node.id}`)
           .attr("x",  d => d.x)
           .attr("y", d => d.y)
+          .style("width", node.width)
+          .style("height", node.height)
           .attr("cursor", "grab")
-          .attr("stroke", "#444")
+          .style("fill", COLORS.ClearBlue)
           .call(this.setDrag(node))
       
       return svg
@@ -36,19 +41,23 @@ export class Decoration_pathBase extends DecorationModel {
       return drag;
     }
 
-    this.dragstarted = function() {
-      SingletonFlowchart.clicked = true
-      d3.select(`#${SingletonFlowchart.selected}`).attr("stroke",null)
-      SingletonFlowchart.selected = this.id
+    this.dragstarted = function(event, d) {
+      SingletonFlowchart.selected && d3.select(`#${SingletonFlowchart.selected}`).attr("stroke",null)
+      SingletonFlowchart.selectNode(`_pathBase-${d.id}`)
   
       d3.select(this)
-        .attr("stroke", "black")
+        .style("stroke", "black")
         .attr("cursor", "grabbing")
     }
+
+    // this.dragged = async function (event, d){
+      /* use inheritance or overwrite */
+    // }
 
     this.dragended = function() {
       this.cursor = "grab"
       d3.select(this)
+        .style("stroke", 'none')
         .attr("cursor", "grab")
     };
   }

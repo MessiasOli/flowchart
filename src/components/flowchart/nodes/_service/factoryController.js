@@ -1,44 +1,38 @@
+import { Types } from "../../utils/typesNodes"
 import { ControllerBoxText } from "../boxText/controllerBoxText"
 import { ControllerCircle } from "../circle/controllerCircle"
 import { ControllerLine } from "../line/controllerLine"
 import { ControllerConnection } from "../connection/controllerConnection"
 import { ControllerInputBox } from "../inputBox/controllerInputBox"
 import { ControllerPercentageEntry } from "../percentageEntry/controllerPercentageEntry"
-
-export class Types {
-  constructor(){
-    this.InputBoxController = 'inputbox';
-    this.PercentageEntry = 'percentageentry';
-    this.BoxTextController = 'boxtext';
-    this.CircleController = 'circle';
-    this.LineController = 'line';
-    this.ConnectionController = 'connection';
-  }
-}
+import { ControllerArea } from "../area/controllerArea"
 
 let types = new Types()
 
 export let GetNewController = function (type){
   switch (type) {
-    case types.InputBoxController:
+    case types.InputBox:
       return new ControllerInputBox();
 
     case types.PercentageEntry:
       return new ControllerPercentageEntry();  
 
-    case types.BoxTextController:
+    case types.Area:
+      return new ControllerArea();
+
+    case types.BoxText:
       return new ControllerBoxText();
 
-    case types.CircleController:
+    case types.Circle:
       return  new ControllerCircle();
 
-    case types.LineController:
+    case types.Line:
       return new ControllerLine();
 
-    case types.ConnectionController:
+    case types.Connection:
       return new ControllerConnection();
 
     default: 
-      throw `Factory: Atenção - ${type} não é um classe disponível para criação`
+      throw `Factory: Erro - ${type} não é um classe disponível para ser instânciada`
   }
 }

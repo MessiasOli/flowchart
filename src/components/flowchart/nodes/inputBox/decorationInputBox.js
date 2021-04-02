@@ -1,6 +1,6 @@
 import { DecorationModel } from "../_model/DecorationModel";
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
-import { COLORS } from "../_utils/colors"
+import { COLORS } from "../../utils/colors"
 import * as d3 from "d3"
 
 export class DecorationInputBox extends DecorationModel {
