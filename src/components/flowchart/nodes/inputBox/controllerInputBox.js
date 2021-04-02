@@ -7,10 +7,10 @@ class ControllerInputBox extends IController {
     super("Controller_pathBase");
     console.log(`ControllerInputBox criado!`)
     
-    this.setNewNode = () => {
+    this.setNewNode = (callback) => {
       console.log("Criando novo InputBox");
       let inputBox = new InputBox();
-      inputBox.decorate();
+      inputBox.decorate(callback);
     }
   }
 }

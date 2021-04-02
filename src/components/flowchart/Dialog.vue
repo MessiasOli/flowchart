@@ -4,7 +4,8 @@
       <h2>{{ header || "Caixa de dialogo" }}</h2>
     </div>
     <div class="body">
-      <FormArea :node.sync="nodeEdited" />
+      <FormArea v-if="node.type == types.Area" :node.sync="nodeEdited" />
+      <FormInputBox v-if="node.type == types.InputBox" :node.sync="nodeEdited" />
     </div>
     <div class="footer">
       <md-button @click="saveNode" class="md-raised md-primary">Aceitar</md-button>
@@ -15,11 +16,13 @@
 
 <script>
 import FormArea from "./dialogForm/FormArea";
+import FormInputBox from "./dialogForm/FormInputBox";
+import { Types } from "./utils/typesNodes"
 
 
   export default {
     name: "Dialog",
-    components: { FormArea },
+    components: { FormArea, FormInputBox },
 
     props: {
       node: {
@@ -32,22 +35,24 @@ import FormArea from "./dialogForm/FormArea";
       }
     },
 
-    watch:{
-      dialogVisible(){
-        this.showDialog = true;
-        this.header = this.node.type
-        this.nodeEdited = this.node;
-        console.log('this.header :>> ', this.header);
-      }
-    },
-
     data() {
       return {
+        types: new Types(),
         header: "",
         showDialog: false,
         nodeEdited: null,
       }
     },
+
+    watch:{
+      dialogVisible(){
+        this.header = this.node.type
+        this.nodeEdited = this.node;
+        console.log('this.header :>> ', this.header);
+        this.showDialog = true;
+      }
+    },
+
     methods: {
       saveNode(){
         this.node.update(this.nodeEdited);

@@ -7,36 +7,40 @@ export class DecorationInputBox extends DecorationModel {
   constructor() {
     super("DecorationInputBox")
     console.log("DecorationInputBox Criado!");
+    this.node = null;
   
-    this.init = async function (node) {
+    this.init = async function (newNode, openDialog) {
       let svg = SingletonFlowchart.svg
-      console.log("node :>> ", node);
+      console.log("newNode :>> ", newNode);
+      this.node = newNode;
   
        await svg
-          .data([node])
+          .data([newNode])
           .append("g")
           .classed("InputBox", true)
-          .attr("id", `InputBox-${node.id}`)
+          .attr("id", `InputBox-${newNode.id}`)
 
-          let g = d3.select(`#InputBox-${node.id}`)
+          let g = d3.select(`#InputBox-${newNode.id}`)
 
           g.append("image")
-          .attr('width', node.widthImg)
-          .attr('height', node.heightImg)
-          .attr("x", node.xImg)
-          .attr("y", node.yImg)
-          .attr("xlink:href", node.srcImg)
+          .attr('width', newNode.widthImg)
+          .attr('height', newNode.heightImg)
+          .attr("x", newNode.xImg)
+          .attr("y", newNode.yImg)
+          .attr("xlink:href", newNode.srcImg)
           .attr("cursor", "grab")
           .call(this.setDrag())
+          .on('dblclick', () => openDialog(newNode))
           .node();
 
           g.append('text')
-          .attr("y", (d) => d.y + node.heightText)
-          .attr("x", (d) => d.x + node.width / 2)
+          .attr("y", (d) => d.y + newNode.heightText)
+          .attr("x", newNode.xText())
           .attr("cursor", "pointer")
           .attr("text-anchor", "middle")
           .style('stoke', COLORS.Black90)
-          .text(node.value)
+          .text(newNode.value)
+          .on('dblclick', () => openDialog(newNode))
           .node();
 
           g.append("rect")
@@ -45,8 +49,8 @@ export class DecorationInputBox extends DecorationModel {
           .attr("y", (d) => d.y)
           .attr("stroke", COLORS.ClearBlue)
           .style("fill", '#0000')
-          .style("width", node.width)
-          .style("height", node.height)
+          .style("width", newNode.width)
+          .style("height", newNode.height)
           .node();
 
       
@@ -79,10 +83,12 @@ export class DecorationInputBox extends DecorationModel {
     this.dragged = async function (event, d) {
       const adjustY = 5;
       const adjustX = 5;
+      d.x = event.x;
+      d.y = event.y;
       SingletonFlowchart.clicked = false;
       await d3.select(this).raise().attr("x", (d.xImg = event.x - 12 - adjustX)).attr("y", (d.yImg = event.y - 92));
-      await d3.select(`#InputBox-${d.id} > rect`).raise().attr("x", (d.x = event.x - adjustX)).attr("y", (d.y = event.y - adjustY));
-      await d3.select(`#InputBox-${d.id} > text`).raise().attr("x", (d.x = event.x + d.width / 2 - adjustX)).attr("y", (d.y = event.y + d.heightText - adjustY));
+      await d3.select(`#InputBox-${d.id} > rect`).raise().attr("x", (d.x - adjustX)).attr("y", (d.y - adjustY));
+      await d3.select(`#InputBox-${d.id} > text`).raise().attr("x", (d.xText() - adjustX)).attr("y", (d.y + d.heightText - adjustY));
       
     }
 
@@ -92,5 +98,15 @@ export class DecorationInputBox extends DecorationModel {
         .attr("stroke", COLORS.ClearBlue)
         .attr("cursor", "grab") 
     };
+
+    this.setTextAndAdjustWidth = () => {
+      d3.select(`#InputBox-${this.node.id} > text`)
+        .attr("x", this.node.xText() - 5)
+        .text(this.node.value)
+        .node()
+
+      d3.select(`#InputBox-${this.node.id} > rect`)
+        .style("width", this.node.width)
+    }
   }
 }

@@ -17,11 +17,11 @@
 
     <div class="toolbar">
 
-      <md-button @click="() => ctrInputBox.setNewNode()"><md-icon><img src="../../assets/inputBox.svg" alt="" srcset=""/></md-icon>
+      <md-button @click="() => ctrInputBox.setNewNode(this.openDialog)"><md-icon><img src="../../assets/inputBox.svg" alt="" srcset=""/></md-icon>
         Caixa de Insumo
       </md-button>
 
-      <md-button @click="() => ctrPercentageEntry.setNewNode()"><md-icon><img src="../../assets/percentageEntry.svg" alt="" srcset=""/></md-icon>
+      <md-button @click="() => ctrPercentageEntry.setNewNode(this.openDialog)"><md-icon><img src="../../assets/percentageEntry.svg" alt="" srcset=""/></md-icon>
         Porcentagem de Saída
       </md-button>
 
