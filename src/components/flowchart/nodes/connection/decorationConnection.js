@@ -44,7 +44,7 @@ class DecorationConnection extends DecorationModel {
         .classed("Connection", true)
         .attr("id", `dot-${id}`)
         .attr("d", line)
-        .attr("stroke", "#444")
+        .attr("stroke", this.connectionNode.color)
         .attr("stroke-width", 3)
         .style("cursor", "pointer")
         .style("fill", "none")
@@ -131,18 +131,17 @@ class DecorationConnection extends DecorationModel {
     }
 
     this.dragstarted = async function(event, d) {
-      SingletonFlowchart.clicked = true
-      await console.log('oi', d)
-      SingletonFlowchart.selected = 'dot-' + d.id
-      await console.log('oi')
+      SingletonFlowchart.selectNode('dot-' + d.id)
     }
   
     this.dragged = function(event, d, dot) {
       SingletonFlowchart.clicked = false
 
       if(!dot){
+        console.log("Entrada 1")
         d.node.moveLastPoint({x: event.x, y: event.y})
       }else{
+        console.log("Entrada 2")
         d.node.pointOnPath({x: event.x, y: event.y}, dot)
       }
     }

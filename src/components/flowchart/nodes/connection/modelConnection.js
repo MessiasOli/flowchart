@@ -2,7 +2,7 @@ import { NodeModel } from "../_model/NodeModel";
 import { DecorationConnection } from "./decorationConnection"
 
 class Connection extends NodeModel {
-  constructor(x, y, parentId) {
+  constructor(x, y, parentId, color) {
     super("Connection");
     this.decorator = new DecorationConnection();
     
@@ -13,6 +13,7 @@ class Connection extends NodeModel {
     this.y = y;
     this.x1 = 0;
     this.y1 = 0;
+    this.color = color || "#000"
     this.internalPoints = new Array();
     this.qtdInternalPoints = 0
     this.height = 250;
@@ -36,6 +37,7 @@ class Connection extends NodeModel {
     }
 
     this.pointOnPath = async function(coordinate, dot) {
+      console.log('cordinate, dot :>> ', coordinate, dot);
       if(dot == 1)
       {
         if(this.internalPoints.length == 0){
@@ -65,8 +67,8 @@ class Connection extends NodeModel {
     }
 
     this.moveLastPoint = function(coordinate) {
-      this.x1 = coordinate.x
-      this.y1 = coordinate.y
+        this.x1 = coordinate.x
+        this.y1 = coordinate.y
       this.changePath([null, null, null, null, null, null, coordinate.x, coordinate.y])
       this.decorator.move(this.path)
     }
@@ -82,7 +84,6 @@ class Connection extends NodeModel {
         if(path.length == 2){
           this.path = `M${this.x},${this.y}L${x2},${y2}L${this.x1},${this.y1}`
         }else{
-          path.length == 3 && path.push(path[path.length - 1])
           path[1] = `${x2},${y2}`
           this.path = path.reduce((x,t) => x+"L"+t)
         }

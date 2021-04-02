@@ -13,6 +13,8 @@ class InputBox extends NodeModel {
     this.x = 500;
     this.y = 100;
     this.xText = () => this.x + (this.width / 2);
+    this.xDot = () => this.x + 70;
+    this.yDot = () => this.y - 5;
     this.height = 20;
     this.heightText = this.height - 5;
     this.width = 60;
@@ -21,6 +23,8 @@ class InputBox extends NodeModel {
     this.heightImg = 100;
     this.xImg = this.x -12;
     this.yImg = 13;
+
+    this.connectionPack = new Array();
 
     this.decorate = async function(callback) {
       await this.decorator.init(this, callback)
