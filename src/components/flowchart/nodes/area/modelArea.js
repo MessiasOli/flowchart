@@ -15,6 +15,7 @@ class Area extends NodeModel {
     this.height = 60;
     this.width = 110;
     this.nameOfArea = "Area"
+    this.connectionPack = new Array();
 
     this.decorate = async function(callback) {
       await this.decorator.init(this, callback)

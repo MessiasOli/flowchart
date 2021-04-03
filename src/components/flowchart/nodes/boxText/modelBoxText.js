@@ -8,9 +8,13 @@ class BoxText extends NodeModel {
     
     this.contador = 0;
     this.x = 500;
-    this.y = 100;
-    this.height = 40;
+    this.y = 80;
+    this.yText = () => this.y - 20;
+    this.yBoxBody = () => this.y + 20;
     this.width = 100;
+    this.boxTextHeight = 20;
+    this.boxBodyHeight = 40;
+    this.height = this.boxBodyHeight + this.boxTextHeight;
     this.connectionPack = new Array();
 
     this.decorate = async function() {

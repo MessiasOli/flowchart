@@ -37,7 +37,6 @@ class Connection extends NodeModel {
     }
 
     this.pointOnPath = async function(coordinate, dot) {
-      console.log('cordinate, dot :>> ', coordinate, dot);
       if(dot == 1)
       {
         if(this.internalPoints.length == 0){

@@ -1,6 +1,7 @@
 import { DecorationModel } from "../_model/DecorationModel";
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { ControllerConnection } from "../connection/controllerConnection"
+import { GetSixConections } from "../../utils/tools"
 import * as d3 from "d3";
 
 class DecorationBoxText extends DecorationModel {
@@ -22,15 +23,15 @@ class DecorationBoxText extends DecorationModel {
         .classed('title', true)
         .attr('stroke','black')
         .attr("x", (d) => d.x)
-        .attr("y", (d) => d.y-20)
+        .attr("y", (d) => d.y)
         .style("width", node.width)
-        .style("height", 20)
+        .style("height", node.boxTextHeight)
         .style('fill', 'none')
 
         let g = d3.select(`#BoxText-${node.id}`)
         
         g.append('text')
-        .attr("y", (d) => d.y - 3)
+        .attr("y", (d) => d.yBoxBody() - 3)
         .attr("x", (d) => d.x + node.width / 2)
         .style('stoke', 'black')
         .text("BoxText")
@@ -40,12 +41,12 @@ class DecorationBoxText extends DecorationModel {
         g.append("rect")
         .classed("BoxText", true)
         .attr("x", (d) => d.x)
-        .attr("y", (d) => d.y)
+        .attr("y", (d) => d.yBoxBody())
         .attr("cursor", "grab")
         .attr("stroke", "#444")
         .style("fill", '#0000')
         .style("width", node.width)
-        .style("height", node.height)
+        .style("height", node.boxBodyHeight)
         .call(this.setDrag(node))
         .node();
 
@@ -55,7 +56,7 @@ class DecorationBoxText extends DecorationModel {
     };
 
     this.createConnections = function(node) {
-      let connections = this.getConnectorPosition(node);
+      let connections = GetSixConections(node);
       let that = this
 
       d3.select(`#BoxText-${node.id}`)
@@ -106,14 +107,17 @@ class DecorationBoxText extends DecorationModel {
 
     this.dragged = async function(event, d) {
       SingletonFlowchart.clicked = false;
-      await d3.select(this).raise().attr("x", (d.x = event.x)).attr("y", (d.y = event.y));
-      await d3.select(`#BoxText-${d.id} > text`).raise().attr("x", (d.x = event.x + d.width / 2)).attr("y", (d.y = event.y - 3));
-      await d3.select(`#BoxText-${d.id} > .title`).raise().attr("x", (d.x = event.x)).attr("y", (d.y = event.y - 20));
+      let adjust = 20
+      d.x = event.x;
+      d.y = event.y;
+      await d3.select(this).raise().attr("x", (d.x)).attr("y", (d.yBoxBody() + adjust));
+      await d3.select(`#BoxText-${d.id} > text`).raise().attr("x", (d.x + d.width / 2)).attr("y", (d.yBoxBody() + adjust - 3));
+      await d3.select(`#BoxText-${d.id} > .title`).raise().attr("x", (d.x = event.x)).attr("y", d.y + adjust);
       
       d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
       d.connectionPack.forEach(point => {
           let dot = d.decorator.getPointPosition(d, point.dot)
-          point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y + 20})
+          point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y + adjust})
       });
     };
 
@@ -124,27 +128,9 @@ class DecorationBoxText extends DecorationModel {
     };
 
     this.getPointPosition = function(node, point){
-      return this.getConnectorPosition(node).filter( dot => dot.point == point)
+      return GetSixConections(node).filter( dot => dot.point == point)
     }
 
-    this.getConnectorPosition = function(node) {
-      const halfWidth = node.width / 6;
-      const halfHeight = (node.height + 20) / 6;
-      let newY = node.y - 20
-      let top1 = { x: node.x + halfWidth * 1, y: newY, point: 'top1' };
-      let top2 = { x: node.x + halfWidth * 3, y: newY, point: 'top2' };
-      let top3 = { x: node.x + halfWidth * 5, y: newY, point: 'top3' };
-      let left1 = { x: node.x, y: newY + halfHeight * 1, point: 'left1' };
-      let left2 = { x: node.x, y: newY + halfHeight * 3, point: 'left2' };
-      let left3 = { x: node.x, y: newY + halfHeight * 5, point: 'left3' };
-      let bottom1 = { x: node.x + halfWidth * 1, y: node.y + node.height, point: 'bottom1' };
-      let bottom2 = { x: node.x + halfWidth * 3, y: node.y + node.height, point: 'bottom2' };
-      let bottom3 = { x: node.x + halfWidth * 5, y: node.y + node.height, point: 'bottom3' };
-      let right1 = { x: node.x + node.width, y: newY + halfHeight * 1, point: 'right1' };
-      let right2 = { x: node.x + node.width, y: newY + halfHeight * 3, point: 'right2' };
-      let right3 = { x: node.x + node.width, y: newY + halfHeight * 5, point: 'right3' };
-      return [ left1, left2, left3, right1, right2, right3, top1, top2, top3, bottom1, bottom2, bottom3 ];
-    };
   }
 }
 

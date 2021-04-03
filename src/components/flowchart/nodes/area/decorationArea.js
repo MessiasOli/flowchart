@@ -1,6 +1,8 @@
 import { DecorationModel } from "../_model/DecorationModel";
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
+import { ControllerConnection } from "../connection/controllerConnection"
 import { COLORS } from "../../utils/colors"
+import { GetSixConections } from "../../utils/tools"
 import * as d3 from "d3"
 
 export class DecorationArea extends DecorationModel {
@@ -8,6 +10,7 @@ export class DecorationArea extends DecorationModel {
     super("DecorationArea")
     console.log("DecorationArea Criado!");
     this.node = null;
+    this.ctrConnection = new ControllerConnection()
   
     this.init = async function (newNode, openDialog) {
       let svg = SingletonFlowchart.svg
@@ -40,9 +43,43 @@ export class DecorationArea extends DecorationModel {
         .style('fill', COLORS.Black95)
         .text(newNode.nameOfArea)
         .on('dblclick', () => openDialog(newNode))
+
+        this.createConnections(newNode)
       
       return svg
     }
+
+    this.createConnections = function(node) {
+      let connections = GetSixConections(node);
+      let that = this
+
+      d3.select(`#Area-${node.id}`)
+        .selectAll(`.circle-${node.id}`)
+        .data(connections)
+        .join("circle")
+        .attr("id", d => d.point +'-'+ node.id)
+        .classed("circleBox", true)
+        .attr("cx", (d) => d.x)
+        .attr("cy", (d) => d.y)
+        .attr("cursor", "pointer")
+        .attr("r", 4)
+        .style('fill','#0000')
+        .on('mouseover', (event, d) => d3.select("#"+ d.point +'-'+ node.id).style('fill', 'rgba(255, 0, 0, 0.705)'))
+        .on('mouseout', (event, d) => d3.select("#"+ d.point +'-'+ node.id).style('fill', '#0000'))
+        .call(d3
+          .drag()
+          .on("start", () => that.connected = true)
+          .on("drag", (event) => {
+            if(that.connected && !that.transientConnection){
+              that.transientConnection = that.ctrConnection.setNewNode(event.x, event.y, `#Area-${node.id}`)
+            }
+            that.connected = false
+            that.transientConnection.moveTo({ x: event.x, y: event.y})
+          }).on('end', (event, d) => {
+            !that.connected && that.node.connectionPack.push({ conn: that.transientConnection, dot: d.point })
+            that.transientConnection = null;
+          }))
+    };
   
     this.setDrag = function() {
       let that = this
@@ -62,21 +99,42 @@ export class DecorationArea extends DecorationModel {
       d3.select(this)
         .style("stroke", "black")
         .attr("cursor", "grabbing")
+
+      d3.selectAll(`#Area-${d.id} > .circleBox`).remove();
     }
 
     this.dragged = async function (event, d){
       SingletonFlowchart.clicked = false;
       d.x = event.x + 20;
       d.y = event.y;
-      await d3.select(this).raise().attr("x", (d.x)).attr("y", (d.y));
-      await d3.select(`#Area-${d.id} > text`).raise().attr("x", (d.xText())).attr("y", (d.yText()));
+
+      await d3.select(this)
+        .raise()
+        .attr("x", (d.x))
+        .attr("y", (d.y));
+      await d3.select(`#Area-${d.id} > text`)
+        .raise()
+        .attr("x", (d.xText()))
+        .attr("y", (d.yText()));
+
+      d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
+      d.connectionPack.forEach(point => {
+          let dot = d.decorator.getPointPosition(d, point.dot)
+          point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y + 20})
+      });
     }
 
-    this.dragended = function() {
+    this.dragended = function(event, node) {
       this.cursor = "grab"
       d3.select(this)
         .attr("cursor", "grab")
         .style("stroke", "none")
+
+      node.decorator.createConnections(node);
+    }
+
+    this.getPointPosition = function(node, point){
+      return GetSixConections(node).filter( dot => dot.point == point)
     }
 
     this.setTextAndAdjustWidth = () => {

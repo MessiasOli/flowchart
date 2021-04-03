@@ -17,27 +17,27 @@
 
     <div class="toolbar">
 
-      <md-button @click="() => ctrInputBox.setNewNode(this.openDialog)"><md-icon><img src="../../assets/inputBox.svg" alt="" srcset=""/></md-icon>
+      <md-button class="btn-toolbar" @click="() => ctrInputBox.setNewNode(this.openDialog)"><md-icon><img src="../../assets/inputBox.svg" alt="" srcset=""/></md-icon>
         Caixa de Insumo
       </md-button>
 
-      <md-button @click="() => ctrPercentageEntry.setNewNode(this.openDialog)"><md-icon><img src="../../assets/percentageEntry.svg" alt="" srcset=""/></md-icon>
+      <md-button class="btn-toolbar" @click="() => ctrPercentageEntry.setNewNode(this.openDialog)"><md-icon><img src="../../assets/percentageEntry.svg" alt="" srcset=""/></md-icon>
         Porcentagem de Saída
       </md-button>
 
-      <md-button @click="() => ctrArea.setNewNode(this.openDialog)"><md-icon><img src="../../assets/area.svg" alt="" srcset=""/></md-icon>
+      <md-button class="btn-toolbar" @click="() => ctrArea.setNewNode(this.openDialog)"><md-icon><img src="../../assets/area.svg" alt="" srcset=""/></md-icon>
         Area
       </md-button>
 
-      <md-button @click="() => ctrCircle.setNewNode()"><md-icon><img src="../../assets/circle.svg" alt="" srcset=""/></md-icon>
+      <md-button class="btn-toolbar" @click="() => ctrCircle.setNewNode()"><md-icon><img src="../../assets/circle.svg" alt="" srcset=""/></md-icon>
         Circulo
       </md-button>
 
-      <md-button @click="() => ctrLine.setNewNode()"><md-icon><img src="../../assets/line.svg" alt="" srcset=""/></md-icon>
+      <md-button class="btn-toolbar" @click="() => ctrLine.setNewNode()"><md-icon><img src="../../assets/line.svg" alt="" srcset=""/></md-icon>
         Linha
       </md-button>
 
-      <md-button @click="() => ctrBoxText.setNewNode()"><md-icon><img src="../../assets/boxText.svg" alt="" srcset=""/></md-icon>
+      <md-button class="btn-toolbar" @click="() => ctrBoxText.setNewNode()"><md-icon><img src="../../assets/boxText.svg" alt="" srcset=""/></md-icon>
         BoxText
       </md-button>
 
@@ -215,8 +215,13 @@ export default {
   font-weight: 700;
 }
 
+.toolbar >.md-button.btn-toolbar>.md-ripple {
+  justify-content: start;
+}
+
 .toolbar > button {
   margin: 0;
+  width: 100%;
   padding: 0 10px 0 5px;
   font-size: 10px;
 }

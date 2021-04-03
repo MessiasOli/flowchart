@@ -138,10 +138,8 @@ class DecorationConnection extends DecorationModel {
       SingletonFlowchart.clicked = false
 
       if(!dot){
-        console.log("Entrada 1")
         d.node.moveLastPoint({x: event.x, y: event.y})
       }else{
-        console.log("Entrada 2")
         d.node.pointOnPath({x: event.x, y: event.y}, dot)
       }
     }
