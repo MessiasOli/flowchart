@@ -7,10 +7,10 @@ class ControllerBoxText extends IController {
     super("ControllerBoxText");
     console.log(`ControllerBoxText criado!`)
     
-    this.setNewNode = () => {
+    this.setNewNode = (callback) => {
       console.log("Criando novo BoxText");
       let boxText = new BoxText();
-      boxText.decorate();
+      boxText.decorate(callback);
     }
   }
 }

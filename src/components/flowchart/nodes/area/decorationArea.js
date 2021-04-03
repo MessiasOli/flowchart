@@ -10,6 +10,7 @@ export class DecorationArea extends DecorationModel {
     super("DecorationArea")
     console.log("DecorationArea Criado!");
     this.node = null;
+    this.transientConnection = null;
     this.ctrConnection = new ControllerConnection()
   
     this.init = async function (newNode, openDialog) {
@@ -49,38 +50,6 @@ export class DecorationArea extends DecorationModel {
       return svg
     }
 
-    this.createConnections = function(node) {
-      let connections = GetSixConections(node);
-      let that = this
-
-      d3.select(`#Area-${node.id}`)
-        .selectAll(`.circle-${node.id}`)
-        .data(connections)
-        .join("circle")
-        .attr("id", d => d.point +'-'+ node.id)
-        .classed("circleBox", true)
-        .attr("cx", (d) => d.x)
-        .attr("cy", (d) => d.y)
-        .attr("cursor", "pointer")
-        .attr("r", 4)
-        .style('fill','#0000')
-        .on('mouseover', (event, d) => d3.select("#"+ d.point +'-'+ node.id).style('fill', 'rgba(255, 0, 0, 0.705)'))
-        .on('mouseout', (event, d) => d3.select("#"+ d.point +'-'+ node.id).style('fill', '#0000'))
-        .call(d3
-          .drag()
-          .on("start", () => that.connected = true)
-          .on("drag", (event) => {
-            if(that.connected && !that.transientConnection){
-              that.transientConnection = that.ctrConnection.setNewNode(event.x, event.y, `#Area-${node.id}`)
-            }
-            that.connected = false
-            that.transientConnection.moveTo({ x: event.x, y: event.y})
-          }).on('end', (event, d) => {
-            !that.connected && that.node.connectionPack.push({ conn: that.transientConnection, dot: d.point })
-            that.transientConnection = null;
-          }))
-    };
-  
     this.setDrag = function() {
       let that = this
       console.log('this :>> ', this);
@@ -120,7 +89,7 @@ export class DecorationArea extends DecorationModel {
       d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
       d.connectionPack.forEach(point => {
           let dot = d.decorator.getPointPosition(d, point.dot)
-          point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y + 20})
+          point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y})
       });
     }
 
@@ -135,6 +104,61 @@ export class DecorationArea extends DecorationModel {
 
     this.getPointPosition = function(node, point){
       return GetSixConections(node).filter( dot => dot.point == point)
+    }
+
+    this.createConnections = function(node) {
+      let connections = GetSixConections(node);
+
+      d3.select(`#Area-${node.id}`)
+        .selectAll(`.circle-${node.id}`)
+        .data(connections)
+        .join("circle")
+        .attr("id", d => d.point +'-'+ node.id)
+        .classed("circleBox", true)
+        .attr("cx", (d) => d.x)
+        .attr("cy", (d) => d.y)
+        .attr("cursor", "pointer")
+        .attr("r", 4)
+        .style('fill','#0000')
+        .on('mouseover', (event, d) => this.mouseOver(d, node))
+        .on('mouseout', (event, d) => this.mouseOut(d, node))
+        .call(this.setDragConnections(node))
+        .node();
+    };
+
+    this.mouseOver = function (d, node) {
+      d3.select("#"+ d.point +'-'+ node.id)
+        .style('fill', 'rgba(255, 0, 0, 0.705)')
+    }
+
+    this.mouseOut = function (d, node){
+      d3.select("#"+ d.point +'-'+ node.id)
+        .style('fill', '#0000')
+    }
+
+    this.setDragConnections = function(node){
+      let that = this
+      let drag = d3
+        .drag()
+        .on("start", () => that.connected = true)
+        .on("drag", (event) => that.draggedConnections(event, that, node))
+        .on("end", (event, node) => that.dragendedConnections(event, that, node));
+
+      return drag;
+    }
+
+    this.draggedConnections = (event, that, node) =>{
+      if(that.connected && !that.transientConnection){
+        console.log('entrei :>> ');
+        that.transientConnection = that.ctrConnection.setNewNode(event.x, event.y, `#Area-${node.id}`)
+      }
+      that.connected = false
+      that.transientConnection.moveTo({ x: event.x, y: event.y})
+    }
+
+    this.dragendedConnections = (event, that, node) =>{
+      !that.connected && that.node.connectionPack.push({ conn: that.transientConnection, dot: node.point })
+      that.transientConnection = null;
     }
 
     this.setTextAndAdjustWidth = () => {

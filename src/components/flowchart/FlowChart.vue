@@ -37,7 +37,7 @@
         Linha
       </md-button>
 
-      <md-button class="btn-toolbar" @click="() => ctrBoxText.setNewNode()"><md-icon><img src="../../assets/boxText.svg" alt="" srcset=""/></md-icon>
+      <md-button class="btn-toolbar" @click="() => ctrBoxText.setNewNode(this.openDialog)"><md-icon><img src="../../assets/boxText.svg" alt="" srcset=""/></md-icon>
         BoxText
       </md-button>
 

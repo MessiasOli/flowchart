@@ -36,7 +36,6 @@ class InputBox extends NodeModel {
     }
 
     this.update = (nodeEdited) => {
-      console.log('nodeEdited :>> ', nodeEdited);
       this.value = NumberFormat(nodeEdited.value)
       let lenghtOfFont = this.value.length * 9
       this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
