@@ -42,7 +42,10 @@
       </md-button>
 
     </div>
-    <div id="canvas"></div>
+    <div id="canvas" 
+    @mousedown="startSelection($event)"
+    @mousemove="moveSelection($event)"
+    @mouseup="endSelection($event)"></div>
     <Dialog
       :dialogVisible="showDialog"
       :node="selectedNode"
@@ -67,6 +70,7 @@ export default {
       typesNodes: new Types(),
       showDialog: 0,
       selectedNode: null,
+      ctrSelection: null,
       ctrInputLine: null,
       ctrPercentageEntry: null,
       ctrBoxText: null,
@@ -77,23 +81,36 @@ export default {
   },
   watch: {},
   methods: {
+    async startSelection(event){
+      if(event.ctrlKey){
+        this.ctrSelection.onSelection = true
+        await this.ctrSelection.setNewNode(event);
+      }
+    },
+
+    moveSelection(event){
+      if(event.ctrlKey){
+        this.ctrSelection.moveSelectionTo(event);
+      }
+    },
+
+    endSelection(event){
+      if(event.ctrlKey){
+        this.ctrSelection.selectNodes();
+      }
+    },
+
     openDialog(node){
       this.selectedNode = node
       this.showDialog++;
-      console.log('node :>> ', node);
     },
 
     removeNode() {
       let selection = SingletonFlowchart.selected
       if(selection){
         SingletonFlowchart.unSelectNode();
-        console.log('Removendo selection :>> ', selection);
         d3.selectAll(`#${selection}`).remove()
       }
-    },
-
-    editNode() {
-      console.log("Método edit");
     },
 
     unSelected(){
@@ -119,6 +136,7 @@ export default {
       this.ctrCircle = GetNewController(this.typesNodes.Circle);
       this.ctrLine = GetNewController(this.typesNodes.Line);
       this.ctrArea = GetNewController(this.typesNodes.Area);
+      this.ctrSelection = GetNewController(this.typesNodes.Selection);
     },
 
     setShortCuts(){

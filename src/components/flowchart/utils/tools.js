@@ -28,5 +28,17 @@ const GetSixConections = (node) => {
   return [ left1, left2, left3, right1, right2, right3, top1, top2, top3, bottom1, bottom2, bottom3 ];
 };
 
+const GetSVGCoordinates = (event) => {
+  let boundingClientRect = document.querySelector("#svg").getBoundingClientRect();
+  let x = event.pageX - boundingClientRect.left - window.scrollX;
+  let y = event.pageY - boundingClientRect.top - window.scrollY;
 
-export { NumberFormat, GetSixConections }
+  return [x, y]
+}
+
+
+export { 
+  NumberFormat, 
+  GetSixConections,
+  GetSVGCoordinates
+}

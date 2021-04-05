@@ -6,6 +6,8 @@ import { ControllerConnection } from "../connection/controllerConnection"
 import { ControllerInputBox } from "../inputBox/controllerInputBox"
 import { ControllerPercentageEntry } from "../percentageEntry/controllerPercentageEntry"
 import { ControllerArea } from "../area/controllerArea"
+import { ControllerSelection } from "../selection/controllerSelection"
+
 
 let types = new Types()
 
@@ -31,6 +33,9 @@ export let GetNewController = function (type){
 
     case types.Connection:
       return new ControllerConnection();
+
+    case types.Selection:
+      return new ControllerSelection();
 
     default: 
       throw `Factory: Erro - ${type} não é um classe disponível para ser instânciada`

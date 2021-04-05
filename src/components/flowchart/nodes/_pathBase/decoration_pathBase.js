@@ -6,33 +6,31 @@ import * as d3 from "d3"
 export class Decoration_pathBase extends DecorationModel {
   constructor() {
     super("Decoration_pathBase")
-    console.log("Decoration_pathBase Criado!");
+    this.node = null;
   
-    this.init = async function (node) {
+    this.init = async function (newNode) {
       let svg = SingletonFlowchart.svg
-      console.log("node :>> ", node);
+      this.node = newNode
   
        await svg
-          .data([node])
+          .data([newNode])
           .append("g")
-          .attr("id", `Area-${node.id}`)
+          .attr("id", `_pathBase-${newNode.id}`)
           .append("rect")
           .classed("_pathBase", true)
-          .attr("id", `_pathBase-${node.id}`)
           .attr("x",  d => d.x)
           .attr("y", d => d.y)
-          .style("width", node.width)
-          .style("height", node.height)
+          .style("width", newNode.width)
+          .style("height", newNode.height)
           .attr("cursor", "grab")
           .style("fill", COLORS.ClearBlue)
-          .call(this.setDrag(node))
+          .call(this.setDrag(newNode))
       
       return svg
     }
   
     this.setDrag = function() {
       let that = this
-      console.log('this :>> ', this);
       let drag = d3
         .drag()
         .on("start", that.dragstarted)
