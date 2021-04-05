@@ -2,6 +2,7 @@ import { DecorationModel } from "../_model/DecorationModel";
 import { ControllerConnection } from "../connection/controllerConnection"
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { COLORS } from "../../utils/colors"
+//import { GetSVGCoordinates } from "../../utils/tools"
 import * as d3 from "d3"
 
 export class DecorationInputBox extends DecorationModel {
@@ -145,15 +146,15 @@ export class DecorationInputBox extends DecorationModel {
     this.draggedCircle = (event, that, node) =>{
       if(that.conected && !that.transientConnection){
         that.transientConnection = that.ctrConnection.setNewNode(
-          node.xDot() - 5, 
-          node.yDot() - 5, 
+          node.xDot(), 
+          node.yDot(), 
           `#InputBox-${node.id}`,
           COLORS.CornflowerBlue
         )
       }
-      
+
       that.conected = false;
-      that.transientConnection.moveTo({ x: event.x, y: event.y})
+      that.transientConnection.moveTo({ x: event.x + 71.3, y: event.y - 1.5})
     }
 
     this.dragendedCircle = (event, that, node) =>{

@@ -30,12 +30,19 @@ const GetSixConections = (node) => {
 
 const GetSVGCoordinates = (event) => {
   let boundingClientRect = document.querySelector("#svg").getBoundingClientRect();
-  let x = event.pageX - boundingClientRect.left - window.scrollX;
-  let y = event.pageY - boundingClientRect.top - window.scrollY;
+  let x;
+  let y;
+
+  if(event.type == "drag"){
+    x = event.x - window.scrollX;
+    y = event.y - window.scrollY;
+  }else{
+    x = event.pageX - boundingClientRect.left - window.scrollX;
+    y = event.pageY - boundingClientRect.top - window.scrollY;
+  }
 
   return [x, y]
 }
-
 
 export { 
   NumberFormat, 
