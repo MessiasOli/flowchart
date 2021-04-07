@@ -57,7 +57,7 @@
 import * as d3 from "d3";
 import { SingletonFlowchart } from "./nodes/_service/singletonFlowchart";
 import { GetNewController } from "./nodes/_service/factoryController";
-import { Types } from "./utils/typesNodes"
+import { Types } from "./utils/nodeTypes"
 import Dialog from './Dialog.vue';
 
 export default {

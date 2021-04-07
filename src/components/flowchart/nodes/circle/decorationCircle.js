@@ -1,26 +1,27 @@
 import { DecorationModel } from "../_model/DecorationModel"
+import { ControllerCircle } from "../circle/controllerCircle"
 import { SingletonFlowchart } from "../_service/singletonFlowchart"
 import * as d3 from "d3"
 
 class DecorationCircle extends DecorationModel {
   constructor() {
     super("DecorationCircle")
-    console.log("DecorationCircle Criado!");
+    this.ctr = new ControllerCircle();
 
     this.init = async function(node) {
       let svg = SingletonFlowchart.svg
   
        await svg
-         .data([{ x: 500, y: 300, index: Math.trunc((Math.random()*100))}, { x: 400, y: 200, index: Math.random(0,10) }])
+         .data([ node ])
          .append("circle")
-          .attr("id" ,"circle-"+node.id)
+          .attr("id" , d => "circle-"+d.id)
           .attr("cx",  d => d.x)
           .attr("cy", d => d.y)
-          .attr("r", node.radius)
+          .attr("r", d => d.radius)
           .attr("cursor", "grab")
           .classed("circle", true)
           .style("fill", d3.schemeCategory10[100 % 10])
-          .call(this.setDrag(node))
+          .call(this.setDrag())
       
       return svg
     }
@@ -31,13 +32,12 @@ class DecorationCircle extends DecorationModel {
         .drag()
         .on("start", that.dragstarted)
         .on("drag", that.dragged)
-        .on("end", that.dragended);
+        .on("end", (event, d) => that.dragended(d, that));
       return drag;
     }
   
-    this.dragstarted = function() {
-      SingletonFlowchart.clicked = true
-      SingletonFlowchart.selected = this.id
+    this.dragstarted = function(event, d) {
+      SingletonFlowchart.selectNode(`circle-${d.id}`);
   
       d3.select(this)
         .style("stroke", "black")
@@ -46,14 +46,17 @@ class DecorationCircle extends DecorationModel {
   
     this.dragged = function(event, d) {
       SingletonFlowchart.clicked = false
-      d3.select(this).raise().attr("cx", d.x = event.x).attr("cy", d.y = event.y);
+      d.x = event.x;
+      d.y = event.y;
+      d3.select(`#circle-${d.id}`).raise().attr("cx", d.x).attr("cy", d.y);
     }
   
-    this.dragended = function() {
-      this.cursor = "grab"
-      d3.select(this)
+    this.dragended = function(d, that) {
+      d3.select(`#circle-${d.id}`)
         .style("stroke", "none")
         .attr("cursor", "grab")
+      console.log('updateNode :>> ', d);
+      that.ctr.updateNode(d)
     }
   }
 }

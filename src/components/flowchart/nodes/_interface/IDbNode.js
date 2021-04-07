@@ -5,7 +5,7 @@ export var IDbNode = {
       this.getNodeById = (id) => { throw errorMsg( nameClass, 'getNodeById()') }
       this.updateNode = (node) => { throw errorMsg( nameClass, 'updateNode()') }
       this.removeNode = () => { throw errorMsg( nameClass, 'removeNode()') }
-      this.saveNode = (node) => { throw errorMsg( nameClass, 'saveNode()') }
+      this.addNode = (node) => { throw errorMsg( nameClass, 'addNode()') }
   }
 }
 

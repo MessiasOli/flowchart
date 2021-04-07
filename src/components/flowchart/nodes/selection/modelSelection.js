@@ -1,6 +1,6 @@
 import { NodeModel } from "../_model/NodeModel";
 import { DecorationSelection } from "./decorationSelection"
-import { Types } from "../../utils/typesNodes"
+import { Types } from "../../utils/nodeTypes"
 
 class Selection extends NodeModel {
   constructor() {

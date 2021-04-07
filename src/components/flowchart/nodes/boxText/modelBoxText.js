@@ -1,6 +1,6 @@
 import { NodeModel } from "../_model/NodeModel";
 import { DecorationBoxText } from "./decorationBoxText"
-import { Types } from "../../utils/typesNodes"
+import { Types } from "../../utils/nodeTypes"
 
 class BoxText extends NodeModel {
   constructor() {

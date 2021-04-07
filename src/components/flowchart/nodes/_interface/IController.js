@@ -1,5 +1,7 @@
+import { DbRepository } from "../_service/repositoryNodes";
 export class IController {
   constructor(nameClass){
+    this.repository = new DbRepository();
     this.setNewNode = () => { throw errorMsg( nameClass, 'setNewNode()') }
     this.loadNodes = () => { throw errorMsg( nameClass, 'loadNodes()') }
     this.saveNodes = () => { throw errorMsg( nameClass, 'saveNodes()') }

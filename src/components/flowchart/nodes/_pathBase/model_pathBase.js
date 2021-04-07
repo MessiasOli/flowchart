@@ -1,6 +1,6 @@
 import { NodeModel } from "../_model/NodeModel";
 import { Decoration_pathBase } from "./decoration_pathBase"
-import { Types } from "../../utils/typesNodes"
+import { Types } from "../../utils/nodeTypes"
 
 class _pathBase extends NodeModel {
   constructor() {

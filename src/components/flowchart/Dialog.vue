@@ -25,7 +25,7 @@ import FormArea from "./dialogForm/FormArea";
 import FormInputBox from "./dialogForm/FormInputBox";
 import FormPercentageEntry from "./dialogForm/FormPercentageEntry";
 import FormBoxText from "./dialogForm/FormBoxText";
-import { Types } from "./utils/typesNodes"
+import { Types } from "./utils/nodeTypes"
 
 
   export default {

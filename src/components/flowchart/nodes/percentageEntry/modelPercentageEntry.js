@@ -1,6 +1,6 @@
 import { NodeModel } from "../_model/NodeModel";
 import { DecorationPercentageEntry } from "./decorationPercentageEntry"
-import { Types } from "../../utils/typesNodes"
+import { Types } from "../../utils/nodeTypes"
 import { NumberFormat } from "../../utils/tools"
 
 class PercentageEntry extends NodeModel {

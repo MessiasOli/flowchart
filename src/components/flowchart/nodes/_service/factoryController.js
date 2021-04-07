@@ -1,4 +1,4 @@
-import { Types } from "../../utils/typesNodes"
+import { Types } from "../../utils/nodeTypes"
 import { ControllerBoxText } from "../boxText/controllerBoxText"
 import { ControllerCircle } from "../circle/controllerCircle"
 import { ControllerLine } from "../line/controllerLine"

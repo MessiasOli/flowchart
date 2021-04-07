@@ -10,6 +10,18 @@ class Circle extends NodeModel{
     this.decorate = async function() {
       await this.decorator.init(this)
     };
+
+    this.copyTo = function (){
+      return {
+        id: this.id,
+        type: this.type,
+        x: this.x,
+        y: this.y,
+        heigth: this.heigth,
+        width: this.width,
+        radius: this.radius
+      }
+    }
   }
 }
 

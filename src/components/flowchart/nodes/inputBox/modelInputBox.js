@@ -1,6 +1,6 @@
 import { NodeModel } from "../_model/NodeModel";
 import { DecorationInputBox } from "./decorationInputBox"
-import { Types } from "../../utils/typesNodes"
+import { Types } from "../../utils/nodeTypes"
 import { NumberFormat } from "../../utils/tools"
 
 class InputBox extends NodeModel {

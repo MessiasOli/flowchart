@@ -1,6 +1,6 @@
 import { NodeModel } from "../_model/NodeModel";
 import { DecorationArea } from "./decorationArea"
-import { Types } from "../../utils/typesNodes"
+import { Types } from "../../utils/nodeTypes"
 
 class Area extends NodeModel {
   constructor() {
