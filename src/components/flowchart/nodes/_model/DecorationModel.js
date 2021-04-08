@@ -16,10 +16,13 @@ export class DecorationModel extends IDecoration {
     this.dragged = function(event, d) {
       SingletonFlowchart.clicked = false;
 
+      d.x = event.x;
+      d.y = event.y;
+
       d3.select(this)
         .raise()
-        .attr("x", (d.x = event.x))
-        .attr("y", (d.y = event.y));
+        .attr("x", d.x)
+        .attr("y", d.y);
     };
 
     this.dragended = function() {

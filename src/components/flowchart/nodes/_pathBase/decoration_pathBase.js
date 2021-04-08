@@ -1,4 +1,5 @@
 import { DecorationModel } from "../_model/DecorationModel";
+import { Controller_pathBase } from "../circle/controller_pathBase"
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3"
@@ -7,6 +8,7 @@ export class Decoration_pathBase extends DecorationModel {
   constructor() {
     super("Decoration_pathBase")
     this.node = null;
+    this.ctr = new Controller_pathBase();
   
     this.init = async function (newNode) {
       let svg = SingletonFlowchart.svg
@@ -35,7 +37,7 @@ export class Decoration_pathBase extends DecorationModel {
         .drag()
         .on("start", that.dragstarted)
         .on("drag", that.dragged)
-        .on("end", that.dragended);
+        .on("end", (event, d) => that.dragended(d, that));
       return drag;
     }
 
@@ -48,15 +50,26 @@ export class Decoration_pathBase extends DecorationModel {
         .attr("cursor", "grabbing")
     }
 
-    // this.dragged = async function (event, d){
-      /* use inheritance or overwrite */
-    // }
+    /* - to override
+    this.dragged = async function (event, d){
+      
+      d.x = event.x;
+      d.y = event.y;
 
-    this.dragended = function() {
-      this.cursor = "grab"
       d3.select(this)
+        .raise()
+        .attr("x", d.x)
+        .attr("y", d.y)
+    } 
+    */
+
+    this.dragended = function(d, that) {
+      this.cursor = "grab"
+      d3.select(`#_pathBase-${d.id}`)
         .style("stroke", 'none')
         .attr("cursor", "grab")
+
+      that.ctr.update(d);
     };
   }
 }

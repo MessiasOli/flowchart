@@ -19,14 +19,9 @@ class ControllerCircle extends IController {
 
     this.loadNode = (node) => {
       let circle = new Circle();
-
-      circle.id = node.id;
-      circle.type = node.type;
-      circle.x = node.x;
-      circle.y = node.y;
+      console.log('node :>> ', node);
+      circle.simpleCopyFrom(node);
       circle.radius = node.radius;
-      circle.width = node.width;
-      circle.heigth = node.heigth;
 
       circle.decorate();
       this.addNode(circle)
