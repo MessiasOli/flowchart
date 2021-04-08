@@ -54,7 +54,7 @@ import { Types } from "./utils/nodeTypes"
 
     watch:{
       dialogVisible(){
-        this.header = this.node.type
+        this.header = Types.Caption[this.node.type];
         this.nodeEdited = this.node;
         console.log('this.header :>> ', this.header);
         this.showDialog = true;

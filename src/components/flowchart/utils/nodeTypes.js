@@ -1,13 +1,25 @@
 export class Types {
   constructor(){
-    this._pathBase = "modelo Base";
-    this.Selection = "Seleção de nó"
-    this.InputBox = 'Matéria Prima';
-    this.PercentageEntry = 'Caixa de Desvio';
-    this.BoxText = 'Caixa de Texto';
-    this.Circle = 'Circulo';
-    this.Line = 'Linha';
-    this.Connection = 'Conexão';
-    this.Area = 'Area';
+    this._pathBase = 0
+    this.Selection = 1
+    this.InputBox = 2
+    this.PercentageEntry = 3
+    this.BoxText = 4
+    this.Circle = 5
+    this.Line = 6
+    this.Connection = 7
+    this.Area = 8
+
+    this.Caption = [
+      "Base",
+      "Seleção",
+      "Caixa de Insumos",
+      "Percentual de saída",
+      "Caixa de Texto",
+      "Ciculo",
+      "Linha",
+      "Conexão",
+      "Area"
+    ];
   }
 }

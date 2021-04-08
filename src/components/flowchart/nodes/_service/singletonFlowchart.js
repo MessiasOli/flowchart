@@ -1,3 +1,5 @@
+import { MemoryRepository } from "./memoryRepository"
+
 export var SingletonFlowchart = {
     instance: function(){
         if(!SingletonFlowchart.instance){
@@ -9,15 +11,26 @@ export var SingletonFlowchart = {
     nodeClicked: false,
     selected: null,
     clicked: null,
-    nodeMemory: new Array(),
+    Memory: new MemoryRepository(),
 
-    selectNode: function(id) {
+    selectNode: function(idHtml) {
         this.clicked = true
-        SingletonFlowchart.selected = id
+        this.selected = idHtml;
+        this.selectedId = getId(idHtml)
     },
 
     unSelectNode: function() {
         this.clicked = false
-        SingletonFlowchart.selected = ``
+        this.selected = ``
+    },
+
+    removeNodeSelected: function () {
+        this.Memory.removeNode(this.selectedId)
+        this.unSelectNode();
     }
+}
+
+function getId(idHtml){
+    let token = idHtml.split('-');
+    return token.length == 2 ? token[1] : "";
 }

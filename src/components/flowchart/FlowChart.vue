@@ -15,6 +15,14 @@
       <md-icon>-</md-icon>
     </md-button>
 
+    <md-button
+      id="btn-plus3"
+      @click="saveFlowchart()"
+      class="md-fab md-mini md-accent"
+    >
+      <md-icon>S</md-icon>
+    </md-button>
+
     <div class="toolbar">
 
       <md-button class="btn-toolbar" @click="() => ctrInputBox.setNewNode(this.openDialog)"><md-icon><img src="../../assets/inputBox.svg" alt="" srcset=""/></md-icon>
@@ -55,6 +63,8 @@
 
 <script>
 import * as d3 from "d3";
+import axios from "axios";
+import { HttpApiNode,  RequestSuscess, RequestError } from "../../utils/global"
 import { SingletonFlowchart } from "./nodes/_service/singletonFlowchart";
 import { GetNewController } from "./nodes/_service/factoryController";
 import { Types } from "./utils/nodeTypes"
@@ -105,10 +115,24 @@ export default {
       this.showDialog++;
     },
 
+    saveFlowchart(){
+      let nodes = SingletonFlowchart.Memory.getAllNodes();
+
+      let flowchart = {
+        id: 1050,
+        flowchartStructure: JSON.stringify(nodes)
+      }
+    
+      console.log('nodes :>> ', flowchart);
+      axios.post(`${HttpApiNode}`, flowchart)
+            .then(res => RequestSuscess(res.data))
+            .catch(error => RequestError(error))
+    },
+
     removeNode() {
       let selection = SingletonFlowchart.selected
       if(selection){
-        SingletonFlowchart.unSelectNode();
+        SingletonFlowchart.removeNodeSelected();
         d3.selectAll(`#${selection}`).remove()
       }
     },
@@ -142,6 +166,7 @@ export default {
     setShortCuts(){
       let that = this
       document.onkeydown = function (event) {
+
         switch (event.key) {
           case 'Delete':
             that.removeNode();
@@ -191,6 +216,12 @@ export default {
 #btn-plus1 {
   position: fixed;
   top: 100px;
+  left: 50px;
+}
+
+#btn-plus3 {
+  position: fixed;
+  top: 150px;
   left: 50px;
 }
 
