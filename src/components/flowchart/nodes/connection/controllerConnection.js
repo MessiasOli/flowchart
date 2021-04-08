@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { IController } from "../_interface/IController";
+import { ControllerModel } from "../_model/ControllerModel";
 import { Connection } from "./modelConnection";
 
-class ControllerConnection extends IController {
+class ControllerConnection extends ControllerModel {
   constructor() {
     super("ControllerConnection");
     

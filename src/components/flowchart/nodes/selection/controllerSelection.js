@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { IController } from "../_interface/IController";
+import { ControllerModel } from "../_model/ControllerModel";
 import { Selection } from "./modelSelection";
 import { GetSVGCoordinates } from "../../utils/tools"
 
 
-class ControllerSelection extends IController {
+class ControllerSelection extends ControllerModel {
   constructor() {
     super("ControllerSelection");
     console.log(`ControllerSelection criado!`)

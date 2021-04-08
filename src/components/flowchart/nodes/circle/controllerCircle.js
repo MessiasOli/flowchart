@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { IController } from "../_interface/IController";
+import { ControllerModel } from "../_model/ControllerModel";
 import { Types } from "../../utils/nodeTypes"
 import { Circle } from "./modelCircle";
 
-class ControllerCircle extends IController {
+class ControllerCircle extends ControllerModel {
   constructor() {
     super("ControllerCircle")
     console.log("ControllerCircle criado!")

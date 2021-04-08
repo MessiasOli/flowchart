@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { IController } from "../_interface/IController";
+import { ControllerModel } from "../_model/ControllerModel";
 import { Line } from "./modelLine";
 
-class ControllerLine extends IController {
+class ControllerLine extends ControllerModel {
   constructor() {
     super("ControllerLine");
     console.log(`ControllerLine criado!`)

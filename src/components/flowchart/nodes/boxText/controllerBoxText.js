@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { IController } from "../_interface/IController";
+import { ControllerModel } from "../_model/ControllerModel";
 import { BoxText } from "./modelBoxText";
 
-class ControllerBoxText extends IController {
+class ControllerBoxText extends ControllerModel {
   constructor() {
     super("ControllerBoxText");
     console.log(`ControllerBoxText criado!`)

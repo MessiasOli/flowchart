@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { IController } from "../_interface/IController";
+import { ControllerModel } from "../_model/ControllerModel";
 import { PercentageEntry } from "./modelPercentageEntry";
 
-class ControllerPercentageEntry extends IController {
+class ControllerPercentageEntry extends ControllerModel {
   constructor() {
     super("Controller_pathBase");
     console.log(`ControllerPercentageEntry criado!`)
