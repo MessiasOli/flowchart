@@ -163,6 +163,28 @@ export default {
       this.ctrSelection = GetNewController(this.typesNodes.Selection);
     },
 
+    loadDatabaseNodes(){
+      console.log("Carregando nós do banco de dados")
+      axios.get(`${HttpApiNode}`)
+        .then(res => {
+          if(res && res.data){
+            this.loadNodes(res.data)
+          }
+        })
+        .catch(RequestError)
+    },
+
+    loadNodes(data){
+      let nodes = JSON.parse(data[0].flowchartStructure)
+      nodes.forEach(node => {
+        switch(node.type){
+          case this.typesNodes.Circle:
+            this.ctrCircle.loadNode(node)
+        }
+      });
+      console.log("Nós carregados.", nodes.length)
+    },
+
     setShortCuts(){
       let that = this
       document.onkeydown = function (event) {
@@ -189,9 +211,10 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     this.configSVG();
-    this.initializaControllers();
+    await this.initializaControllers();
+    this.loadDatabaseNodes();
     this.setShortCuts();
   }
 };

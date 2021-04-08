@@ -2,7 +2,7 @@ import { SingletonFlowchart } from "../_service/singletonFlowchart"
 export class IController {
   constructor(nameClass){
     this.setNewNode = () => { throw errorMsg( nameClass, 'setNewNode()') }
-    this.loadNodes = () => { throw errorMsg( nameClass, 'loadNodes()') }
+    this.loadNode = () => { throw errorMsg( nameClass, 'loadNode()') }
     this.saveNodes = () => { throw errorMsg( nameClass, 'saveNodes()') }
     
     this.removeNode = (node) => SingletonFlowchart.Memory.removeNode(node);
