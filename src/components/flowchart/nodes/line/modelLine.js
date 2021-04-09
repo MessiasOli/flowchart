@@ -5,8 +5,7 @@ import { DecorationLine } from "./decorationLine"
 class Line extends NodeModel {
   constructor() {
     super("Line");
-    
-
+  
     this.type = new Types().Line
     this.x = 500;
     this.y = 100;

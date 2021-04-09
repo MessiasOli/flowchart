@@ -44,6 +44,7 @@ class InputBox extends NodeModel {
     this.copyFrom = (node) => {
       this.simpleCopyFrom(node);
       this.connectionPack = node.connectionPack;
+      this.widthImg = node.widthImg
       this.xImg = node.xImg;
       this.yImg = node.yImg;
       this.value = node.value;
@@ -54,6 +55,7 @@ class InputBox extends NodeModel {
       cloned.id = this.id
       cloned.type = this.type
       cloned.connectionPack = this.connectionPack.map(c => ({ conn: c.conn.clone(), dot: c.dot }));
+      cloned.width = this.width;
       cloned.value = this.value;
       cloned.x = this.x;
       cloned.y = this.y;
