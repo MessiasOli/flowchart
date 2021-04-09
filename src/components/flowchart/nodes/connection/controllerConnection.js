@@ -15,6 +15,22 @@ class ControllerConnection extends ControllerModel {
     this.isAlive = function(node){
       return document.querySelectorAll("#dot-" + node.id).length ? true : false
     }
+
+    this.loadNode = (node) => {
+      let conn = new Connection()
+      conn.simpleCopyFrom(node);
+      conn.parentId = node.parentId;
+      conn.color = node.color;
+      conn.contador = node.contador;
+      conn.path = node.path;
+      conn.x1 = node.x1;
+      conn.y1 = node.y1;
+      conn.internalPoints = node.internalPoints;
+      conn.qtdInternalPoints = node.qtdInternalPoints;
+
+      conn.decorate();
+      return conn
+    }
   }
 }
 
