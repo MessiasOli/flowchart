@@ -5,12 +5,19 @@ import { Line } from "./modelLine";
 class ControllerLine extends ControllerModel {
   constructor() {
     super("ControllerLine");
-    console.log(`ControllerLine criado!`)
     
     this.setNewNode = () => {
-      console.log("Criando novo Line");
-      let conn = new Line();
-      conn.decorate();
+      let line = new Line();
+      line.decorate();
+      this.addNode(line)
+    }
+
+    this.loadNode = (node) => {
+      let line = new Line();
+      line.copyFrom(node);
+      line.decorate();
+      console.log('line :>> ', line);
+      this.addNode(line);
     }
   }
 }

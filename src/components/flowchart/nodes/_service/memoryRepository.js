@@ -14,7 +14,7 @@ class MemoryRepository {
      this.memory = this.memory.filter(n => n.id != id);
     }
     
-    this.getAllNodes = () => this.memory.map( n => n.clone() )
+    this.getAllNodes = () => this.memory.map(n => n.clone())
     
     this.clear = () => this.memory = new Array();
   }

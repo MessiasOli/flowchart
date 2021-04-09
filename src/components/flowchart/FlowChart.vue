@@ -190,6 +190,10 @@ export default {
             this.ctrInputBox.loadNode(node, this.openDialog);
             break;
 
+          case this.typesNodes.Line:
+            this.ctrLine.loadNode(node);
+          break;
+
           case this.typesNodes.Area:
             this.ctrArea.loadNode(node, this.openDialog);
             break;
