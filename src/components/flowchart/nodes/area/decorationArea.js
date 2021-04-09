@@ -1,5 +1,6 @@
 import { DecorationModel } from "../_model/DecorationModel";
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
+import { ControllerArea } from "../area/controllerArea"
 import { ControllerConnection } from "../connection/controllerConnection"
 import { COLORS } from "../../utils/colors"
 import { GetSixConections } from "../../utils/tools"
@@ -8,15 +9,17 @@ import * as d3 from "d3"
 export class DecorationArea extends DecorationModel {
   constructor() {
     super("DecorationArea")
-    console.log("DecorationArea Criado!");
+
     this.node = null;
     this.transientConnection = null;
-    this.ctrConnection = new ControllerConnection()
+
+    this.ctrArea = new ControllerArea();
+    this.ctrConnection = new ControllerConnection();
   
     this.init = async function (newNode, openDialog) {
       let svg = SingletonFlowchart.svg
-      console.log("node :>> ", newNode);
       this.node = newNode;
+
        await svg
           .data([newNode])
           .append("g")
@@ -27,7 +30,7 @@ export class DecorationArea extends DecorationModel {
 
         g.append("rect")
           .classed(`Area-${newNode.id}`, true)
-          .attr("x",  d => d.x)
+          .attr("x", d => d.x)
           .attr("y", d => d.y)
           .style("width", newNode.width)
           .style("height", newNode.height)
@@ -46,18 +49,18 @@ export class DecorationArea extends DecorationModel {
         .on('dblclick', () => openDialog(newNode))
 
         this.createConnections(newNode)
+        this.createConnectionPath(newNode)
       
       return svg
     }
 
     this.setDrag = function() {
       let that = this
-      console.log('this :>> ', this);
       let drag = d3
         .drag()
         .on("start", that.dragstarted)
         .on("drag", that.dragged)
-        .on("end", that.dragended);
+        .on("end",(event, d) => that.dragended(d, that));
       return drag;
     }
 
@@ -93,13 +96,14 @@ export class DecorationArea extends DecorationModel {
       });
     }
 
-    this.dragended = function(event, node) {
-      this.cursor = "grab"
-      d3.select(this)
+    this.dragended = function(node, that) {
+      d3.select(`.Area-${node.id}`)
         .attr("cursor", "grab")
         .style("stroke", "none")
 
-      node.decorator.createConnections(node);
+        node.decorator.createConnections(node);
+        that.ctrArea.updateNode(node);
+        console.log('node :>> ', node);
     }
 
     this.getPointPosition = function(node, point){
@@ -149,7 +153,6 @@ export class DecorationArea extends DecorationModel {
 
     this.draggedConnections = (event, that, node) =>{
       if(that.connected && !that.transientConnection){
-        console.log('entrei :>> ');
         that.transientConnection = that.ctrConnection.setNewNode(event.x, event.y, `#Area-${node.id}`)
       }
       that.connected = false
@@ -169,6 +172,19 @@ export class DecorationArea extends DecorationModel {
 
       d3.select(`#Area-${this.node.id} > rect`)
         .style("width", this.node.width)
+    }
+
+    this.createConnectionPath = (node) => {
+      if(node.connectionPack.length > 0){
+        let objConnections = node.connectionPack
+        node.connectionPack = new Array();
+        console.log('nodeCreateConn :>> ', node);
+        
+        objConnections.forEach(obj => {
+          let newConn = this.ctrConnection.loadNode(obj.conn)
+          node.connectionPack.push({ conn: newConn, dot: obj.dot })
+        });
+      }
     }
   }
 }

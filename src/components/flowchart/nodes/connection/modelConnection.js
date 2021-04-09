@@ -6,11 +6,11 @@ class Connection extends NodeModel {
     super("Connection");
     this.decorator = new DecorationConnection();
     
-    this.parentId = parentId
+    this.parentId = parentId || "";
     this.contador = 0;
     this.path = '';
-    this.x = x;
-    this.y = y;
+    this.x = x || 0;
+    this.y = y || 0;
     this.x1 = 0;
     this.y1 = 0;
     this.color = color || "#000"

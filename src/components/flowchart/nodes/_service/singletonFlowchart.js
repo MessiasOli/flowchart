@@ -27,7 +27,7 @@ export var SingletonFlowchart = {
     removeNodeSelected: function () {
         this.Memory.removeNode(this.selectedId)
         this.unSelectNode();
-    }
+    },
 }
 
 function getId(idHtml){

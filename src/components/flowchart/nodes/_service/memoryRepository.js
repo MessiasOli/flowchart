@@ -1,5 +1,4 @@
 import { IDbNode } from "../_interface/IDbNode";
-
 class MemoryRepository {
   constructor() {
     IDbNode.DbNode.apply(this, ["Repository"]);
@@ -15,7 +14,9 @@ class MemoryRepository {
      this.memory = this.memory.filter(n => n.id != id);
     }
 
-    this.getAllNodes = () => this.memory
+    this.getAllNodes = () => this.memory.map(n => n.deleteDecorator())
+
+    this.clear = () => this.memory = new Array();
   }
 }
 

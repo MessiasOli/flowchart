@@ -32,6 +32,12 @@ class Area extends NodeModel {
       this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
       this.decorator.setTextAndAdjustWidth()
     }
+
+    this.deleteDecorator = () => {
+      delete this.decorator;
+      this.connectionPack.forEach(c => c.conn.deleteDecorator());
+      return this
+    }
   }
 }
 

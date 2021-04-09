@@ -117,6 +117,7 @@ export default {
 
     saveFlowchart(){
       let nodes = SingletonFlowchart.Memory.getAllNodes();
+      console.log('nodes :>> ', nodes);
 
       let flowchart = {
         id: 1050,
@@ -167,9 +168,12 @@ export default {
       console.log("Carregando nós do banco de dados")
       axios.get(`${HttpApiNode}`)
         .then(res => {
-          if(res && res.data){
+          if(res && res.data.length > 0){
+            SingletonFlowchart.Memory.clear()
             this.loadNodes(res.data)
           }
+          else
+            console.log("Não há nós para serem carregados.") 
         })
         .catch(RequestError)
     },
@@ -179,7 +183,12 @@ export default {
       nodes.forEach(node => {
         switch(node.type){
           case this.typesNodes.Circle:
-            this.ctrCircle.loadNode(node)
+            this.ctrCircle.loadNode(node);
+            break;
+
+          case this.typesNodes.Area:
+            this.ctrArea.loadNode(node, this.openDialog);
+            break;
         }
       });
       console.log("Nós carregados.", nodes.length)

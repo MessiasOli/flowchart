@@ -19,7 +19,6 @@ class ControllerCircle extends ControllerModel {
 
     this.loadNode = (node) => {
       let circle = new Circle();
-      console.log('node :>> ', node);
       circle.simpleCopyFrom(node);
       circle.radius = node.radius;
 

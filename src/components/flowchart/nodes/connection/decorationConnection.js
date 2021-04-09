@@ -12,7 +12,7 @@ class DecorationConnection extends DecorationModel {
     this.init = async function (node) {
       this.svg = d3.select(node.parentId)
       this.connectionNode = node
-      console.log('node :>> ', node);
+
         this.svg
           .selectAll(`.circle-${node.id}`)
           .data([{ x:node.x, y: node.y, id: node.id, node: this.connectionNode }])
@@ -22,6 +22,11 @@ class DecorationConnection extends DecorationModel {
           .attr('cy', d => d.y)
           .attr("cursor", "pointer")
           .attr('r', 4)
+          .node();
+
+      if(node.path){
+        this.move(node.path)
+      }
       
       return this.svg
     }
