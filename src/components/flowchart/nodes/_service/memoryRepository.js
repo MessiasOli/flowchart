@@ -13,9 +13,9 @@ class MemoryRepository {
     this.removeNode = (id) =>{
      this.memory = this.memory.filter(n => n.id != id);
     }
-
-    this.getAllNodes = () => this.memory.map(n => n.deleteDecorator())
-
+    
+    this.getAllNodes = () => this.memory.map( n => n.clone() )
+    
     this.clear = () => this.memory = new Array();
   }
 }

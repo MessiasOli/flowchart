@@ -42,7 +42,6 @@ export class Decoration_pathBase extends DecorationModel {
     }
 
     this.dragstarted = function(event, d) {
-      SingletonFlowchart.selected && d3.select(`#${SingletonFlowchart.selected}`).attr("stroke",null)
       SingletonFlowchart.selectNode(`_pathBase-${d.id}`)
   
       d3.select(this)

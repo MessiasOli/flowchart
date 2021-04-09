@@ -9,18 +9,13 @@ export class NodeModel extends INode {
     this.width = 120;
     this.decorator = null;
 
-    this.simpleCopyFrom = (node) => {
+    this.simpleCopyFrom = function (node) {
       this.id = node.id;
       this.type = node.type;
       this.x = node.x;
       this.y = node.y;
       this.height = node.height;
       this.width = node.width;
-    }
-
-    this.deleteDecorator = () =>{
-      delete this.decorator
-      return this
     }
   }
 }

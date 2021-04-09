@@ -55,7 +55,6 @@ class DecorationCircle extends DecorationModel {
       d3.select(`#circle-${d.id}`)
         .style("stroke", "none")
         .attr("cursor", "grab")
-      console.log('updateNode :>> ', d);
       that.ctr.updateNode(d)
     }
   }

@@ -6,8 +6,8 @@ import { NumberFormat } from "../../utils/tools"
 class InputBox extends NodeModel {
   constructor() {
     super("InputBox");
-    this.decorator = new DecorationInputBox();
     
+    this.connectionPack = new Array();
     this.type = new Types().InputBox;
     this.value = "0,00";
     this.x = 500;
@@ -23,10 +23,9 @@ class InputBox extends NodeModel {
     this.heightImg = 100;
     this.xImg = this.x -12;
     this.yImg = 13;
-
-    this.connectionPack = new Array();
-
+    
     this.decorate = async function(callback) {
+      this.decorator = new DecorationInputBox();
       await this.decorator.init(this, callback)
     };
 
@@ -40,6 +39,28 @@ class InputBox extends NodeModel {
       let lenghtOfFont = this.value.length * 9
       this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
       this.decorator.setTextAndAdjustWidth()
+    }
+
+    this.copyFrom = (node) => {
+      this.simpleCopyFrom(node);
+      this.connectionPack = node.connectionPack;
+      this.xImg = node.xImg;
+      this.yImg = node.yImg;
+      this.value = node.value;
+    }
+
+    this.clone = () => {
+      let cloned = new InputBox();
+      cloned.id = this.id
+      cloned.type = this.type
+      cloned.connectionPack = this.connectionPack.map(c => ({ conn: c.conn.clone(), dot: c.dot }));
+      cloned.value = this.value;
+      cloned.x = this.x;
+      cloned.y = this.y;
+      cloned.xImg = this.xImg;
+      cloned.yImg = this.yImg;
+
+      return cloned
     }
   }
 }

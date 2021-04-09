@@ -4,23 +4,22 @@ import { DecorationCircle } from "./decorationCircle"
 class Circle extends NodeModel{
   constructor() {
     super("Circle")
-    this.decorator = new DecorationCircle()
     this.radius = 20
+    
+    this.decorate = function() {
+      this.decorator = new DecorationCircle()
+      this.decorator.init(this)
+    }
 
-    this.decorate = async function() {
-      await this.decorator.init(this)
-    };
-
-    this.copyTo = function (){
-      return {
-        id: this.id,
-        type: this.type,
-        x: this.x,
-        y: this.y,
-        heigth: this.heigth,
-        width: this.width,
-        radius: this.radius
-      }
+    this.clone = function() {
+      let cloned = new Circle();
+      cloned.id = this.id
+      cloned.type = this.type
+      cloned.x = this.x
+      cloned.y = this.y
+      cloned.radius = this.radius
+      console.log('clone :>> ', cloned);
+      return cloned;
     }
   }
 }

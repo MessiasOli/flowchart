@@ -9,7 +9,6 @@ class DecorationLine extends DecorationModel {
   
     this.init = async function (node) {
       let svg = SingletonFlowchart.svg
-      console.log("node :>> ", node);
       let line = `M${node.x},${node.y}L${node.x},${node.y+100}`
   
        await svg

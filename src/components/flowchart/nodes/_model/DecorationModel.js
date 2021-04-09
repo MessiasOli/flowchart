@@ -29,5 +29,17 @@ export class DecorationModel extends IDecoration {
       this.cursor = "grab";
       d3.select(this).style("stroke", "none");
     };
+
+    this.createConnectionPath = function (node) {
+      if(node.connectionPack.length > 0){
+        let objConnections = node.connectionPack
+        node.connectionPack = new Array();
+
+        objConnections.forEach(obj => {
+          let newConn = this.ctrConnection.loadNode(obj.conn)
+          node.connectionPack.push({ conn: newConn, dot: obj.dot })
+        });
+      }
+    }
   }
 }

@@ -6,7 +6,6 @@ import { NumberFormat } from "../../utils/tools"
 class PercentageEntry extends NodeModel {
   constructor() {
     super("PercentageEntry");
-    this.decorator = new DecorationPercentageEntry();
     
     this.type = new Types().PercentageEntry
     this.value = "0,00 %";
@@ -16,8 +15,9 @@ class PercentageEntry extends NodeModel {
     this.height = 20;
     this.heightText = this.height - 5;
     this.width = 70;
-
+    
     this.decorate = async function(callback) {
+      this.decorator = new DecorationPercentageEntry();
       await this.decorator.init(this, callback)
     };
 
@@ -32,6 +32,17 @@ class PercentageEntry extends NodeModel {
       let lenghtOfFont = this.value.length * 9
       this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
       this.decorator.setTextAndAdjustWidth()
+    }
+
+    this.clone = function() {
+      let cloned = new PercentageEntry();
+      cloned.id = this.id;
+      cloned.type = this.type
+      cloned.value = this.value;
+      cloned.x = this.x;
+      cloned.y = this.y;
+
+      return cloned;
     }
   }
 }

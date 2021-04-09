@@ -1,11 +1,12 @@
 export class INode {
     constructor(nameClass) {
-        this.decorate = () => { throw errorMsg( nameClass, 'renderMe()') }
+        this.clone = () => { throw errorMsg( nameClass, 'clone()') }
+        this.update = () => {throw errorMsg( nameClass, 'update()') }
         this.remover = () => { throw errorMsg( nameClass, 'remover()') }
-        this.update = () => {throw errorMsg( nameClass, 'update()')}
-        this.openDialog = () => {throw errorMsg( nameClass, 'openDialog()')}
-        this.simpleCopyFrom = () => {throw errorMsg( nameClass, 'simpleCopyFrom()')}
-        this.deleteDecorator = () => {throw errorMsg( nameClass, 'deleteDecorator()')}
+        this.decorate = () => { throw errorMsg( nameClass, 'decorate()') }
+        this.openDialog = () => { throw errorMsg( nameClass, 'openDialog()') }
+        this.simpleCopyFrom = () => { throw errorMsg( nameClass, 'simpleCopyFrom()') }
+        this.deleteDecorator = () => { throw errorMsg( nameClass, 'deleteDecorator()') }
     }
 }
 

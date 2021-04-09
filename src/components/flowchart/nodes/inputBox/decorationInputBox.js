@@ -15,7 +15,6 @@ export class DecorationInputBox extends DecorationModel {
   
     this.init = async function (newNode, openDialog) {
       let svg = SingletonFlowchart.svg
-      console.log("newNode :>> ", newNode);
       this.node = newNode;
   
        await svg
@@ -56,7 +55,6 @@ export class DecorationInputBox extends DecorationModel {
           .style("width", newNode.width)
           .style("height", newNode.height)
           .node();
-
           
           g.append('circle')
             .attr("cx", newNode.xDot())
@@ -68,7 +66,7 @@ export class DecorationInputBox extends DecorationModel {
             .call(this.setDragCircle(newNode))
             .node();
 
-      
+          this.createConnectionPath(newNode)
       return svg
     }
   
@@ -85,47 +83,41 @@ export class DecorationInputBox extends DecorationModel {
     }
 
     this.dragstarted = function(event, d) {
-      SingletonFlowchart.clicked = true
-      SingletonFlowchart.selected = `InputBox-${d.id}`
-
-      d3.select(this)
-        .attr("cursor", "grabbing")
-
+      SingletonFlowchart.selectNode(`InputBox-${d.id}`);
+      d3.select(this).attr("cursor", "grabbing")
     }
 
     this.dragged = async function (event, d) {
-      const adjustY = 5;
-      const adjustX = 5;
-      d.x = event.x;
-      d.y = event.y;
+      const adjust = 5;
+      d.x = event.x - adjust;
+      d.y = event.y - adjust;
       SingletonFlowchart.clicked = false;
 
       await d3.select(this)
               .raise()
-              .attr("x", (d.xImg = event.x - 12 - adjustX))
+              .attr("x", (d.xImg = event.x - 12 - adjust))
               .attr("y", (d.yImg = event.y - 92));
 
       await d3.select(`#InputBox-${d.id} > rect`)
               .raise()
-              .attr("x", (d.x - adjustX))
-              .attr("y", (d.y - adjustY));
+              .attr("x", d.x)
+              .attr("y", d.y);
 
       await d3.select(`#InputBox-${d.id} > text`)
               .raise()
-              .attr("x", (d.xText() - adjustX))
-              .attr("y", (d.y + d.heightText - adjustY));
+              .attr("x", d.xText())
+              .attr("y", (d.y + d.heightText));
 
       await d3.select(`#InputBox-${d.id} > circle`)
               .raise()
-              .attr("cx", (d.xDot() - adjustX))
-              .attr("cy", (d.yDot() - adjustY));
+              .attr("cx", d.xDot())
+              .attr("cy", d.yDot());
 
       d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
-      d.connectionPack.forEach(point => point.conn.moveFirstPoint({x: d.xDot() - adjustX, y: d.yDot() - adjustY}));
+      d.connectionPack.forEach(point => point.conn.moveFirstPoint({x: d.xDot(), y: d.yDot()}));
     }
 
     this.dragended = function() {
-      this.cursor = "grab"
       d3.select(this)
         .attr("stroke", COLORS.ClearBlue)
         .attr("cursor", "grab") 

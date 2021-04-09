@@ -4,7 +4,6 @@ import { DecorationConnection } from "./decorationConnection"
 class Connection extends NodeModel {
   constructor(x, y, parentId, color) {
     super("Connection");
-    this.decorator = new DecorationConnection();
     
     this.parentId = parentId || "";
     this.contador = 0;
@@ -19,8 +18,27 @@ class Connection extends NodeModel {
     this.height = 250;
     
     this.decorate = async function() {
+      this.decorator = new DecorationConnection();
       await this.decorator.init(this)
     };
+
+    this.clone = function(){
+      let cloned = new Connection();
+      cloned.id = this.id
+      cloned.type = this.type
+      cloned.parentId = this.parentId;
+      cloned.contador = this.contador;
+      cloned.path = this.path;
+      cloned.x = this.x;
+      cloned.y = this.y;
+      cloned.x1 = this.x1;
+      cloned.y1 = this.y1;
+      cloned.internalPoints = this.internalPoints;
+      cloned.qtdInternalPoints = this.qtdInternalPoints;
+
+      console.log('clone connection :>> ', cloned);
+      return cloned;
+    }
 
     this.moveFirstPoint = function (coordinate) {
       this.x = coordinate.x

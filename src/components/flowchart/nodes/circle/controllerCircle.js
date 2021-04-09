@@ -21,7 +21,8 @@ class ControllerCircle extends ControllerModel {
       let circle = new Circle();
       circle.simpleCopyFrom(node);
       circle.radius = node.radius;
-
+ 
+      console.log('circle :>> ', circle);
       circle.decorate();
       this.addNode(circle)
     }

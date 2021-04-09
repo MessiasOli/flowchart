@@ -11,6 +11,15 @@ class ControllerInputBox extends ControllerModel {
       console.log("Criando novo InputBox");
       let inputBox = new InputBox();
       inputBox.decorate(callback);
+
+      this.addNode(inputBox);
+    }
+
+    this.loadNode = (node, callback) => {
+      let inputBox = new InputBox();
+      inputBox.copyFrom(node);
+      inputBox.decorate(callback);
+      this.addNode(inputBox)
     }
   }
 }

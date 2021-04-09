@@ -81,7 +81,6 @@ export default {
       showDialog: 0,
       selectedNode: null,
       ctrSelection: null,
-      ctrInputLine: null,
       ctrPercentageEntry: null,
       ctrBoxText: null,
       ctrCircle: null,
@@ -117,7 +116,7 @@ export default {
 
     saveFlowchart(){
       let nodes = SingletonFlowchart.Memory.getAllNodes();
-      console.log('nodes :>> ', nodes);
+      console.log('Salvar :>> ', nodes);
 
       let flowchart = {
         id: 1050,
@@ -126,8 +125,9 @@ export default {
     
       console.log('nodes :>> ', flowchart);
       axios.post(`${HttpApiNode}`, flowchart)
-            .then(res => RequestSuscess(res.data))
-            .catch(error => RequestError(error))
+        .then(res => res.data)
+        .then(RequestSuscess)
+        .catch(RequestError)
     },
 
     removeNode() {
@@ -147,11 +147,11 @@ export default {
     configSVG(){
       let that = this
       d3.select("#canvas").call(d3.drag().on('end',function(){ that.unSelected() })).append("svg");
-          let svg = d3
-            .select("svg")
-            .attr("id", "svg")
+      let svg = d3
+        .select("svg")
+        .attr("id", "svg")
 
-          SingletonFlowchart.svg = svg;
+      SingletonFlowchart.svg = svg;
     },
 
     initializaControllers(){
@@ -166,16 +166,16 @@ export default {
 
     loadDatabaseNodes(){
       console.log("Carregando nós do banco de dados")
-      axios.get(`${HttpApiNode}`)
-        .then(res => {
-          if(res && res.data.length > 0){
-            SingletonFlowchart.Memory.clear()
-            this.loadNodes(res.data)
-          }
-          else
-            console.log("Não há nós para serem carregados.") 
-        })
-        .catch(RequestError)
+      axios.get(`${HttpApiNode}`).then(this.hasNode).catch(RequestError)
+    },
+
+    hasNode(res){
+      if(res && res.data.length > 0){
+        SingletonFlowchart.Memory.clear()
+        this.loadNodes(res.data)
+      }
+      else
+      console.log("Não há nós para serem carregados.") 
     },
 
     loadNodes(data){
@@ -186,12 +186,16 @@ export default {
             this.ctrCircle.loadNode(node);
             break;
 
+          case this.typesNodes.InputBox:
+            this.ctrInputBox.loadNode(node, this.openDialog);
+            break;
+
           case this.typesNodes.Area:
             this.ctrArea.loadNode(node, this.openDialog);
             break;
         }
       });
-      console.log("Nós carregados.", nodes.length)
+      console.log("Nós carregados:", nodes.length)
     },
 
     setShortCuts(){

@@ -50,7 +50,6 @@ export class DecorationArea extends DecorationModel {
 
         this.createConnections(newNode)
         this.createConnectionPath(newNode)
-      
       return svg
     }
 
@@ -103,7 +102,6 @@ export class DecorationArea extends DecorationModel {
 
         node.decorator.createConnections(node);
         that.ctrArea.updateNode(node);
-        console.log('node :>> ', node);
     }
 
     this.getPointPosition = function(node, point){
@@ -172,19 +170,6 @@ export class DecorationArea extends DecorationModel {
 
       d3.select(`#Area-${this.node.id} > rect`)
         .style("width", this.node.width)
-    }
-
-    this.createConnectionPath = (node) => {
-      if(node.connectionPack.length > 0){
-        let objConnections = node.connectionPack
-        node.connectionPack = new Array();
-        console.log('nodeCreateConn :>> ', node);
-        
-        objConnections.forEach(obj => {
-          let newConn = this.ctrConnection.loadNode(obj.conn)
-          node.connectionPack.push({ conn: newConn, dot: obj.dot })
-        });
-      }
     }
   }
 }

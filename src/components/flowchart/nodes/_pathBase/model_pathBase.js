@@ -5,15 +5,15 @@ import { Types } from "../../utils/nodeTypes"
 class _pathBase extends NodeModel {
   constructor() {
     super("_pathBase");
-    this.decorator = new Decoration_pathBase();
-
+    
     this.type = new Types()._pathBase;
     this.x = 500;
     this.y = 100;
     this.height = 250;
     this.width = 100;
-
+    
     this.decorate = async function() {
+      this.decorator = new Decoration_pathBase();
       await this.decorator.init(this)
     };
 

@@ -5,8 +5,7 @@ import { Types } from "../../utils/nodeTypes"
 class Selection extends NodeModel {
   constructor() {
     super("Selection");
-    this.decorator = new DecorationSelection();
-
+    
     this.type = new Types().Selection;
     this.height = 0;
     this.width = 0;
@@ -14,11 +13,12 @@ class Selection extends NodeModel {
     this.xEnd = -1;
     this.yStart = 0;
     this.yEnd = -1;
-
+    
     this.getX = () => this.xStart < this.xEnd ? this.xStart : this.xEnd;
     this.getY = () => this.yStart < this.yEnd ? this.yStart : this.yEnd;
-
+    
     this.decorate = async function(xStart, yStart) {
+      this.decorator = new DecorationSelection();
       console.log('x, y :>> ', xStart, yStart);
       this.xStart = xStart;
       this.yStart = yStart;

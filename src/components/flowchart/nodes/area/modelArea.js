@@ -5,7 +5,6 @@ import { Types } from "../../utils/nodeTypes"
 class Area extends NodeModel {
   constructor() {
     super("Area");
-    this.decorator = new DecorationArea();
     
     this.type = new Types().Area
     this.x = 500;
@@ -16,8 +15,9 @@ class Area extends NodeModel {
     this.width = 110;
     this.nameOfArea = "Area"
     this.connectionPack = new Array();
-
+    
     this.decorate = async function(callback) {
+      this.decorator = new DecorationArea();
       await this.decorator.init(this, callback)
     }
 
@@ -33,10 +33,16 @@ class Area extends NodeModel {
       this.decorator.setTextAndAdjustWidth()
     }
 
-    this.deleteDecorator = () => {
-      delete this.decorator;
-      this.connectionPack.forEach(c => c.conn.deleteDecorator());
-      return this
+    this.clone = () => {
+      let cloned = new Area()
+      cloned.id = this.id
+      cloned.type = this.type
+      cloned.x = this.x
+      cloned.y = this.y
+      cloned.nameOfArea = this.nameOfArea
+      cloned.connectionPack = this.connectionPack.map(c => ({ conn: c.conn.clone(), dot: c.dot }))
+
+      return cloned
     }
   }
 }
