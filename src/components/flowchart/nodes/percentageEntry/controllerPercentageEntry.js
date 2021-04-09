@@ -4,13 +4,19 @@ import { PercentageEntry } from "./modelPercentageEntry";
 
 class ControllerPercentageEntry extends ControllerModel {
   constructor() {
-    super("Controller_pathBase");
-    console.log(`ControllerPercentageEntry criado!`)
+    super("ControllerPercentageEntry");
     
     this.setNewNode = (callback) => {
-      console.log("Criando novo PercentageEntry");
       let percentageEntry = new PercentageEntry();
       percentageEntry.decorate(callback);
+      this.addNode(percentageEntry);
+    }
+
+    this.loadNode = (node, callback) => {
+      let percentageEntry = new PercentageEntry();
+      percentageEntry.copyFrom(node);
+      percentageEntry.decorate(callback);
+      this.addNode(percentageEntry);
     }
   }
 }

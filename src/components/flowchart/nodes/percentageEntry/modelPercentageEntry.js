@@ -44,6 +44,12 @@ class PercentageEntry extends NodeModel {
 
       return cloned;
     }
+
+    this.copyFrom = (node) =>{
+      this.simpleCopyFrom(node)
+      this.value = node.value
+      this.heightText = node.heightText
+    }
   }
 }
 

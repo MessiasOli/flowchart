@@ -186,13 +186,17 @@ export default {
             this.ctrCircle.loadNode(node);
             break;
 
+          case this.typesNodes.PercentageEntry:
+            this.ctrPercentageEntry.loadNode(node, this.openDialog);
+            break;
+
           case this.typesNodes.InputBox:
             this.ctrInputBox.loadNode(node, this.openDialog);
             break;
 
           case this.typesNodes.Line:
             this.ctrLine.loadNode(node);
-          break;
+            break;
 
           case this.typesNodes.Area:
             this.ctrArea.loadNode(node, this.openDialog);
