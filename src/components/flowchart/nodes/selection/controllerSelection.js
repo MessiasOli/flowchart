@@ -8,28 +8,36 @@ class ControllerSelection extends ControllerModel {
   constructor() {
     super("ControllerSelection");
     this.selection = null;
-    this.onSelection = false;
+    this.isRendered = false;
     
-    this.setNewNode = (event) => {
+    this.setNewNode = () => {
       this.selection = null;
       this.selection = new Selection();
+    }
 
-      let [x, y] = GetSVGCoordinates(event);
-      this.selection.decorate(x, y);
+    this.start = (event) => {
+      if(!this.isRendered){
+        console.log("start")
+        let [x, y] = GetSVGCoordinates(event);
+        this.selection.decorate(x, y);
+        this.isRendered = true
+      }else{
+        this.cancel()
+      }
     }
 
     this.moveSelectionTo = (event) =>{
-      if(this.onSelection){
+      if(this.isRendered){
         let [ x, y ] = GetSVGCoordinates(event)
         this.selection.SelectTo(x, y)
       }
     }
 
-    this.selectNodes = () => {
-      if(this.onSelection){
-        this.selection.eraseSquare();
-      }
-      this.onSelection = false
+    this.cancel = () =>{
+      this.selection.eraseSquare();
+      this.isRendered = false;
+      console.log("fim")
+
     }
   }
 }

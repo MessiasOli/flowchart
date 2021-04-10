@@ -36,7 +36,6 @@ class Connection extends NodeModel {
       cloned.internalPoints = this.internalPoints;
       cloned.qtdInternalPoints = this.qtdInternalPoints;
 
-      console.log('clone connection :>> ', cloned);
       return cloned;
     }
 

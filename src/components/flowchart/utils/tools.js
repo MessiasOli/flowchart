@@ -44,8 +44,25 @@ const GetSVGCoordinates = (event) => {
   return [x, y]
 }
 
+function GetEdgeOfPoints(points) {
+  let minX = points.reduce((prev, point) => {
+    return point.x < prev ? point.x : prev;
+  }, Infinity);
+  let maxX = points.reduce((prev, point) => {
+    return point.x > prev ? point.x : prev;
+  }, 0);
+  let minY = points.reduce((prev, point) => {
+    return point.y < prev ? point.y : prev;
+  }, Infinity);
+  let maxY = points.reduce((prev, point) => {
+    return point.y > prev ? point.y : prev;
+  }, 0);
+  return {start: {x: minX, y: minY}, end: {x: maxX, y: maxY}};
+}
+
 export { 
   NumberFormat, 
   GetSixConections,
-  GetSVGCoordinates
+  GetSVGCoordinates,
+  GetEdgeOfPoints
 }

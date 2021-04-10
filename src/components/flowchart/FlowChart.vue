@@ -50,10 +50,11 @@
       </md-button>
 
     </div>
-    <div id="canvas" 
+    <div id="canvas"
     @mousedown="selectionArea.start($event)"
     @mousemove="selectionArea.move($event)"
-    @mouseup="selectionArea.end($event)"></div>
+    >
+    </div>
     
     <Dialog
       :dialogVisible="showDialog"
@@ -196,8 +197,6 @@ export default {
         switch (event.key) {
           case 'Delete':
             that.removeNode();
-            break;
-          default:
             break;
         }
       }

@@ -19,7 +19,6 @@ class Selection extends NodeModel {
     
     this.decorate = async function(xStart, yStart) {
       this.decorator = new DecorationSelection();
-      console.log('x, y :>> ', xStart, yStart);
       this.xStart = xStart;
       this.yStart = yStart;
       await this.decorator.init(this)
@@ -56,7 +55,19 @@ class Selection extends NodeModel {
     }
 
     this.eraseSquare = function(){
-      this.decorator.removeSquare()
+      if(this.decorator){
+        this.decorator.removeSquare()
+        this.reset();
+      }
+    }
+
+    this.reset = () =>{
+      this.height = 0;
+      this.width = 0;
+      this.xStart = 0;
+      this.xEnd = -1;
+      this.yStart = 0;
+      this.yEnd = -1;
     }
   }
 }

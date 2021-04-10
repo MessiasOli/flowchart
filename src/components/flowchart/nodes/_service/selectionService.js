@@ -3,21 +3,29 @@ import { ControllerSelection } from "../selection/controllerSelection";
 export class Selection {
   constructor() {
     this.ctr = new ControllerSelection();
-  
+    this.ctr.setNewNode();
+    this.clicked = false;
+    
     this.start = (event) => {
-      // console.log("start", event)
-      this.ctr.setNewNode(event)
+      this.clicked = !this.clicked
+      console.log("click-Star", this.clicked)
+
+      if(this.clicked || !this.ctr.isRendered){
+        this.ctr.start(event)
+        this.clicked = true;
+      }else{
+        this.ctr.moveSelectionTo(event)
+      }
     }
   
     this.move = (event) =>{
-      // console.log("move", event)
-      this.ctr.moveSelectionTo(event)
+      if(this.clicked){
+        this.ctr.moveSelectionTo(event)
+      }
     }
-  
-    this.end = (event) =>{
-      // console.log("end", event)
-      this.ctr.moveSelectionTo(event)
+
+    this.cancel = () =>{
+
     }
   }
 }
-
