@@ -37,12 +37,21 @@ class Area extends NodeModel {
       let cloned = new Area()
       cloned.id = this.id
       cloned.type = this.type
+      cloned.height = this.height;
+      cloned.width = this.width;
       cloned.x = this.x
       cloned.y = this.y
       cloned.nameOfArea = this.nameOfArea
       cloned.connectionPack = this.connectionPack.map(c => ({ conn: c.conn.clone(), dot: c.dot }))
 
       return cloned
+    }
+
+    this.copyFrom = (node) => {
+      this.simpleCopyFrom(node)
+      this.connectionPack = node.connectionPack;
+      this.nameOfArea = node.nameOfArea;
+
     }
   }
 }

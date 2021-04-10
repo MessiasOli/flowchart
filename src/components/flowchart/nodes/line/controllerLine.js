@@ -16,7 +16,6 @@ class ControllerLine extends ControllerModel {
       let line = new Line();
       line.copyFrom(node);
       line.decorate();
-      console.log('line :>> ', line);
       this.addNode(line);
     }
   }

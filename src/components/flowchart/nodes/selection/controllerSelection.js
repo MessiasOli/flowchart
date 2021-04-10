@@ -7,12 +7,10 @@ import { GetSVGCoordinates } from "../../utils/tools"
 class ControllerSelection extends ControllerModel {
   constructor() {
     super("ControllerSelection");
-    console.log(`ControllerSelection criado!`)
     this.selection = null;
     this.onSelection = false;
     
     this.setNewNode = (event) => {
-      console.log("Criando novo Selection");
       this.selection = null;
       this.selection = new Selection();
 

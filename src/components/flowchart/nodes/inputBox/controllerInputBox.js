@@ -4,11 +4,9 @@ import { InputBox } from "./modelInputBox";
 
 class ControllerInputBox extends ControllerModel {
   constructor() {
-    super("Controller_pathBase");
-    console.log(`ControllerInputBox criado!`)
+    super("ControllerInputBox");
     
     this.setNewNode = (callback) => {
-      console.log("Criando novo InputBox");
       let inputBox = new InputBox();
       inputBox.decorate(callback);
 

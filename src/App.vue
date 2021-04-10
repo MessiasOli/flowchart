@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <h1 id='title-app'>Flowsheet D3.js</h1>
-    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <FlowChart />
   </div>
 </template>
@@ -13,7 +12,8 @@ export default {
   name: 'App',
   components: {
     FlowChart
-  }
+  },
+  
 }
 </script>
 <style>

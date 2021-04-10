@@ -15,11 +15,7 @@ class ControllerArea extends ControllerModel {
 
     this.loadNode = (node, callback) => {
       let area = new Area();
-      
-      area.simpleCopyFrom(node);
-      area.connectionPack = node.connectionPack;
-      area.nameOfArea = node.nameOfArea;
-
+      area.copyFrom(node);
       area.decorate(callback);
       this.addNode(area)
     }

@@ -51,13 +51,15 @@
 
     </div>
     <div id="canvas" 
-    @mousedown="startSelection($event)"
-    @mousemove="moveSelection($event)"
-    @mouseup="endSelection($event)"></div>
+    @mousedown="selectionArea.start($event)"
+    @mousemove="selectionArea.move($event)"
+    @mouseup="selectionArea.end($event)"></div>
+    
     <Dialog
       :dialogVisible="showDialog"
-      :node="selectedNode"
+      :node="nodeRefToDialog"
     />
+    <ProgressBarQuery v-if="loading"/>
   </div>
 </template>
 
@@ -67,20 +69,23 @@ import axios from "axios";
 import { HttpApiNode,  RequestSuscess, RequestError } from "../../utils/global"
 import { SingletonFlowchart } from "./nodes/_service/singletonFlowchart";
 import { GetNewController } from "./nodes/_service/factoryController";
+import { Selection } from "./nodes/_service/selectionService"
 import { Types } from "./utils/nodeTypes"
 import Dialog from './Dialog.vue';
+import ProgressBarQuery from "../ProgressBarQuery"
 
 export default {
-  components: { Dialog },
   name: "FlowChart",
+  components: { Dialog, ProgressBarQuery },
 
   data() {
     return {
-      toolbarClosed: true,
       typesNodes: new Types(),
+      selectionArea: new Selection(),
+      toolbarClosed: true,
+      loading: true,
       showDialog: 0,
-      selectedNode: null,
-      ctrSelection: null,
+      nodeRefToDialog: null,
       ctrPercentageEntry: null,
       ctrBoxText: null,
       ctrCircle: null,
@@ -90,27 +95,8 @@ export default {
   },
   watch: {},
   methods: {
-    async startSelection(event){
-      if(event.ctrlKey){
-        this.ctrSelection.onSelection = true
-        await this.ctrSelection.setNewNode(event);
-      }
-    },
-
-    moveSelection(event){
-      if(event.ctrlKey){
-        this.ctrSelection.moveSelectionTo(event);
-      }
-    },
-
-    endSelection(event){
-      if(event.ctrlKey){
-        this.ctrSelection.selectNodes();
-      }
-    },
-
     openDialog(node){
-      this.selectedNode = node
+      this.nodeRefToDialog = node
       this.showDialog++;
     },
 
@@ -125,9 +111,8 @@ export default {
     
       console.log('nodes :>> ', flowchart);
       axios.post(`${HttpApiNode}`, flowchart)
-        .then(res => res.data)
-        .then(RequestSuscess)
-        .catch(RequestError)
+        .then(() => RequestSuscess("Elementos salvos com sucesso!"))
+        .catch(() => RequestError("Ops aconteceu algo!"))
     },
 
     removeNode() {
@@ -161,11 +146,9 @@ export default {
       this.ctrCircle = GetNewController(this.typesNodes.Circle);
       this.ctrLine = GetNewController(this.typesNodes.Line);
       this.ctrArea = GetNewController(this.typesNodes.Area);
-      this.ctrSelection = GetNewController(this.typesNodes.Selection);
     },
 
     loadDatabaseNodes(){
-      console.log("Carregando nós do banco de dados")
       axios.get(`${HttpApiNode}`).then(this.hasNode).catch(RequestError)
     },
 
@@ -175,7 +158,7 @@ export default {
         this.loadNodes(res.data)
       }
       else
-      console.log("Não há nós para serem carregados.") 
+      RequestSuscess("Não há diagrama para ser exibido");
     },
 
     loadNodes(data){
@@ -203,7 +186,7 @@ export default {
             break;
         }
       });
-      console.log("Nós carregados:", nodes.length)
+      console.log(`${nodes.length} elementos carregados!`)
     },
 
     setShortCuts(){
@@ -235,8 +218,10 @@ export default {
   async mounted() {
     this.configSVG();
     await this.initializaControllers();
-    this.loadDatabaseNodes();
+    await this.loadDatabaseNodes();
     this.setShortCuts();
+    RequestSuscess("Sistema carregado");
+    this.loading = false
   }
 };
 </script>

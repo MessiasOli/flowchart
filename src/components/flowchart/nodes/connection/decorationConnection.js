@@ -5,7 +5,6 @@ import * as d3 from "d3"
 class DecorationConnection extends DecorationModel {
   constructor() {
     super("DecorationBoxText")
-    console.log("DecorationBoxText Criado!");
     this.connectionNode = null
     this.svg
   

@@ -1,3 +1,14 @@
-export const RequestSuscess = (e) => console.log("Sucesso na requisição: >>", e);
-export const RequestError = (e) => console.log("Error: >>", e);
+import Vue from 'vue'
+
+export const RequestSuscess = (message) => {
+  Vue.toasted.global.defaultSuccess({
+    msg: message
+  })
+};
+
+export const RequestError = (err) => {
+  Vue.toasted.global.defaultError({
+    msg: err
+})
+};
 export const HttpApiNode = "http://localhost:5000/flowchart";

@@ -8,7 +8,6 @@ import * as d3 from "d3"
 export class DecorationInputBox extends DecorationModel {
   constructor() {
     super("DecorationInputBox")
-    console.log("DecorationInputBox Criado!");
     this.node = null;
     this.busyConnection = false;
     this.ctrConnection = new ControllerConnection()
