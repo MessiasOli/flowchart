@@ -56,9 +56,14 @@ class Selection extends NodeModel {
 
     this.eraseSquare = function(){
       if(this.decorator){
+        console.log('limpo o quadro :>> ');
         this.decorator.removeSquare()
         this.reset();
       }
+    }
+
+    this.getCoordinates = ()=>{
+      return {x1: this.xStart, y1: this.yStart, x2: this.xEnd, y2: this.yEnd};
     }
 
     this.reset = () =>{

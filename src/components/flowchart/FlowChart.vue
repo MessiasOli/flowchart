@@ -102,7 +102,7 @@ export default {
     },
 
     saveFlowchart(){
-      let nodes = SingletonFlowchart.Memory.getAllNodes();
+      let nodes = SingletonFlowchart.Memory.getNodesToSave();
       console.log('Salvar :>> ', nodes);
 
       let flowchart = {
