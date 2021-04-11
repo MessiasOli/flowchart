@@ -25,7 +25,7 @@ export class NodeModel extends INode {
         this.decorator.move(); 
       }
       catch (e){
-        throw `Decorator da classe ${nameClass} não instanciado.\nError:${e}`
+        throw `Classe ${nameClass} metodo move.\nError:${e}`
       }
     }
 
@@ -34,7 +34,7 @@ export class NodeModel extends INode {
         this.decorator.createSelectorArea(); 
       }
       catch (e){
-        throw `Decorator da classe ${nameClass} não instanciado.\nError:${e}`
+        throw `Classe ${nameClass} metodo isSelected.\nError:${e}`
       }
     }
   }

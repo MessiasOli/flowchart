@@ -145,7 +145,7 @@ export class DecorationInputBox extends DecorationModel {
       }
 
       that.conected = false;
-      that.transientConnection.moveTo({ x: event.x + 71.3, y: event.y - 1.5})
+      that.transientConnection.startMoveConnection({ x: event.x + 71.3, y: event.y - 1.5})
     }
 
     this.dragendedCircle = (event, that, node) =>{

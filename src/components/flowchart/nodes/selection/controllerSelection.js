@@ -47,8 +47,8 @@ class ControllerSelection extends ControllerModel {
       let selectedNodes = SingletonFlowchart.Memory.getNodesBetween(coordinates)
       console.log('selectedNodes :>> ', selectedNodes);
       try{
-        selectedNodes.forEach(n => n.isSelected())
         SingletonFlowchart.selectedNodes = selectedNodes;
+        selectedNodes.forEach(n => n.isSelected())
 
       }
       catch (e)

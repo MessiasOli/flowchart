@@ -4,7 +4,7 @@ import * as d3 from "d3"
 
 class DecorationConnection extends DecorationModel {
   constructor() {
-    super("DecorationBoxText")
+    super("DecorationConnection")
     this.node = null
     this.svg
   
@@ -24,19 +24,18 @@ class DecorationConnection extends DecorationModel {
           .node();
 
       if(node.path){
-        this.move(node.path)
+        this.changePath(node.path)
       }
       
       return this.svg
     }
     
-    this.move = function(line) {
+    this.changePath = async function(line) {
       let id = this.node.id
-      console.log('this.node :>> ', this.node);
       d3.selectAll(`#dot-${id}`).remove()
 
       // Primeiro ponto
-      this.createDot({
+      await this.createDot({
         id: id, 
         x: this.node.x1, 
         y: this.node.y1, 
@@ -44,40 +43,40 @@ class DecorationConnection extends DecorationModel {
       }).node()
 
       // Reta
-        this.svg
-        .append("path")
-        .classed("Connection", true)
-        .attr("id", `dot-${id}`)
-        .attr("d", line)
-        .attr("stroke", this.node.color)
-        .attr("stroke-width", 3)
-        .style("cursor", "pointer")
-        .style("fill", "none")
-        .on("click", ()=>{SingletonFlowchart.selected = 'dot-'+id})
-        .on("dblclick", (event, d) => this.createBreakPoint(event, d, id))
-        .node();
+      await this.svg
+      .append("path")
+      .classed("Connection", true)
+      .attr("id", `dot-${id}`)
+      .attr("d", line)
+      .attr("stroke", this.node.color)
+      .attr("stroke-width", 3)
+      .style("cursor", "pointer")
+      .style("fill", "none")
+      .on("click", ()=>{SingletonFlowchart.selected = 'dot-'+id})
+      .on("dblclick", (event, d) => this.createBreakPoint(event, d, id))
+      .node();
 
-        if(this.node.internalPoints.length > 0){
-          this.createDot({
-            id: id, 
-            x: this.node.internalPoints[0].x, 
-            y: this.node.internalPoints[0].y, 
-            node: this.node 
-          }).call(d3.drag()
-          .on("start", this.dragstarted)
-          .on("drag",(event, d) => this.dragged(event, d, 1)))
-        }
+      if(this.node.internalPoints.length > 0){
+        await this.createDot({
+          id: id, 
+          x: this.node.internalPoints[0].x, 
+          y: this.node.internalPoints[0].y, 
+          node: this.node 
+        }).call(d3.drag()
+        .on("start", this.dragstarted)
+        .on("drag",(event, d) => this.dragged(event, d, 1)))
+      }
 
-        if(this.node.internalPoints.length > 1){
-          this.createDot({
-            id: id,
-            x: this.node.internalPoints[1].x, 
-            y: this.node.internalPoints[1].y, 
-            node: this.node 
-          }).call(d3.drag()
-          .on("start", this.dragstarted)
-          .on("drag",(event, d) => this.dragged(event, d, 2)))
-        }
+      if(this.node.internalPoints.length > 1){
+        await this.createDot({
+          id: id,
+          x: this.node.internalPoints[1].x, 
+          y: this.node.internalPoints[1].y, 
+          node: this.node 
+        }).call(d3.drag()
+        .on("start", this.dragstarted)
+        .on("drag",(event, d) => this.dragged(event, d, 2)))
+      }
 
       // Segundo ponto
       this.createDot({
@@ -98,7 +97,7 @@ class DecorationConnection extends DecorationModel {
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
         .attr("cursor", "pointer")
-        .attr('r', 4)
+        .attr('r', d => d.node.r)
     }
 
     this.createBreakPoint = function(event, d, id){
@@ -145,6 +144,17 @@ class DecorationConnection extends DecorationModel {
         d.node.moveLastPoint({x: event.x, y: event.y})
       }else{
         d.node.pointOnPath({x: event.x, y: event.y}, dot)
+      }
+    }
+
+    this.move = async (line) => {
+      await this.changePath(line);
+    }
+
+    this.createSelectorArea = function (){
+      let parent = SingletonFlowchart.selectedNodes.filter(n => n.idName == this.node.parentId.replace("#", ""));
+      if(parent.length > 0){
+        this.boxSelection.initSelection(this.node);
       }
     }
 

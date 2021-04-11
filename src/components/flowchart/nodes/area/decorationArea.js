@@ -104,16 +104,19 @@ export class DecorationArea extends DecorationModel {
 
     this.move = async function(){
       let d = this.node;
-      await this.drag();
+      
+      await d3.select(`.${d.idName}`)
+        .raise()
+        .attr("x", (d.x))
+        .attr("y", (d.y));
+
+      await d3.select(`#${d.idName} > text`)
+        .raise()
+        .attr("x", (d.xText()))
+        .attr("y", (d.yText()));
 
       await d3.selectAll(`#${d.idName} > .circleBox`).remove();
       await d.decorator.createConnections(d);
-      await d.connectionPack.forEach(dot => {
-        let c = dot.conn;
-        let x = c.x + (c.x - d.x);
-        let y = c.y + (c.y - d.y);
-        c.moveTo({x, y});
-      });
     }
 
     this.dragended = function(node) {
@@ -174,7 +177,7 @@ export class DecorationArea extends DecorationModel {
         that.transientConnection = that.ctrConnection.setNewNode(event.x, event.y, `#Area-${node.id}`)
       }
       that.connected = false
-      that.transientConnection.moveTo({ x: event.x, y: event.y})
+      that.transientConnection.startMoveConnection({ x: event.x, y: event.y})
     }
 
     this.dragendedConnections = (event, that, node) =>{

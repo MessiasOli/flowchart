@@ -1,7 +1,6 @@
 import { NodeModel } from "../_model/NodeModel";
 import { Types } from "../../utils/nodeTypes"
 import { DecorationConnection } from "./decorationConnection"
-
 class Connection extends NodeModel {
   constructor(x, y, parentId, color) {
     super("Connection");
@@ -16,6 +15,7 @@ class Connection extends NodeModel {
     this.y2 = 0;
     this.x = this.x1;
     this.y = this.y1;
+    this.r = 4;
     this.color = color || "#000"
     this.internalPoints = new Array();
     this.qtdInternalPoints = 0
@@ -37,12 +37,66 @@ class Connection extends NodeModel {
       cloned.path = this.path;
       cloned.x = this.x;
       cloned.y = this.y;
-      cloned.x1 = this.x2;
-      cloned.y1 = this.y2;
+      cloned.x1 = this.x1;
+      cloned.y1 = this.y1;
+      cloned.x2 = this.x2;
+      cloned.y2 = this.y2;
+      cloned.r = this.r;
       cloned.internalPoints = this.internalPoints;
       cloned.qtdInternalPoints = this.qtdInternalPoints;
 
       return cloned;
+    }
+
+    this.move = async () => {
+      let coordinates = await this.getCoordinatePath();
+      let extremes = await this.getExtremesCoordinates();
+      let newPath = "M";
+      let counter = 0
+
+      console.log('(this.y + this.r) - this.y1 :>> ', this.y, this.r, this.y1);
+
+      let diffX = (this.x + this.r) - extremes.min.x
+      let diffY = (this.y + this.r) - extremes.min.y
+
+      console.log('diffX, diffY :>> ', diffX, diffY);
+
+      coordinates.forEach(c => {
+        counter++;
+        newPath += `${c.x + diffX},${c.y + diffY}`
+
+        if(counter != coordinates.length){
+          newPath += 'L'
+        }
+      });
+
+      this.internalPoints.forEach(p => {
+        p.x += diffX;
+        p.y += diffY;
+      })
+
+      this.path = newPath;
+      coordinates = await this.getCoordinatePath();
+      this.x1 = coordinates[0].x
+      this.y1 = coordinates[0].y
+      this.x2 = coordinates[coordinates.length-1].x
+      this.y2 = coordinates[coordinates.length-1].y
+
+      this.decorator.move(newPath);
+    }
+
+    this.getCoordinatePath = () =>{
+      let strCoord = this.path.replace("M", "").split('L')
+      let coord = new Array();
+
+      strCoord.forEach(c => {
+        let [x, y] = c.split(",")
+        x = parseFloat(x);
+        y = parseFloat(y);
+        coord.push({x: x, y: y});
+      })
+
+      return coord;
     }
 
     this.moveFirstPoint = function (coordinate) {
@@ -50,52 +104,51 @@ class Connection extends NodeModel {
       this.x1 = coordinate.x
       this.y1 = coordinate.y
       this.changePath([this.x1, this.y1])
-      this.decorator.move(this.path)
+      this.decorator.changePath(this.path)
       this.setArea();
     }
 
-    this.moveTo = function(coordinate) {
-      console.log('moveTo :>> ', coordinate);
+    this.startMoveConnection = function(coordinate) {
       this.x2 = coordinate.x
       this.y2 = coordinate.y
       this.path = `M${this.x1},${this.y1}L${this.x2},${this.y2}`
-      this.decorator.move(this.path)
+      this.decorator.changePath(this.path)
       this.setArea();
     }
 
-    this.setArea = () => {
-      let path = this.path
-      let coord = path.replace("M", "").split('L')
+    this.setArea = async () => {
+      let extremes = await this.getExtremesCoordinates()
+      this.x = extremes.min.x - this.r;
+      this.y = extremes.min.y - this.r;
+      this.height = Math.abs(extremes.max.y - extremes.min.y + (this.r * 2));
+      this.width = Math.abs(extremes.max.x - extremes.min.x + (this.r * 2));
+    }
+
+    this.getExtremesCoordinates = async () => {
+      let coord =  await this.getCoordinatePath()
       let minX = -1;
-      let maxX = 0;
-      let minY = 0;
-      let maxY = 0;
+      let maxX = -1;
+      let minY = -1;
+      let maxY = -1;
 
       coord.forEach(c => {
-        let [x, y] = c.split(",")
-
         if(minX == -1){
-          minX = x;
-          minY = y;
-          maxX = x;
-          maxY = y;
+          minX = c.x;
+          minY = c.y;
         }
         
-        if(x < minX)
-          minX = x
-        if(x > maxX)
-          maxX = x
+        if(c.x < minX)
+          minX = c.x
+        if(c.x > maxX)
+          maxX = c.x
 
-        if(y < minY)
-          minY = y
-        if(y > maxY)
-          maxY = y
-
+        if(c.y < minY)
+          minY = c.y
+        if(c.y > maxY)
+          maxY = c.y
       });
 
-      this.height = maxY - minY;
-      this.width = maxX - minX;
-      console.log('this.height, this.width :>> ', this.height, this.width);
+      return ({ min:{x: minX, y: minY}, max: {x: maxX, y: maxY} })
     }
 
     this.pointOnPath = async function(coordinate, dot) {
@@ -125,7 +178,7 @@ class Connection extends NodeModel {
         this.internalPoints[0].x = coordinate.x;
         this.internalPoints[0].y = coordinate.y
       }
-      this.decorator.move(this.path)
+      this.decorator.changePath(this.path)
       this.setArea();
     }
 
@@ -134,7 +187,7 @@ class Connection extends NodeModel {
         this.x2 = coordinate.x
         this.y2 = coordinate.y
       this.changePath([null, null, null, null, null, null, coordinate.x, coordinate.y])
-      this.decorator.move(this.path)
+      this.decorator.changePath(this.path)
       this.setArea();
     }
 

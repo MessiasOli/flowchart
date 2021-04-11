@@ -48,11 +48,11 @@ export class BoxSelection {
       try {
         let coord = GetCoordinateDiff(event, n)
 
-        await SingletonFlowchart.selectedNodes.forEach(d => {
+        await SingletonFlowchart.selectedNodes.forEach(async d => {
           d.x += coord.x;
           d.y += coord.y;
-          d.move();
-          d3.select(`#Selected-${d.id} > rect`)
+          await d.move();
+          await d3.select(`#Selected-${d.id} > rect`)
             .raise()
             .attr("x", d.x)
             .attr("y", d.y)

@@ -137,7 +137,7 @@ class DecorationBoxText extends DecorationModel {
         that.transientConnection = that.ctrConnection.setNewNode(event.x, event.y, `#BoxText-${node.id}`)
       }
       that.connected = false
-      that.transientConnection.moveTo({ x: event.x, y: event.y})
+      that.transientConnection.startMoveConnection({ x: event.x, y: event.y})
     }
 
     this.dragendedConnections = (event, that, node) =>{
