@@ -3,6 +3,7 @@ import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { ControllerArea } from "../area/controllerArea"
 import { ControllerConnection } from "../connection/controllerConnection"
 import { COLORS } from "../../utils/colors"
+import { Types } from "../../utils/nodeTypes"
 import { GetSixConections } from "../../utils/tools"
 import * as d3 from "d3"
 
@@ -11,6 +12,7 @@ export class DecorationArea extends DecorationModel {
     super("DecorationArea")
 
     this.node = null;
+    this.typeConn = new Types().Connection
     this.transientConnection = null;
 
     this.ctrArea = new ControllerArea();
@@ -113,6 +115,24 @@ export class DecorationArea extends DecorationModel {
         .raise()
         .attr("x", (d.xText()))
         .attr("y", (d.yText()));
+
+      let conn = new Array();
+      await SingletonFlowchart.selectedNodes.forEach(n => {
+        if(this.typeConn == n.type){
+          conn.push(n)
+        }
+      });
+
+      if(d.connectionPack.length > 0){
+        d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
+        d.connectionPack.forEach(point => {
+          let isSelected = conn.includes(point.conn)
+          if(!isSelected){
+            let dot = d.decorator.getPointPosition(d, point.dot)
+            point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y})
+          }
+        });
+      }
 
       await d3.selectAll(`#${d.idName} > .circleBox`).remove();
       await d.decorator.createConnections(d);
