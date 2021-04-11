@@ -35,6 +35,7 @@ class Line extends NodeModel {
     this.clone = function() {
       let cloned = new Line();
       cloned.id = this.id;
+      cloned.idName = this.idName;
       cloned.type = this.type
       cloned.x = this.x;
       cloned.y = this.y;

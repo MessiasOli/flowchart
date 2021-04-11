@@ -21,11 +21,6 @@ class Area extends NodeModel {
       await this.decorator.init(this, callback)
     }
 
-    this.move = function (x, y){
-      this.x = x
-      this.y = y
-    }
-
     this.update = (nodeEdited) => {
       this.nameOfArea = nodeEdited.nameOfArea
       let lenghtOfFont = this.nameOfArea.length * 9
@@ -36,6 +31,7 @@ class Area extends NodeModel {
     this.clone = () => {
       let cloned = new Area()
       cloned.id = this.id
+      cloned.idName = this.idName
       cloned.type = this.type
       cloned.height = this.height;
       cloned.width = this.width;

@@ -1,10 +1,12 @@
 import { IDecoration } from "../_interface/IDecoration";
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
+import { BoxSelection } from "../_service/globalDecoration"
 import * as d3 from "d3";
 
 export class DecorationModel extends IDecoration {
   constructor(nameClass) {
     super(nameClass);
+    this.boxSelection = new BoxSelection;
 
     this.dragstarted = function() {
       SingletonFlowchart.clicked = true;
@@ -39,6 +41,36 @@ export class DecorationModel extends IDecoration {
           let newConn = this.ctrConnection.loadNode(obj.conn)
           node.connectionPack.push({ conn: newConn, dot: obj.dot })
         });
+      }
+    }
+
+    this.createSelectorArea = function (){
+      try
+      {
+        this.boxSelection.initSelection(this.node);
+      }
+      catch (e)
+      {
+        throw `Classe ${nameClass}, Metodo createSelectorArea().\n${e}`;
+      }
+    }
+
+    this.move = function (){
+      try
+      {
+        if(!this.node){
+          throw "this.node não instanciado!"
+        }
+
+        console.log('this.node.idName :>> ', this.node);
+        d3.select("#"+this.node.idName)
+        .raise()
+        .attr("x", this.node.x)
+        .attr("y", this.node.y);
+      }
+      catch (e)
+      {
+        throw `Classe ${nameClass}, Metodo move().\n${e}`;
       }
     }
   }

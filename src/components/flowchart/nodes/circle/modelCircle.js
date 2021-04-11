@@ -14,6 +14,7 @@ class Circle extends NodeModel{
     this.clone = function() {
       let cloned = new Circle();
       cloned.id = this.id
+      cloned.idName = this.idName
       cloned.type = this.type
       cloned.x = this.x
       cloned.y = this.y

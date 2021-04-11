@@ -42,6 +42,7 @@ class BoxText extends NodeModel {
     this.clone = () => {
       let cloned = new BoxText();
       cloned.id = this.id
+      cloned.idName = this.idName
       cloned.type = this.type
       cloned.connectionPack = this.connectionPack.map(b => ({ conn: b.conn.clone(), dot: b.dot }));
       cloned.contador = this.contador

@@ -21,11 +21,6 @@ class PercentageEntry extends NodeModel {
       await this.decorator.init(this, callback)
     };
 
-    this.move = function (x, y){
-      this.x = x
-      this.y = y
-    }
-
     this.update = (nodeEdited) => {
       this.value = NumberFormat(nodeEdited.value) + " %"
       let lenghtOfFont = this.value.length * 9
@@ -36,6 +31,7 @@ class PercentageEntry extends NodeModel {
     this.clone = function() {
       let cloned = new PercentageEntry();
       cloned.id = this.id;
+      cloned.idName = this.idName
       cloned.type = this.type
       cloned.value = this.value;
       cloned.x = this.x;

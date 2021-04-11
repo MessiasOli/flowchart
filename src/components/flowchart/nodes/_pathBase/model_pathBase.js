@@ -16,11 +16,6 @@ class _pathBase extends NodeModel {
       this.decorator = new Decoration_pathBase();
       await this.decorator.init(this)
     };
-
-    this.move = function (x, y){
-      this.x = x
-      this.y = y
-    }
   }
 }
 

@@ -82,7 +82,7 @@ export class DecorationInputBox extends DecorationModel {
     }
 
     this.dragstarted = function(event, d) {
-      SingletonFlowchart.selectNode(`InputBox-${d.id}`);
+      SingletonFlowchart.selectNode(`#InputBox-${d.id}`);
       d3.select(this).attr("cursor", "grabbing")
     }
 

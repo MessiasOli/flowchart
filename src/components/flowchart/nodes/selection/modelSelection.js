@@ -24,11 +24,6 @@ class Selection extends NodeModel {
       await this.decorator.init(this)
     };
 
-    this.move = function (x, y){
-      this.x = x
-      this.y = y
-    }
-
     this.SelectTo = function (xSelection, ySelection){
       let xResult = this.getNewDimensions(this.xStart, xSelection);
       this.xEnd = xResult.axis;

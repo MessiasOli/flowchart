@@ -59,7 +59,8 @@ export class DecorationPercentageEntry extends DecorationModel {
 
     this.dragstarted = function(event, d) {
       SingletonFlowchart.clicked = true
-      SingletonFlowchart.selected = `PercentageEntry-${d.id}`
+      SingletonFlowchart.selectNode(d.idName);
+      console.log('d :>> ', d);
   
       d3.select(this)
         .attr("stroke", "black")

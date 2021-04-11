@@ -9,6 +9,7 @@ export class Types {
     this.Line = 6
     this.Connection = 7
     this.Area = 8
+    this.Box = 9
 
     this.Caption = [
       "Base",
@@ -19,7 +20,8 @@ export class Types {
       "Ciculo",
       "Linha",
       "Conexão",
-      "Area"
+      "Area",
+      "Caixa"
     ];
   }
 }

@@ -42,9 +42,17 @@ class ControllerSelection extends ControllerModel {
 
     this.selectElementsInArea = () => {
       let coordinates = this.selection.getCoordinates();
-      console.log(`coordinates`, coordinates);
       let nodesSelected = SingletonFlowchart.Memory.getNodesBetween(coordinates)
       console.log('nodesSelected :>> ', nodesSelected);
+      try{
+        nodesSelected.forEach(n => n.isSelected())
+
+      }
+      catch (e)
+      {
+        this.cancel();
+        throw e
+      }
 
       this.cancel();
     }
