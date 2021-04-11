@@ -9,6 +9,7 @@ class ControllerConnection extends ControllerModel {
     this.setNewNode = (x, y, ParentId, color) => {
       let conn = new Connection(x, y, ParentId, color);
       conn.decorate();
+      this.addNode(conn);
       return conn;
     }
 

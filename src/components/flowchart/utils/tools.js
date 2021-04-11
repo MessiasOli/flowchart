@@ -44,8 +44,17 @@ const GetSVGCoordinates = (event) => {
   return [x, y]
 }
 
+const GetCoordinateDiff = function (event, node){
+  let [x, y] = GetSVGCoordinates(event)
+  return {
+    x: x - node.x,
+    y: y - node.y
+  } 
+}
+
 export { 
   NumberFormat, 
   GetSixConections,
-  GetSVGCoordinates
+  GetSVGCoordinates,
+  GetCoordinateDiff
 }

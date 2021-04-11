@@ -5,16 +5,16 @@ import * as d3 from "d3"
 class DecorationConnection extends DecorationModel {
   constructor() {
     super("DecorationBoxText")
-    this.connectionNode = null
+    this.node = null
     this.svg
   
     this.init = async function (node) {
       this.svg = d3.select(node.parentId)
-      this.connectionNode = node
+      this.node = node
 
         this.svg
           .selectAll(`.circle-${node.id}`)
-          .data([{ x:node.x, y: node.y, id: node.id, node: this.connectionNode }])
+          .data([{ x:node.x1, y: node.y1, id: node.id, node: this.node }])
           .join("circle")
           .attr("id", `dot-${node.id}`)
           .attr('cx', d => d.x)
@@ -31,15 +31,16 @@ class DecorationConnection extends DecorationModel {
     }
     
     this.move = function(line) {
-      let id = this.connectionNode.id
-
+      let id = this.node.id
+      console.log('this.node :>> ', this.node);
       d3.selectAll(`#dot-${id}`).remove()
+
       // Primeiro ponto
       this.createDot({
         id: id, 
-        x: this.connectionNode.x, 
-        y: this.connectionNode.y, 
-        node: this.connectionNode 
+        x: this.node.x1, 
+        y: this.node.y1, 
+        node: this.node 
       }).node()
 
       // Reta
@@ -48,7 +49,7 @@ class DecorationConnection extends DecorationModel {
         .classed("Connection", true)
         .attr("id", `dot-${id}`)
         .attr("d", line)
-        .attr("stroke", this.connectionNode.color)
+        .attr("stroke", this.node.color)
         .attr("stroke-width", 3)
         .style("cursor", "pointer")
         .style("fill", "none")
@@ -56,23 +57,23 @@ class DecorationConnection extends DecorationModel {
         .on("dblclick", (event, d) => this.createBreakPoint(event, d, id))
         .node();
 
-        if(this.connectionNode.internalPoints.length > 0){
+        if(this.node.internalPoints.length > 0){
           this.createDot({
             id: id, 
-            x: this.connectionNode.internalPoints[0].x, 
-            y: this.connectionNode.internalPoints[0].y, 
-            node: this.connectionNode 
+            x: this.node.internalPoints[0].x, 
+            y: this.node.internalPoints[0].y, 
+            node: this.node 
           }).call(d3.drag()
           .on("start", this.dragstarted)
           .on("drag",(event, d) => this.dragged(event, d, 1)))
         }
 
-        if(this.connectionNode.internalPoints.length > 1){
+        if(this.node.internalPoints.length > 1){
           this.createDot({
             id: id,
-            x: this.connectionNode.internalPoints[1].x, 
-            y: this.connectionNode.internalPoints[1].y, 
-            node: this.connectionNode 
+            x: this.node.internalPoints[1].x, 
+            y: this.node.internalPoints[1].y, 
+            node: this.node 
           }).call(d3.drag()
           .on("start", this.dragstarted)
           .on("drag",(event, d) => this.dragged(event, d, 2)))
@@ -81,9 +82,9 @@ class DecorationConnection extends DecorationModel {
       // Segundo ponto
       this.createDot({
         id: id,
-        x: this.connectionNode.x1, 
-        y: this.connectionNode.y1, 
-        node: this.connectionNode 
+        x: this.node.x2, 
+        y: this.node.y2, 
+        node: this.node 
       }).call(this.setDrag())
         .node()
     }
@@ -102,7 +103,7 @@ class DecorationConnection extends DecorationModel {
 
     this.createBreakPoint = function(event, d, id){
       SingletonFlowchart.clicked = true
-      SingletonFlowchart.selected = 'dot-'+this.connectionNode.id
+      SingletonFlowchart.selected = 'dot-'+this.node.id
       let connClicked = d.connectionPack.filter(conections => conections.conn.id == id)[0]
       let line = connClicked.conn.path;
       
@@ -114,7 +115,7 @@ class DecorationConnection extends DecorationModel {
         id: id,
         x: event.offsetX, 
         y: event.offsetY, 
-        node: this.connectionNode 
+        node: this.node 
       }).call(d3.drag()
         .on("start", this.dragstarted)
         .on("drag", (event, d) => this.draggedNewBreakPoint(event, d, connClicked.conn.qtdInternalPoints))
@@ -140,7 +141,6 @@ class DecorationConnection extends DecorationModel {
   
     this.dragged = function(event, d, dot) {
       SingletonFlowchart.clicked = false
-
       if(!dot){
         d.node.moveLastPoint({x: event.x, y: event.y})
       }else{

@@ -58,14 +58,14 @@ export class DecorationArea extends DecorationModel {
       let drag = d3
         .drag()
         .on("start", that.dragstarted)
-        .on("drag", that.dragged)
+        .on("drag",(event, d) => that.dragged(event, d, that))
         .on("end",(event, d) => that.dragended(d, that));
       return drag;
     }
 
     this.dragstarted = function(event, d) {
       SingletonFlowchart.selected && d3.select(`.${SingletonFlowchart.selected}`).attr("stroke",null)
-      SingletonFlowchart.selectNode(`#Area-${d.id}`);
+      SingletonFlowchart.selectNode(`Area-${d.id}`);
   
       d3.select(this)
         .style("stroke", "black")
@@ -74,16 +74,23 @@ export class DecorationArea extends DecorationModel {
       d3.selectAll(`#Area-${d.id} > .circleBox`).remove();
     }
 
-    this.dragged = async function (event, d){
+    this.dragged = async function (event, d, that){
       SingletonFlowchart.clicked = false;
       d.x = event.x + 20;
       d.y = event.y;
 
-      await d3.select(this)
+      that.drag();
+    }
+
+    this.drag = async function() {
+      let d = this.node;
+      console.log('nativeDrag :>> ');
+      await d3.select(`.${d.idName}`)
         .raise()
         .attr("x", (d.x))
         .attr("y", (d.y));
-      await d3.select(`#Area-${d.id} > text`)
+
+      await d3.select(`#${d.idName} > text`)
         .raise()
         .attr("x", (d.xText()))
         .attr("y", (d.yText()));
@@ -95,13 +102,26 @@ export class DecorationArea extends DecorationModel {
       });
     }
 
-    this.dragended = function(node, that) {
+    this.move = async function(){
+      let d = this.node;
+      await this.drag();
+
+      await d3.selectAll(`#${d.idName} > .circleBox`).remove();
+      await d.decorator.createConnections(d);
+      await d.connectionPack.forEach(dot => {
+        let c = dot.conn;
+        let x = c.x + (c.x - d.x);
+        let y = c.y + (c.y - d.y);
+        c.moveTo({x, y});
+      });
+    }
+
+    this.dragended = function(node) {
       d3.select(`.Area-${node.id}`)
         .attr("cursor", "grab")
         .style("stroke", "none")
 
         node.decorator.createConnections(node);
-        that.ctrArea.updateNode(node);
     }
 
     this.getPointPosition = function(node, point){

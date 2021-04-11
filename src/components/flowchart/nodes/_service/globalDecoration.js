@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { SingletonFlowchart } from "./singletonFlowchart"
-import { GetSVGCoordinates } from "../../utils/tools"
+import { GetCoordinateDiff } from "../../utils/tools"
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3";
 
@@ -9,6 +9,7 @@ export class BoxSelection {
     let svg = SingletonFlowchart.svg
 
     this.initSelection = async function (nodeRef) {
+      console.log('nodeRef :>> ', nodeRef);
     await svg
         .data([nodeRef])
         .append("g")
@@ -74,12 +75,4 @@ export class BoxSelection {
 
     }
   }
-}
-
-function GetCoordinateDiff(event, node){
-  let [x, y] = GetSVGCoordinates(event)
-  return {
-    x: x - node.x,
-    y: y - node.y
-  } 
 }
