@@ -84,7 +84,6 @@ export class DecorationArea extends DecorationModel {
 
     this.drag = async function() {
       let d = this.node;
-      console.log('nativeDrag :>> ');
       await d3.select(`.${d.idName}`)
         .raise()
         .attr("x", (d.x))
@@ -104,7 +103,7 @@ export class DecorationArea extends DecorationModel {
 
     this.move = async function(){
       let d = this.node;
-      
+
       await d3.select(`.${d.idName}`)
         .raise()
         .attr("x", (d.x))

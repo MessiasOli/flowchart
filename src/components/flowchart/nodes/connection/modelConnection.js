@@ -45,6 +45,7 @@ class Connection extends NodeModel {
       cloned.internalPoints = this.internalPoints;
       cloned.qtdInternalPoints = this.qtdInternalPoints;
 
+      console.log('cloned :>> ', cloned);
       return cloned;
     }
 
@@ -54,12 +55,8 @@ class Connection extends NodeModel {
       let newPath = "M";
       let counter = 0
 
-      console.log('(this.y + this.r) - this.y1 :>> ', this.y, this.r, this.y1);
-
       let diffX = (this.x + this.r) - extremes.min.x
       let diffY = (this.y + this.r) - extremes.min.y
-
-      console.log('diffX, diffY :>> ', diffX, diffY);
 
       coordinates.forEach(c => {
         counter++;
@@ -100,7 +97,6 @@ class Connection extends NodeModel {
     }
 
     this.moveFirstPoint = function (coordinate) {
-      console.log('moveFirstPoint :>> ', coordinate);
       this.x1 = coordinate.x
       this.y1 = coordinate.y
       this.changePath([this.x1, this.y1])
@@ -152,7 +148,6 @@ class Connection extends NodeModel {
     }
 
     this.pointOnPath = async function(coordinate, dot) {
-      console.log('pointOnPath :>> ');
       if(dot == 1)
       {
         if(this.internalPoints.length == 0){
@@ -183,7 +178,6 @@ class Connection extends NodeModel {
     }
 
     this.moveLastPoint = function(coordinate) {
-      console.log('moveLastPoint :>> ');
         this.x2 = coordinate.x
         this.y2 = coordinate.y
       this.changePath([null, null, null, null, null, null, coordinate.x, coordinate.y])

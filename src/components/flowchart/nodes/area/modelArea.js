@@ -47,7 +47,6 @@ class Area extends NodeModel {
       this.simpleCopyFrom(node)
       this.connectionPack = node.connectionPack;
       this.nameOfArea = node.nameOfArea;
-
     }
   }
 }

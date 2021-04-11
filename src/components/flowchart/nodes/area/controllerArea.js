@@ -13,10 +13,10 @@ class ControllerArea extends ControllerModel {
       this.addNode(area);
     }
 
-    this.loadNode = (node, callback) => {
+    this.loadNode = async (node, callback) => {
       let area = new Area();
-      area.copyFrom(node);
-      area.decorate(callback);
+      await area.copyFrom(node);
+      await area.decorate(callback);
       this.addNode(area)
     }
   }
