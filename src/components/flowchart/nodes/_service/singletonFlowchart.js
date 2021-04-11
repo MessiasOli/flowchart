@@ -7,9 +7,11 @@ export var SingletonFlowchart = {
         }
         return SingletonFlowchart.instance;
     },
+    
     svg: null,
     nodeClicked: false,
     selected: null,
+    selectedNodes: null,
     clicked: null,
     Memory: new MemoryRepository(),
 

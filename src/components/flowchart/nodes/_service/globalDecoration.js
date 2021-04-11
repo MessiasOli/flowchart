@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { SingletonFlowchart } from "./singletonFlowchart"
+import { GetSVGCoordinates } from "../../utils/tools"
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3";
 
@@ -37,25 +38,34 @@ export class BoxSelection {
     this.dragstarted = function(event, d) {
       SingletonFlowchart.selectNode(`Box-${d.id}`)
 
-      d3.select(this)
+      d3.selectAll(".SelectionNode")
         .style("stroke", "black")
         .attr("cursor", "grabbing")
     }
 
-    this.dragged = async function (event, d){
-      
-      d.x = event.x;
-      d.y = event.y;
-      d.move();
-      
-      d3.select(this)
-        .raise()
-        .attr("x", d.x)
-        .attr("y", d.y)
+    this.dragged = async function (event,n){
+      try {
+        let coord = GetCoordinateDiff(event, n)
+
+        await SingletonFlowchart.selectedNodes.forEach(d => {
+          d.x += coord.x;
+          d.y += coord.y;
+          d.move();
+          d3.select(`#Selected-${d.id} > rect`)
+            .raise()
+            .attr("x", d.x)
+            .attr("y", d.y)
+            .node();
+        });
+      }
+      catch (e)
+      {
+        throw "Classe BoxSelection, método: dragged\nErro: " + e
+      }
     };
 
     this.dragended = function() {
-      d3.select(this)
+      d3.selectAll(".SelectionNode")
         .style("stroke", 'none')
         .attr("cursor", "grab")
     };
@@ -64,4 +74,12 @@ export class BoxSelection {
 
     }
   }
+}
+
+function GetCoordinateDiff(event, node){
+  let [x, y] = GetSVGCoordinates(event)
+  return {
+    x: x - node.x,
+    y: y - node.y
+  } 
 }

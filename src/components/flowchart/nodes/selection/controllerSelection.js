@@ -31,6 +31,8 @@ class ControllerSelection extends ControllerModel {
       if(this.isRendered){
         let [ x, y ] = GetSVGCoordinates(event)
         this.selection.SelectTo(x, y)
+      }else{
+        console.log("Elemento")
       }
     }
 
@@ -42,10 +44,11 @@ class ControllerSelection extends ControllerModel {
 
     this.selectElementsInArea = () => {
       let coordinates = this.selection.getCoordinates();
-      let nodesSelected = SingletonFlowchart.Memory.getNodesBetween(coordinates)
-      console.log('nodesSelected :>> ', nodesSelected);
+      let selectedNodes = SingletonFlowchart.Memory.getNodesBetween(coordinates)
+      console.log('selectedNodes :>> ', selectedNodes);
       try{
-        nodesSelected.forEach(n => n.isSelected())
+        selectedNodes.forEach(n => n.isSelected())
+        SingletonFlowchart.selectedNodes = selectedNodes;
 
       }
       catch (e)
