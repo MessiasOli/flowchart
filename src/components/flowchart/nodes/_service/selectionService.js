@@ -9,9 +9,12 @@ export class Selection {
     
     this.start = (event) => {
       this.clicked = !this.clicked
-      console.log("click-Star", this.clicked)
 
-      if(this.clicked || !this.ctr.isRendered){
+      if(this.ctr.hasNodeSelected()){
+        this.ctr.cancelSelection();
+        this.clicked = false;
+      }
+      else if(this.clicked || !this.ctr.isRendered){
         this.ctr.start(event)
         this.clicked = true;
         this.calMoveSelected = false;
@@ -28,10 +31,6 @@ export class Selection {
         this.calMoveSelected = true;
         this.clicked = false;
       }
-    }
-
-    this.cancel = () =>{
-
     }
   }
 }

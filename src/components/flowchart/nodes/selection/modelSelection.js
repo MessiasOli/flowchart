@@ -51,7 +51,7 @@ class Selection extends NodeModel {
 
     this.eraseSquare = function(){
       if(this.decorator){
-        console.log('limpo o quadro :>> ');
+        console.log('Quadro removido');
         this.decorator.removeSquare()
         this.reset();
       }

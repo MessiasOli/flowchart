@@ -56,6 +56,10 @@ class ControllerSelection extends ControllerModel {
 
       this.cancel();
     }
+
+    this.hasNodeSelected = () => this.getSelections().length > 0;
+    this.cancelSelection  = () => this.getSelections().forEach(n => n.remove());
+    this.getSelections = () => document.querySelectorAll(".SelectionNode")
   }
 }
 

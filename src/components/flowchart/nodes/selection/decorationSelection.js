@@ -20,7 +20,6 @@ export class DecorationSelection extends DecorationModel {
       await svg
           .data([this.node])
           .append("rect")
-          .classed("Selection", true)
           .attr("id", `Selection-${this.node.id}`)
           .attr("x", this.node.getX())
           .attr("y", this.node.getY())

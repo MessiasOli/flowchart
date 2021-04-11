@@ -13,7 +13,7 @@ export class BoxSelection {
         .append("g")
         .attr("id", d => `Selected-${d.id}`)
         .append("rect")
-        .classed("Box", true)
+        .classed("SelectionNode", true)
         .attr("x",  d => d.x)
         .attr("y", d => d.y)
         .style("width", d => d.width)
@@ -26,12 +26,11 @@ export class BoxSelection {
     }
 
     this.setDrag = function() {
-      let that = this
       let drag = d3
         .drag()
-        .on("start", that.dragstarted)
-        .on("drag", that.dragged)
-        .on("end", (event, d) => that.dragended(d, that));
+        .on("start", this.dragstarted)
+        .on("drag", this.dragged)
+        .on("end", this.dragended);
       return drag;
     }
 
@@ -55,12 +54,10 @@ export class BoxSelection {
         .attr("y", d.y)
     };
 
-    this.dragended = function(d, that) {
-      this.cursor = "grab"
-      d3.select(`#${d.idName}`)
+    this.dragended = function() {
+      d3.select(this)
         .style("stroke", 'none')
         .attr("cursor", "grab")
-
     };
 
     this.finishSelection = function(nodeRef){

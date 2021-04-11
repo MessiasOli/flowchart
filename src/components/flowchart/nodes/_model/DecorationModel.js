@@ -54,24 +54,5 @@ export class DecorationModel extends IDecoration {
         throw `Classe ${nameClass}, Metodo createSelectorArea().\n${e}`;
       }
     }
-
-    this.move = function (){
-      try
-      {
-        if(!this.node){
-          throw "this.node não instanciado!"
-        }
-
-        console.log('this.node.idName :>> ', this.node);
-        d3.select("#"+this.node.idName)
-        .raise()
-        .attr("x", this.node.x)
-        .attr("y", this.node.y);
-      }
-      catch (e)
-      {
-        throw `Classe ${nameClass}, Metodo move().\n${e}`;
-      }
-    }
   }
 }

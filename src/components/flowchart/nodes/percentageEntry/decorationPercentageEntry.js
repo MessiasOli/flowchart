@@ -51,7 +51,7 @@ export class DecorationPercentageEntry extends DecorationModel {
       let drag = d3
         .drag()
         .on("start", that.dragstarted)
-        .on("drag", that.dragged)
+        .on("drag", (event, d) => that.dragged(event, d, that))
         .on("end", that.dragended);
 
       return drag;
@@ -68,13 +68,17 @@ export class DecorationPercentageEntry extends DecorationModel {
 
     }
 
-    this.dragged = async function (event, d) {
+    this.dragged = async function (event, d, that) {
       SingletonFlowchart.clicked = false;
       d.x = event.x;
       d.y = event.y -5;
-      await d3.select(this).raise().attr("x", d.x).attr("y", d.y);
-      await d3.select(`#PercentageEntry-${d.id} > text`).raise().attr("x", (d.xText())).attr("y", (d.y + d.heightText));
-      
+      that.move()
+    }
+
+    this.move = async () => {
+      let d = this.node;
+      await d3.select(`#${d.idName} > rect`).raise().attr("x", d.x).attr("y", d.y);
+      await d3.select(`#${d.idName} > text`).raise().attr("x", (d.xText())).attr("y", (d.y + d.heightText));
     }
 
     this.dragended = function() {

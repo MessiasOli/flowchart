@@ -120,8 +120,9 @@ export default {
       let selection = SingletonFlowchart.selected
       if(selection){
         SingletonFlowchart.removeNodeSelected();
-        d3.selectAll(`${selection}`).remove()
+        d3.selectAll(`#${selection}`).remove()
       }
+      console.log('selection :>> ', selection);
     },
 
     unSelected(){
