@@ -9,7 +9,6 @@ export class BoxSelection {
     let svg = SingletonFlowchart.svg
 
     this.initSelection = async function (nodeRef) {
-      console.log('nodeRef :>> ', nodeRef);
     await svg
         .data([nodeRef])
         .append("g")

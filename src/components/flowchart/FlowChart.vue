@@ -132,14 +132,16 @@ export default {
     },
 
     unSelected(){
+      console.log('unselected :>> ');
       this.toolbarClosed = false;
       SingletonFlowchart.unSelectNode();
       this.openToolbar()
     },
 
     configSVG(){
+      //.call(d3.drag().on('end',function(){ that.unSelected() }))
       let that = this
-      let svg = d3.select("#canvas").call(d3.drag().on('end',function(){ that.unSelected() }))
+      let svg = d3.select("#canvas")
         .append("svg")
         .attr("id", "svg")
         .attr("width", 900)
@@ -149,6 +151,7 @@ export default {
         }))
         .append("g")
         .attr("id", "board")
+        .on("click", that.unSelected())
 
       SingletonFlowchart.svg = svg;
     },

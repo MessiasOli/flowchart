@@ -62,7 +62,6 @@ export class DecorationText extends DecorationModel {
     }
 
     this.dragged = async function (event, d){
-      console.log('aqui :>> ');
       d.x = event.x;
       d.y = event.y;
 

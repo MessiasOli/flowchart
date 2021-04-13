@@ -70,7 +70,9 @@ class Line extends NodeModel {
       let cloned = new Line();
       cloned.id = this.id;
       cloned.idName = this.idName;
-      cloned.type = this.type
+      cloned.type = this.type;
+      cloned.width = this.width;
+      cloned.height = this.height;
       cloned.x = this.x;
       cloned.y = this.y;
       cloned.path = this.path;
