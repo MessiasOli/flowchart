@@ -1,5 +1,6 @@
 import { NodeModel } from "../_model/NodeModel";
-import { Types } from "../../utils/nodeTypes"
+import { Types } from "../../utils/nodeTypes";
+import { SetArea, GetExtremesCoordinates, GetCoordinatePath } from "../../utils/tools"
 import { DecorationLine } from "./decorationLine"
 
 class Line extends NodeModel {
@@ -10,10 +11,13 @@ class Line extends NodeModel {
     this.x = 500;
     this.y = 100;
     this.path = `M${this.x},${this.y}L${this.x},${this.y+100}`
-    this.height = 250;
     this.points = [{ x: this.x, y: this.y, id: this.id, dot: 'p1' },
                    { x: this.x, y: this.y +100, id: this.id, dot: 'p2' }]
-    this.cRadius = 1.5;
+    this.r = 2.5;
+    this.x = 498;
+    this.y = 95;
+    this.width = this.r * 2;
+    this.height = 105;
 
     this.decorate = async function() {
       this.decorator = new DecorationLine();
@@ -24,12 +28,42 @@ class Line extends NodeModel {
       this.points[0].x = x;
       this.points[0].y = y;
       this.path = `M${x},${y}L${this.points[1].x},${this.points[1].y}`
+      SetArea(this, this.r * 3)
     }
 
     this.setP2 = (x, y) => {
       this.points[1].x = x;
       this.points[1].y = y;
       this.path = `M${this.points[0].x},${this.points[0].y}L${x},${y}`
+      SetArea(this, this.r * 3)
+    }
+
+    this.move = async () => {
+      let coordinates = await GetCoordinatePath(this.path);
+      let extremes = await GetExtremesCoordinates(this);
+      let newPath = "M";
+      let counter = 0
+
+      let diffX = (this.x + this.r) - extremes.min.x
+      let diffY = (this.y + this.r) - extremes.min.y
+
+      coordinates.forEach(c => {
+        counter++;
+        newPath += `${c.x + diffX},${c.y + diffY}`
+
+        if(counter != coordinates.length){
+          newPath += 'L'
+        }
+      });
+
+      this.path = newPath;
+      coordinates = await GetCoordinatePath(this.path);
+      this.points[0].x = coordinates[0].x
+      this.points[0].y = coordinates[0].y
+      this.points[1].x = coordinates[coordinates.length-1].x
+      this.points[1].y = coordinates[coordinates.length-1].y
+
+      this.decorator.move(newPath);
     }
 
     this.clone = function() {
@@ -41,7 +75,7 @@ class Line extends NodeModel {
       cloned.y = this.y;
       cloned.path = this.path;
       cloned.points = this.points;
-      cloned.cRadius = this.cRadius;
+      cloned.r = this.r;
 
       return cloned;
     }
@@ -50,7 +84,7 @@ class Line extends NodeModel {
       this.simpleCopyFrom(node)
       this.path = node.path;
       this.points = node.points;
-      this.cRadius = node.cRadius;
+      this.r = node.r;
     }
   }
 }

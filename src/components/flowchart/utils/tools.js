@@ -52,9 +52,61 @@ const GetCoordinateDiff = function (event, node){
   } 
 }
 
+const SetArea = async (node, adjust) => {
+  let extremes = await GetExtremesCoordinates(node)
+  node.x = extremes.min.x - node.r;
+  node.y = extremes.min.y - node.r;
+  node.height = Math.abs(extremes.max.y - extremes.min.y + adjust);
+  node.width = Math.abs(extremes.max.x - extremes.min.x + adjust);
+}
+
+const GetExtremesCoordinates = async (node) => {
+  let coord =  await GetCoordinatePath(node.path)
+  let minX = -1;
+  let maxX = -1;
+  let minY = -1;
+  let maxY = -1;
+
+  coord.forEach(c => {
+    if(minX == -1){
+      minX = c.x;
+      minY = c.y;
+    }
+    
+    if(c.x < minX)
+      minX = c.x
+    if(c.x > maxX)
+      maxX = c.x
+
+    if(c.y < minY)
+      minY = c.y
+    if(c.y > maxY)
+      maxY = c.y
+  });
+
+  return ({ min:{x: minX, y: minY}, max: {x: maxX, y: maxY} })
+}
+
+const GetCoordinatePath = (path) =>{
+  let strCoord = path.replace("M", "").split('L')
+  let coord = new Array();
+
+  strCoord.forEach(c => {
+    let [x, y] = c.split(",")
+    x = parseFloat(x);
+    y = parseFloat(y);
+    coord.push({x: x, y: y});
+  })
+
+  return coord;
+}
+
 export { 
   NumberFormat, 
   GetSixConections,
   GetSVGCoordinates,
-  GetCoordinateDiff
+  GetCoordinateDiff,
+  SetArea,
+  GetExtremesCoordinates,
+  GetCoordinatePath
 }

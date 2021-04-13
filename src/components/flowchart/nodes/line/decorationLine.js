@@ -34,7 +34,7 @@ class DecorationLine extends DecorationModel {
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
         .attr("cursor", "pointer")
-        .attr('r', newNode.cRadius)
+        .attr('r', newNode.r)
         .attr('fill', "back")
         .call(this.setDrag(newNode))
       
@@ -80,6 +80,21 @@ class DecorationLine extends DecorationModel {
 
     this.dragended = function() {
     };
+
+    this.move = (line) => {
+      let d = this.node;
+      
+      d3.select(`#${d.idName} > path`).attr("d", line).node();
+      d3.select(`#${d.idName} > .${d.points[0].dot}-${d.id}`)
+        .raise()
+        .attr("cx", d.points[0].x)
+        .attr("cy", d.points[0].y);
+
+      d3.select(`#${d.idName} > .${d.points[1].dot}-${d.id}`)
+        .raise()
+        .attr("cx", d.points[1].x)
+        .attr("cy", d.points[1].y);
+    }
   }
 }
 

@@ -52,6 +52,11 @@ class DecorationCircle extends DecorationModel {
       d.y = event.y;
       d3.select(`#${d.idName}`).raise().attr("cx", d.xCircle()).attr("cy", d.yCircle());
     }
+
+    this.move = () => {
+      let d = this.node;
+      d3.select(`#${d.idName}`).raise().attr("cx", d.xCircle()).attr("cy", d.yCircle());
+    }
   
     this.dragended = function(d, that) {
       d3.select(`#${d.idName}`)
