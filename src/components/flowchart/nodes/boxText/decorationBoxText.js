@@ -69,8 +69,7 @@ class DecorationBoxText extends DecorationModel {
     };
 
     this.dragstarted = function(event, d) {
-      SingletonFlowchart.clicked = true;
-      SingletonFlowchart.selected = `BoxText-${d.id}`;
+      SingletonFlowchart.selectNode(`#${d.idName}`);
 
       d3.select(this).attr("cursor", "grabbing");
       d3.selectAll(`#BoxText-${d.id} > .circleBox`).remove();

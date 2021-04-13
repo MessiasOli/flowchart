@@ -45,7 +45,7 @@ export class DecorationText extends DecorationModel {
 
     
     this.dragstarted = function(event, d) {
-      SingletonFlowchart.selectNode(`Text-${d.id}`)
+      SingletonFlowchart.selectNode(`#Text-${d.id}`)
       
       d3.select(this)
       .style("stroke", "black")
@@ -60,12 +60,18 @@ export class DecorationText extends DecorationModel {
         .attr("x", d.x)
         .attr("y", d.yText())
     }
-    /* - to override
+
     this.dragged = async function (event, d){
-      
+      console.log('aqui :>> ');
+      d.x = event.x;
+      d.y = event.y;
+
+      d3.select(`#${d.idName} > text`)
+        .raise()
+        .attr("x", d.x)
+        .attr("y", d.yText())
       
     } 
-    */
 
     this.dragended = function() {
       d3.select(this)

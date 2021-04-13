@@ -14,12 +14,9 @@ class ControllerText extends ControllerModel {
 
     this.loadNode = (node, callback) => {
       let text = new Text();
-      text.simpleCopyFrom(node);
-
-      /* Insira aqui as particularidades do nó a ser criado */
-
+      text.copyFrom(node);
       text.decorate(callback);
-      this.addNode(Text)
+      this.addNode(text)
     }
   }
 }

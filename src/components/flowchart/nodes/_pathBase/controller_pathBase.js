@@ -17,7 +17,7 @@ class Controller_pathBase extends ControllerModel {
       let _pathBase = new _pathBase();
       _pathBase.simpleCopyFrom(node);
 
-      /* Insira aqui as particularidades do nó a ser criado */
+      /* Implementar método copyFrom para contemplar particularidades */
 
       _pathBase.decorate();
       this.addNode(_pathBase)

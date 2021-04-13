@@ -10,6 +10,7 @@
       <FormInputBox v-if="node.type == types.InputBox" :node.sync="nodeEdited" />
       <FormPercentageEntry v-if="node.type == types.PercentageEntry" :node.sync="nodeEdited" />
       <FormBoxText v-if="node.type == types.BoxText" :node.sync="nodeEdited" />
+      <FormText v-if="node.type == types.Text" :node.sync="nodeEdited" />
     </div>
     
     <div class="footer">
@@ -25,13 +26,19 @@ import FormArea from "./dialogForm/FormArea";
 import FormInputBox from "./dialogForm/FormInputBox";
 import FormPercentageEntry from "./dialogForm/FormPercentageEntry";
 import FormBoxText from "./dialogForm/FormBoxText";
+import FormText from "./dialogForm/FormText"
 import { Types } from "./utils/nodeTypes"
 
 
   export default {
     name: "Dialog",
-    components: { FormArea, FormInputBox, FormPercentageEntry, FormBoxText},
-
+    components: { 
+      FormArea, 
+      FormInputBox, 
+      FormPercentageEntry, 
+      FormBoxText,
+      FormText
+    },
     props: {
       node: {
         type: Object,

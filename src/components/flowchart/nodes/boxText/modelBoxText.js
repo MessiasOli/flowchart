@@ -26,10 +26,6 @@ class BoxText extends NodeModel {
       await this.decorator.init(this)
     }
 
-    this.openDialog = ()=>{
-      this.calback(this)
-    }
-
     this.update = (nodeEdited) => {
       console.log('nodeEdited :>> ', nodeEdited);
       this.title = nodeEdited.title
