@@ -8,7 +8,6 @@ class BoxText extends NodeModel {
     
     this.type = new Types().BoxText
     this.connectionPack = new Array();
-    this.contador = 0;
     this.x = 500;
     this.y = 80;
     this.width = 100;
@@ -51,6 +50,14 @@ class BoxText extends NodeModel {
       cloned.title = this.title
 
       return cloned
+    }
+
+    this.copyFrom = (node) => {
+      this.simpleCopyFrom(node);
+      this.connectionPack = node.connectionPack;
+      this.boxTextHeight = node.boxTextHeight;
+      this.boxBodyHeight = node.boxBodyHeight;
+      this.title = node.title;
     }
   }
 }

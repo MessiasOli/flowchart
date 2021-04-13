@@ -182,6 +182,10 @@ export default {
             this.ctrPercentageEntry.loadNode(node, this.openDialog);
             break;
 
+          case this.typesNodes.BoxText:
+            this.ctrBoxText.loadNode(node, this.openDialog);
+            break;
+
           case this.typesNodes.InputBox:
             this.ctrInputBox.loadNode(node, this.openDialog);
             break;

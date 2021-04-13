@@ -53,6 +53,7 @@ class DecorationBoxText extends DecorationModel {
         .node();
 
       this.createConnections(newNode);
+      this.createConnectionPath(newNode)
 
       return svg;
     };
@@ -81,8 +82,8 @@ class DecorationBoxText extends DecorationModel {
       d.x = event.x;
       d.y = event.y;
       await d3.select(this).raise().attr("x", (d.x)).attr("y", (d.yBoxBody() + adjust));
-      await d3.select(`#BoxText-${d.id} > text`).raise().attr("x", (d.x + d.width / 2)).attr("y", (d.yBoxBody() + adjust - 3));
-      await d3.select(`#BoxText-${d.id} > .title`).raise().attr("x", (d.x = event.x)).attr("y", d.y + adjust);
+      await d3.select(`#${d.idName} > text`).raise().attr("x", (d.x + d.width / 2)).attr("y", (d.yBoxBody() - 3 + adjust));
+      await d3.select(`#${d.idName} > .title`).raise().attr("x", d.x).attr("y", d.y + adjust);
       
       d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
       d.connectionPack.forEach(point => {
@@ -90,6 +91,32 @@ class DecorationBoxText extends DecorationModel {
           point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y + adjust})
       });
     };
+
+    this.move = async () => {
+      let d = this.node;
+
+      await d3.select(`#${d.idName} > rect`).raise().attr("x", (d.x)).attr("y", (d.yBoxBody()));
+      await d3.select(`#${d.idName} > text`).raise().attr("x", (d.x + d.width / 2)).attr("y", (d.yBoxBody() - 3));
+      await d3.select(`#${d.idName} > .title`).raise().attr("x", d.x).attr("y", d.y);
+
+      let conn = new Array();
+      await SingletonFlowchart.selectedNodes.forEach(n => {
+        if(this.typeConn == n.type){
+          conn.push(n)
+        }
+      });
+
+      if(d.connectionPack.length > 0){
+        d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
+        d.connectionPack.forEach(point => {
+          let isSelected = conn.includes(point.conn)
+          if(!isSelected){
+            let dot = d.decorator.getPointPosition(d, point.dot)
+            point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y})
+          }
+        });
+      }
+    }
 
     this.createConnections = function(node) {
       let connections = GetSixConections(node);

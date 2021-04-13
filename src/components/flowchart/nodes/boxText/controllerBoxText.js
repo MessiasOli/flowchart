@@ -9,6 +9,14 @@ class ControllerBoxText extends ControllerModel {
     this.setNewNode = (callback) => {
       let boxText = new BoxText();
       boxText.decorate(callback);
+      this.addNode(boxText)
+    }
+
+    this.loadNode = (node, callback) => {
+      let boxText = new BoxText();
+      boxText.copyFrom(node)
+      boxText.decorate(callback)
+      this.addNode(boxText);
     }
   }
 }
