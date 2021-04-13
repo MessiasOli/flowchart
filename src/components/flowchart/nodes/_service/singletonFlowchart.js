@@ -30,10 +30,12 @@ export var SingletonFlowchart = {
 
     removeNodeSelected: function () {
         if(!this.selectedNodes || this.selectedNodes.length == 0){
+            console.log("Apenas um nó")
             this.Memory.removeNode(this.selectedId)
             this.unSelectNode();
         }else{
-            this.selectedNodes.forEach(n => {
+            console.log("Varios nós")
+            this.selectedNodes.forEach( n => {
                 this.Memory.removeNode(n.id);
             })
             this.unSelectNode();

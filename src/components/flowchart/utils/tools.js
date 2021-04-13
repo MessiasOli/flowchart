@@ -28,8 +28,23 @@ const GetSixConections = (node) => {
   return [ left1, left2, left3, right1, right2, right3, top1, top2, top3, bottom1, bottom2, bottom3 ];
 };
 
+const GetTransform = () => {
+  let trasnform = document.querySelector('#board').getAttribute('transform')
+  if(trasnform) {
+    let scale = trasnform.split(' ')[1]
+    trasnform = trasnform.slice(trasnform.indexOf('(') + 1, trasnform.indexOf(')'))
+
+    scale = scale.slice(scale.indexOf('(') + 1, scale.indexOf(')'))
+    let x = trasnform.split(',')[0]
+    let y = trasnform.split(',')[1]
+    return { x: parseFloat(x), y: parseFloat(y), scale: parseFloat(scale) }
+  }
+  return { x: 0, y: 0, scale: 1}
+}
+
 const GetSVGCoordinates = (event) => {
   let boundingClientRect = document.querySelector("#svg").getBoundingClientRect();
+  let transform = GetTransform();
   let x;
   let y;
 
@@ -41,14 +56,18 @@ const GetSVGCoordinates = (event) => {
     y = event.pageY - boundingClientRect.top - window.scrollY;
   }
 
+  x -=  transform.x;
+  y -=  transform.y;
+  x /= transform.scale * 1;
+  y /= transform.scale * 1;
+
   return [x, y]
 }
 
 const GetCoordinateDiff = function (event, node){
-  let [x, y] = GetSVGCoordinates(event)
   return {
-    x: x - node.x,
-    y: y - node.y
+    x: event.x - node.x,
+    y: event.y - node.y
   } 
 }
 

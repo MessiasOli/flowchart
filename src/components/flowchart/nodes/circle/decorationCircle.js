@@ -15,7 +15,8 @@ class DecorationCircle extends DecorationModel {
   
        await svg
          .data([ newNode ])
-         .append("circle")
+         .append("g")
+        .append("circle")
           .attr("id" , d => d.idName)
           .attr("cx",  d => d.xCircle())
           .attr("cy", d => d.yCircle())

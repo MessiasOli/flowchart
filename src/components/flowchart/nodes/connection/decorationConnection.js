@@ -1,4 +1,5 @@
 import { DecorationModel } from "../_model/DecorationModel";
+import { GetSVGCoordinates } from "../../utils/tools"
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import * as d3 from "d3"
 
@@ -109,11 +110,13 @@ class DecorationConnection extends DecorationModel {
       if (connClicked.conn.qtdInternalPoints == 2) 
         return
       
+      let [xSvg, ySvg] = GetSVGCoordinates(event)
+
       ++connClicked.conn.qtdInternalPoints;
       this.createDot({
         id: id,
-        x: event.offsetX, 
-        y: event.offsetY, 
+        x: xSvg, 
+        y: ySvg, 
         node: this.node 
       }).call(d3.drag()
         .on("start", this.dragstarted)

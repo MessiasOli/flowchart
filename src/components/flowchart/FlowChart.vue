@@ -139,10 +139,16 @@ export default {
 
     configSVG(){
       let that = this
-      d3.select("#canvas").call(d3.drag().on('end',function(){ that.unSelected() })).append("svg");
-      let svg = d3
-        .select("svg")
+      let svg = d3.select("#canvas").call(d3.drag().on('end',function(){ that.unSelected() }))
+        .append("svg")
         .attr("id", "svg")
+        .attr("width", 900)
+        .attr("height", 900)
+        .call(d3.zoom().on("zoom", function(event) {
+          svg.attr("transform", event.transform).node();
+        }))
+        .append("g")
+        .attr("id", "board")
 
       SingletonFlowchart.svg = svg;
     },

@@ -12,14 +12,16 @@ class MemoryRepository {
     
     this.removeNode = async (id) =>{
      await console.log('Antes de apagar :>> ', this.memory);
-     this.memory = await this.memory.filter(n => {
-       if(n.id == id){
+
+     this.memory = this.memory.filter(n => {
+        if(n.id == id){
          n.kill();
          return false;
         }
         return true
     });
-     console.log('depois de apagar :>> ', this.memory);
+
+     await console.log('depois de apagar :>> ', this.memory);
     }
     
     this.getNodesToSave = () => this.memory.map(n => n.clone())

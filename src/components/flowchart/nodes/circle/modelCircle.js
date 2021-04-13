@@ -8,11 +8,11 @@ class Circle extends NodeModel{
     this.type = new Types().Circle
     this.x = 600
     this.y = 300
-    this.xCircle = () => this.x + 20
-    this.yCircle = () => this.y + 20
+    this.xCircle = () => this.x + 25
+    this.yCircle = () => this.y + 25
     this.radius = 20
-    this.height = 40
-    this.width = 40
+    this.height = 50
+    this.width = 50
     
     this.decorate = function() {
       this.decorator = new DecorationCircle()
