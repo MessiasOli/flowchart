@@ -49,6 +49,10 @@
         BoxText
       </md-button>
 
+      <md-button class="btn-toolbar" @click="() => ctrText.setNewNode(this.openDialog)"><md-icon><img src="../../assets/Text.png" alt="" srcset=""/></md-icon>
+        Texto
+      </md-button>
+
     </div>
     <div id="canvas"
     @mousedown="selectionArea.start($event)"
@@ -71,6 +75,7 @@ import { HttpApiNode,  RequestSuscess, RequestError } from "../../utils/global"
 import { SingletonFlowchart } from "./nodes/_service/singletonFlowchart";
 import { GetNewController } from "./nodes/_service/factoryController";
 import { Selection } from "./nodes/_service/selectionService"
+import { ShortCuts } from "./utils/ShortCuts"
 import { Types } from "./utils/nodeTypes"
 import Dialog from './Dialog.vue';
 import ProgressBarQuery from "../ProgressBarQuery"
@@ -92,6 +97,7 @@ export default {
       ctrCircle: null,
       ctrLine: null,
       ctrArea: null,
+      ctrText: null,
     };
   },
   watch: {},
@@ -118,11 +124,11 @@ export default {
 
     removeNode() {
       let selection = SingletonFlowchart.selected
-      if(selection){
+      let selected = SingletonFlowchart.selectedNodes
+      if(selection || selected){
+        d3.selectAll(`.SelectionNode`).remove();
         SingletonFlowchart.removeNodeSelected();
-        d3.selectAll(`#${selection}`).remove()
       }
-      console.log('selection :>> ', selection);
     },
 
     unSelected(){
@@ -148,6 +154,7 @@ export default {
       this.ctrCircle = GetNewController(this.typesNodes.Circle);
       this.ctrLine = GetNewController(this.typesNodes.Line);
       this.ctrArea = GetNewController(this.typesNodes.Area);
+      this.ctrText = GetNewController(this.typesNodes.Text);
     },
 
     loadDatabaseNodes(){
@@ -186,21 +193,13 @@ export default {
           case this.typesNodes.Area:
             this.ctrArea.loadNode(node, this.openDialog);
             break;
+
+          case this.typesNodes.Text:
+            this.ctrText.loadNode(node, this.openDialog);
+            break;
         }
       });
       console.log(`${nodes.length} elementos carregados!`)
-    },
-
-    setShortCuts(){
-      let that = this
-      document.onkeydown = function (event) {
-
-        switch (event.key) {
-          case 'Delete':
-            that.removeNode();
-            break;
-        }
-      }
     },
 
     openToolbar() {
@@ -219,7 +218,7 @@ export default {
     this.configSVG();
     await this.initializaControllers();
     await this.loadDatabaseNodes();
-    this.setShortCuts();
+    ShortCuts.Init(this);
     RequestSuscess("Sistema carregado");
     this.loading = false
   }

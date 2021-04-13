@@ -1,10 +1,18 @@
 import { NodeModel } from "../_model/NodeModel";
+import { Types } from "../../utils/nodeTypes"
 import { DecorationCircle } from "./decorationCircle"
 
 class Circle extends NodeModel{
   constructor() {
     super("Circle")
+    this.type = new Types().Circle
+    this.x = 600
+    this.y = 300
+    this.xCircle = () => this.x + 20
+    this.yCircle = () => this.y + 20
     this.radius = 20
+    this.height = 40
+    this.width = 40
     
     this.decorate = function() {
       this.decorator = new DecorationCircle()
@@ -19,12 +27,9 @@ class Circle extends NodeModel{
       cloned.x = this.x
       cloned.y = this.y
       cloned.radius = this.radius
-      console.log('clone :>> ', cloned);
       return cloned;
     }
   }
 }
-
-Circle.prototype = Object.create(NodeModel.prototype);
 
 export { Circle };

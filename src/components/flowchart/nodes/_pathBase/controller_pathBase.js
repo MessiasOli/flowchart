@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { IController } from "../_interface/IController";
+import { ControllerModel } from "../_model/ControllerModel";
 import { _pathBase } from "./model_pathBase";
 
-class Controller_pathBase extends IController {
+class Controller_pathBase extends ControllerModel {
   constructor() {
     super("Controller_pathBase");
     

@@ -7,11 +7,12 @@ export var SingletonFlowchart = {
         }
         return SingletonFlowchart.instance;
     },
-    
+
     svg: null,
     nodeClicked: false,
     selected: null,
     selectedNodes: null,
+    copied: null,
     clicked: null,
     Memory: new MemoryRepository(),
 
@@ -24,12 +25,20 @@ export var SingletonFlowchart = {
     unSelectNode: function() {
         this.clicked = false
         this.selected = ``
+        this.selectedNodes = null
     },
 
     removeNodeSelected: function () {
-        this.Memory.removeNode(this.selectedId)
-        this.unSelectNode();
-    },
+        if(!this.selectedNodes || this.selectedNodes.length == 0){
+            this.Memory.removeNode(this.selectedId)
+            this.unSelectNode();
+        }else{
+            this.selectedNodes.forEach(n => {
+                this.Memory.removeNode(n.id);
+            })
+            this.unSelectNode();
+        }
+    }
 }
 
 function getId(idHtml){

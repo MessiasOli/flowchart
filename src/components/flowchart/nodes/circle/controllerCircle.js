@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { ControllerModel } from "../_model/ControllerModel";
-import { Types } from "../../utils/nodeTypes"
 import { Circle } from "./modelCircle";
 
 class ControllerCircle extends ControllerModel {
@@ -9,9 +8,8 @@ class ControllerCircle extends ControllerModel {
 
     this.setNewNode = () => {
       let circle = new Circle();
-      circle.type = new Types().Circle
       circle.decorate();
-
+      console.log('circle :>> ', new Circle());
       this.addNode(circle);
     }
 
@@ -19,7 +17,6 @@ class ControllerCircle extends ControllerModel {
       let circle = new Circle();
       circle.simpleCopyFrom(node);
       circle.radius = node.radius;
- 
       circle.decorate();
       this.addNode(circle)
     }

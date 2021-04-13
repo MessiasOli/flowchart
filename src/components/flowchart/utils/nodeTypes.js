@@ -10,6 +10,7 @@ export class Types {
     this.Connection = 7
     this.Area = 8
     this.Box = 9
+    this.Text = 10
 
     this.Caption = [
       "Base",
@@ -21,7 +22,8 @@ export class Types {
       "Linha",
       "Conexão",
       "Area",
-      "Caixa"
+      "Caixa",
+      "Texto"
     ];
   }
 }

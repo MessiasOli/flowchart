@@ -7,6 +7,7 @@ import { ControllerInputBox } from "../inputBox/controllerInputBox"
 import { ControllerPercentageEntry } from "../percentageEntry/controllerPercentageEntry"
 import { ControllerArea } from "../area/controllerArea"
 import { ControllerSelection } from "../selection/controllerSelection"
+import { ControllerText } from "../text/controllerText"
 
 
 let types = new Types()
@@ -36,6 +37,9 @@ export let GetNewController = function (type){
 
     case types.Selection:
       return new ControllerSelection();
+
+    case types.Text:
+        return new ControllerText();
 
     default: 
       throw `Factory: Erro - ${type} não é um classe disponível para ser instânciada`

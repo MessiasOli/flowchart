@@ -1,4 +1,5 @@
 import { ControllerSelection } from "../selection/controllerSelection";
+import { SingletonFlowchart } from "./singletonFlowchart";
 
 export class Selection {
   constructor() {
@@ -31,6 +32,16 @@ export class Selection {
         this.calMoveSelected = true;
         this.clicked = false;
       }
+      SingletonFlowchart.mousePosition = {x: event.x, y: event.y}
+    }
+
+    this.copy = () => {
+      console.log("Copiar")
+      SingletonFlowchart.copied = SingletonFlowchart.selectedNodes
+    }
+
+    this.cut = () => {
+      console.log("Colar")
     }
   }
 }

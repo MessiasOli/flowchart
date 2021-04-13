@@ -1,28 +1,27 @@
 /* eslint-disable no-unused-vars */
-import { IController } from "../_interface/IController";
-import { _pathBase } from "./modelText";
+import { ControllerModel } from "../_model/ControllerModel";
+import { Text } from "./modelText";
 
-class Controller_pathBase extends IController {
+class ControllerText extends ControllerModel {
   constructor() {
-    super("Controller_pathBase");
+    super("ControllerText");
     
-    this.setNewNode = () => {
-      let _pathBase = new _pathBase();
-      _pathBase.decorate();
-
-      this.addNode(_pathBase);
+    this.setNewNode = (callback) => {
+      let text = new Text();
+      text.decorate(callback);
+      this.addNode(text);
     }
 
-    this.loadNode = (node) => {
-      let _pathBase = new _pathBase();
-      _pathBase.simpleCopyFrom(node);
+    this.loadNode = (node, callback) => {
+      let text = new Text();
+      text.simpleCopyFrom(node);
 
       /* Insira aqui as particularidades do nó a ser criado */
 
-      _pathBase.decorate();
-      this.addNode(_pathBase)
+      text.decorate(callback);
+      this.addNode(Text)
     }
   }
 }
 
-export { Controller_pathBase };
+export { ControllerText };

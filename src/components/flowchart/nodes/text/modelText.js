@@ -1,22 +1,35 @@
 import { NodeModel } from "../_model/NodeModel";
-import { Decoration_pathBase } from "./decorationText"
+import { DecorationText } from "./decorationText"
 import { Types } from "../../utils/nodeTypes"
 
-class _pathBase extends NodeModel {
+class Text extends NodeModel {
   constructor() {
-    super("_pathBase");
+    super("Text");
     
-    this.type = new Types()._pathBase;
+    this.type = new Types().Text;
     this.x = 500;
-    this.y = 100;
-    this.height = 250;
-    this.width = 100;
+    this.y = 200;
+    this.yText = () => this.y + 17;
+    this.text = "Texto";
     
-    this.decorate = async function() {
-      this.decorator = new Decoration_pathBase();
-      await this.decorator.init(this)
+    this.decorate = async function(callback) {
+      this.decorator = new DecorationText();
+      await this.decorator.init(this, callback)
     };
+
+    this.clone = () => {
+      console.log('clone :>> ');
+      let cloned = new Text();
+      cloned.id = this.id;
+      cloned.idName = this.idName;
+      cloned.type = this.type;
+      cloned.x = this.x;
+      cloned.y = this.y;
+      cloned.text = this.text;
+
+      return cloned;
+    }
   }
 }
 
-export { _pathBase };
+export { Text };

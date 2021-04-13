@@ -6,17 +6,19 @@ import * as d3 from "d3"
 class DecorationCircle extends DecorationModel {
   constructor() {
     super("DecorationCircle")
+    this.node = null;
     this.ctr = new ControllerCircle();
 
-    this.init = async function(node) {
+    this.init = async function(newNode) {
       let svg = SingletonFlowchart.svg
+      this.node = newNode;
   
        await svg
-         .data([ node ])
+         .data([ newNode ])
          .append("circle")
-          .attr("id" , d => "circle-"+d.id)
-          .attr("cx",  d => d.x)
-          .attr("cy", d => d.y)
+          .attr("id" , d => d.idName)
+          .attr("cx",  d => d.xCircle())
+          .attr("cy", d => d.yCircle())
           .attr("r", d => d.radius)
           .attr("cursor", "grab")
           .classed("circle", true)
@@ -37,7 +39,7 @@ class DecorationCircle extends DecorationModel {
     }
   
     this.dragstarted = function(event, d) {
-      SingletonFlowchart.selectNode(`circle-${d.id}`);
+      SingletonFlowchart.selectNode(`${d.idName}`);
   
       d3.select(this)
         .style("stroke", "black")
@@ -48,11 +50,11 @@ class DecorationCircle extends DecorationModel {
       SingletonFlowchart.clicked = false
       d.x = event.x;
       d.y = event.y;
-      d3.select(`#circle-${d.id}`).raise().attr("cx", d.x).attr("cy", d.y);
+      d3.select(`#${d.idName}`).raise().attr("cx", d.xCircle()).attr("cy", d.yCircle());
     }
   
     this.dragended = function(d, that) {
-      d3.select(`#circle-${d.id}`)
+      d3.select(`#${d.idName}`)
         .style("stroke", "none")
         .attr("cursor", "grab")
       that.ctr.updateNode(d)

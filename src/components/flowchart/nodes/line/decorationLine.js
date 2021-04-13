@@ -5,10 +5,12 @@ import * as d3 from "d3"
 class DecorationLine extends DecorationModel {
   constructor() {
     super("DecorationLine")
+    this.node = null;
   
     this.init = async function (newNode) {
       let svg = SingletonFlowchart.svg
-  
+      this.node = newNode;
+
       await svg.append("g")
         .data([newNode])
         .classed("Line", true)
@@ -49,7 +51,8 @@ class DecorationLine extends DecorationModel {
       return drag;
     }
 
-    this.dragstarted = function() {
+    this.dragstarted = function(event, d) {
+      SingletonFlowchart.selectNode(`${d.idName}`);
       d3.select(this)
         .attr("stroke", "black")
         .attr("cursor", "pointer")

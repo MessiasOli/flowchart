@@ -1,5 +1,5 @@
 import { DecorationModel } from "../_model/DecorationModel";
-import { Controller_pathBase } from "../circle/controller_pathBase"
+import { Controller_pathBase } from "../_pathBase/controller_pathBase"
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3"
@@ -26,7 +26,7 @@ export class Decoration_pathBase extends DecorationModel {
           .style("height", newNode.height)
           .attr("cursor", "grab")
           .style("fill", COLORS.ClearBlue)
-          .call(this.setDrag(newNode))
+          .call(this.setDrag)
       
       return svg
     }

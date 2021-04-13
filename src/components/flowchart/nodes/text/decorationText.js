@@ -1,34 +1,36 @@
 import { DecorationModel } from "../_model/DecorationModel";
-import { Controller_pathBase } from "../circle/controller_pathBase"
+import { ControllerText } from "../text/controllerText"
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3"
 
-export class Decoration_pathBase extends DecorationModel {
+export class DecorationText extends DecorationModel {
   constructor() {
-    super("Decoration_pathBase")
+    super("DecorationText")
     this.node = null;
-    this.ctr = new Controller_pathBase();
+    this.ctr = new ControllerText();
   
-    this.init = async function (newNode) {
+    this.init = async function (newNode, openDialog) {
       let svg = SingletonFlowchart.svg
       this.node = newNode
   
        await svg
           .data([newNode])
           .append("g")
-          .attr("id", `_pathBase-${newNode.id}`)
-          .append("rect")
-          .classed("_pathBase", true)
-          .attr("x",  d => d.x)
-          .attr("y", d => d.y)
-          .style("width", newNode.width)
-          .style("height", newNode.height)
+          .attr("id", `Text-${newNode.id}`)
           .attr("cursor", "grab")
-          .style("fill", COLORS.ClearBlue)
-          .call(this.setDrag(newNode))
-      
-      return svg
+          .append("text")
+          .text(d => d.text)
+          .classed("Text", true)
+          .attr("cursor", "pointer")
+          .attr("x",  d => d.x)
+          .attr("y", d => d.yText() )
+          .style("font-weight", 700)
+          .style("fill", COLORS.Black95)
+          .on('dblclick', () => openDialog(newNode))
+          .call(this.setDrag())
+          
+          return svg
     }
   
     this.setDrag = function() {
@@ -37,38 +39,44 @@ export class Decoration_pathBase extends DecorationModel {
         .drag()
         .on("start", that.dragstarted)
         .on("drag", that.dragged)
-        .on("end", (event, d) => that.dragended(d, that));
+        .on("end", that.dragended);
       return drag;
     }
 
+    
     this.dragstarted = function(event, d) {
-      SingletonFlowchart.selectNode(`_pathBase-${d.id}`)
-  
+      SingletonFlowchart.selectNode(`Text-${d.id}`)
+      
       d3.select(this)
-        .style("stroke", "black")
-        .attr("cursor", "grabbing")
+      .style("stroke", "black")
+      .attr("cursor", "grabbing")
     }
+    
+    this.move = () =>{
+      let d = this.node;
 
+      d3.select(`#${d.idName} > text`)
+        .raise()
+        .attr("x", d.x)
+        .attr("y", d.yText())
+    }
     /* - to override
     this.dragged = async function (event, d){
       
-      d.x = event.x;
-      d.y = event.y;
-
-      d3.select(this)
-        .raise()
-        .attr("x", d.x)
-        .attr("y", d.y)
+      
     } 
     */
 
-    this.dragended = function(d, that) {
-      this.cursor = "grab"
-      d3.select(`#_pathBase-${d.id}`)
+    this.dragended = function() {
+      d3.select(this)
         .style("stroke", 'none')
-        .attr("cursor", "grab")
-
-      that.ctr.update(d);
+        .attr("cursor", "pointer")
     };
+
+    this.setTextAndAdjustWidth = () => {
+      d3.select(`#Text-${this.node.id} > text`)
+        .text(this.node.text)
+        .node()
+    }
   }
 }

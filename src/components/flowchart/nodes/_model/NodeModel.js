@@ -37,5 +37,14 @@ export class NodeModel extends INode {
         throw `Classe ${nameClass} metodo isSelected.\nError:${e}`
       }
     }
+
+    this.kill = () => {
+      try{
+        this.decorator.disappear(); 
+      }
+      catch (e){
+        throw `Classe ${nameClass} metodo kill.\nError:${e}`
+      }
+    }
   }
 }

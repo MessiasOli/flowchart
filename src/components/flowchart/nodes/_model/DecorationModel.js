@@ -47,6 +47,8 @@ export class DecorationModel extends IDecoration {
     this.createSelectorArea = function (){
       try
       {
+        if(!this.node)
+          throw "this.node não instanciado!"
         this.boxSelection.initSelection(this.node);
       }
       catch (e)
@@ -54,5 +56,7 @@ export class DecorationModel extends IDecoration {
         throw `Classe ${nameClass}, Metodo createSelectorArea().\n${e}`;
       }
     }
+
+    this.disappear = () => d3.select(`#${this.node.idName}`).remove();
   }
 }
