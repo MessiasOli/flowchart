@@ -133,25 +133,23 @@ export default {
 
     unSelected(){
       console.log('unselected :>> ');
-      this.toolbarClosed = false;
       SingletonFlowchart.unSelectNode();
+      this.selectionArea.cancelSelection();
+      this.toolbarClosed = false;
       this.openToolbar()
     },
 
     configSVG(){
-      //.call(d3.drag().on('end',function(){ that.unSelected() }))
       let that = this
-      let svg = d3.select("#canvas")
+      let svg = d3.select("#canvas").call(d3.drag().on('end',function(){ that.unSelected() }))
         .append("svg")
-        .attr("id", "svg")
-        .attr("width", 900)
-        .attr("height", 900)
-        .call(d3.zoom().on("zoom", function(event) {
-          svg.attr("transform", event.transform).node();
-        }))
+          .attr("id", "svg")
+          .call(d3.zoom().on("zoom", function(event) {
+            svg.attr("transform", event.transform).node();
+          }))
+          .on("dblclick.zoom", null)
         .append("g")
-        .attr("id", "board")
-        .on("click", that.unSelected())
+          .attr("id", "board")
 
       SingletonFlowchart.svg = svg;
     },
@@ -182,36 +180,10 @@ export default {
     loadNodes(data){
       let nodes = JSON.parse(data[0].flowchartStructure)
       nodes.forEach(node => {
-        switch(node.type){
-          case this.typesNodes.Circle:
-            this.ctrCircle.loadNode(node);
-            break;
-
-          case this.typesNodes.PercentageEntry:
-            this.ctrPercentageEntry.loadNode(node, this.openDialog);
-            break;
-
-          case this.typesNodes.BoxText:
-            this.ctrBoxText.loadNode(node, this.openDialog);
-            break;
-
-          case this.typesNodes.InputBox:
-            this.ctrInputBox.loadNode(node, this.openDialog);
-            break;
-
-          case this.typesNodes.Line:
-            this.ctrLine.loadNode(node);
-            break;
-
-          case this.typesNodes.Area:
-            this.ctrArea.loadNode(node, this.openDialog);
-            break;
-
-          case this.typesNodes.Text:
-            this.ctrText.loadNode(node, this.openDialog);
-            break;
-        }
+        let ctr = GetNewController(node.type)
+        ctr.loadNode(node, this.openDialog)
       });
+      RequestSuscess("Sistema carregado");
       console.log(`${nodes.length} elementos carregados!`)
     },
 
@@ -228,11 +200,11 @@ export default {
   },
 
   async mounted() {
+    RequestSuscess("Carregando sistema...");
     this.configSVG();
     await this.initializaControllers();
     await this.loadDatabaseNodes();
     ShortCuts.Init(this);
-    RequestSuscess("Sistema carregado");
     this.loading = false
   }
 };

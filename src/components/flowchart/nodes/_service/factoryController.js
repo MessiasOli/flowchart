@@ -9,10 +9,8 @@ import { ControllerArea } from "../area/controllerArea"
 import { ControllerSelection } from "../selection/controllerSelection"
 import { ControllerText } from "../text/controllerText"
 
-
-let types = new Types()
-
 export let GetNewController = function (type){
+  let types = new Types()
   switch (type) {
     case types.InputBox:
       return new ControllerInputBox();

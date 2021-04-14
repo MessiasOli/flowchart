@@ -156,7 +156,6 @@ class DecorationConnection extends DecorationModel {
 
     this.createSelectorArea = function (){
       let parent = SingletonFlowchart.selectedNodes.filter(n => n.idName == this.node.parentId.replace("#", ""));
-      console.log('Entrei :>> ', parent);
       if(parent.length > 0){
         this.boxSelection.initSelection(this.node);
       }

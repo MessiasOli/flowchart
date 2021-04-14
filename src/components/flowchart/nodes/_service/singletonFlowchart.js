@@ -11,8 +11,8 @@ export var SingletonFlowchart = {
     svg: null,
     nodeClicked: false,
     selected: null,
-    selectedNodes: null,
-    copied: null,
+    selectedNodes:  new Array(),
+    copied:  new Array(),
     clicked: null,
     Memory: new MemoryRepository(),
 
@@ -23,9 +23,11 @@ export var SingletonFlowchart = {
     },
 
     unSelectNode: function() {
-        this.clicked = false
-        this.selected = ``
-        this.selectedNodes = null
+        console.log("Singleton zerado");
+        this.clicked = false;
+        this.selected = ``;
+        this.selectedNodes = new Array();
+        this.copied = new Array();
     },
 
     removeNodeSelected: function () {

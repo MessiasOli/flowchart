@@ -69,9 +69,10 @@ export class BoxSelection {
         .style("stroke", 'none')
         .attr("cursor", "grab")
     };
-
-    this.finishSelection = function(nodeRef){
-
-    }
   }
+}
+
+export const RemoveSelectionNodes = () => {
+  d3.selectAll(".SelectionNode").remove();
+  SingletonFlowchart.unSelectNode();
 }

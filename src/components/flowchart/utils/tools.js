@@ -64,11 +64,11 @@ const GetSVGCoordinates = (event) => {
   return [x, y]
 }
 
-const GetCoordinateDiff = function (event, node){
+const GetCoordinateDiff = function (coord, node){
   return {
-    x: event.x - node.x,
-    y: event.y - node.y
-  } 
+    x: coord.x - node.x,
+    y: coord.y - node.y
+  }
 }
 
 const SetArea = async (node, adjust) => {
@@ -80,7 +80,7 @@ const SetArea = async (node, adjust) => {
 }
 
 const GetExtremesCoordinates = async (node) => {
-  let coord =  await GetCoordinatePath(node.path)
+  let coord = await GetCoordinatePath(node.path)
   let minX = -1;
   let maxX = -1;
   let minY = -1;
@@ -105,6 +105,8 @@ const GetExtremesCoordinates = async (node) => {
 
   return ({ min:{x: minX, y: minY}, max: {x: maxX, y: maxY} })
 }
+
+
 
 const GetCoordinatePath = (path) =>{
   let strCoord = path.replace("M", "").split('L')

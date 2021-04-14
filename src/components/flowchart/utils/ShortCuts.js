@@ -12,13 +12,15 @@ export const ShortCuts = {
       }
       if (event.ctrlKey && event.key === 'v'){
         console.log("Colar")
-        serviceSelection.cut();
+        serviceSelection.cut(that.openDialog);
       }
-
+      
       switch (event.key) {
         case 'Delete':
           that.removeNode();
           break;
+        case 'Escape': 
+          that.unSelected();
       }
     }
   },

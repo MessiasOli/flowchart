@@ -8,5 +8,12 @@ export class ControllerModel extends IController {
     this.removeNode = (node) => SingletonFlowchart.Memory.removeNode(node);
     this.addNode = (node) => SingletonFlowchart.Memory.addNode(node);
     this.updateNode = (node) => SingletonFlowchart.Memory.updateNode(node);
+
+    this.loadCopiedNode = async (node, callback) => {
+      
+      await node.decorate(callback);
+      this.addNode(node)
+      node.isSelected();
+    }
   }
 }
