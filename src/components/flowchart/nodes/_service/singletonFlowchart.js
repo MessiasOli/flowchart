@@ -1,4 +1,5 @@
 import { MemoryRepository } from "./memoryRepository"
+import { Save } from "./undoRedo"
 
 export var SingletonFlowchart = {
     instance: function(){
@@ -11,10 +12,11 @@ export var SingletonFlowchart = {
     svg: null,
     nodeClicked: false,
     selected: null,
-    selectedNodes:  new Array(),
-    copied:  new Array(),
     clicked: null,
+    copied:  new Array(),
+    selectedNodes:  new Array(),
     Memory: new MemoryRepository(),
+    SaveStatus: Save(),
 
     selectNode: function(idHtml) {
         this.clicked = true

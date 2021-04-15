@@ -12,17 +12,20 @@ class InputBox extends NodeModel {
     this.value = "0,00";
     this.x = 500;
     this.y = 100;
-    this.xText = () => this.x + (this.width / 2);
-    this.xDot = () => this.x + 70;
-    this.yDot = () => this.y - 5;
-    this.height = 20;
-    this.heightText = this.height - 5;
-    this.width = 60;
-    this.srcImg = require("@/assets/raw-material.png");
-    this.widthImg = 100;
+    this.xRect = () => this.x + 12;
+    this.yRect = () => this.y + 92;
+    this.xDot = (event) => (event ? event.x : this.x) + 78;
+    this.yDot = (event) => (event ? event.y : this.y) + 82;
+    this.xText = () => this.xRect() + (this.widthRect / 2);
+    this.yText = () => this.yRect() + 15 ;
+    this.height = 120;
+    this.width = 90;
+    this.heightRect = 20;
+    this.widthRect = 60;
+    this.heightText = this.heightRect - 5;
     this.heightImg = 100;
-    this.xImg = this.x -12;
-    this.yImg = 13;
+    this.widthImg = 100;
+    this.srcImg = require("@/assets/raw-material.png");
     
     this.decorate = async function(callback) {
       this.decorator = new DecorationInputBox();
@@ -32,7 +35,7 @@ class InputBox extends NodeModel {
     this.update = (nodeEdited) => {
       this.value = NumberFormat(nodeEdited.value)
       let lenghtOfFont = this.value.length * 9
-      this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
+      this.widthRect = lenghtOfFont > this.widthRect ? lenghtOfFont : this.widthRect;
       this.decorator.setTextAndAdjustWidth()
     }
 
@@ -40,9 +43,9 @@ class InputBox extends NodeModel {
       this.simpleCopyFrom(node);
       this.connectionPack = node.connectionPack;
       this.widthImg = node.widthImg
-      this.xImg = node.xImg;
-      this.yImg = node.yImg;
       this.value = node.value;
+      this.widthRect = node.widthRect;
+      this.heightRect = node.widthRect
     }
 
     this.clone = () => {
@@ -53,10 +56,10 @@ class InputBox extends NodeModel {
       cloned.connectionPack = this.connectionPack.map(c => ({ conn: c.conn.clone(), dot: c.dot }));
       cloned.width = this.width;
       cloned.value = this.value;
+      cloned.widthRect = this.widthRect;
+      cloned.valueRect = this.valueRect;
       cloned.x = this.x;
       cloned.y = this.y;
-      cloned.xImg = this.xImg;
-      cloned.yImg = this.yImg;
 
       return cloned
     }

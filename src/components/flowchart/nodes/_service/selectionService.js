@@ -2,6 +2,7 @@ import { ControllerSelection } from "../selection/controllerSelection";
 import { GetNewController } from "../_service/factoryController"
 import { SingletonFlowchart } from "./singletonFlowchart";
 import { GetSVGCoordinates } from "../../utils/tools"
+import { Types } from "../../utils/nodeTypes"
 import { RemoveSelectionNodes } from "./globalDecoration"
 export class Selection {
   constructor() {
@@ -71,17 +72,19 @@ export class Selection {
       }
       
       selected.forEach(async node => {
-        let ctr = GetNewController(node.type)
-        let newNode = await node.clone();
+        if (node.type != new Types().Connection){
+          let ctr = GetNewController(node.type)
+          let newNode = await node.clone();
 
-        newNode.id = + new Date() + avoidingEvenId++;
-        newNode.idName = `${node.idName.split('-')[0]}-${newNode.id}`
+          newNode.id = + new Date() + avoidingEvenId++;
+          newNode.idName = `${node.idName.split('-')[0]}-${newNode.id}`
 
-        newNode.x = xSvg - Math.abs(newNode.x - xSvg) + 200
-        newNode.y = ySvg - Math.abs(newNode.y - ySvg) + 200
+          newNode.x = xSvg - Math.abs(newNode.x - xSvg) + 200
+          newNode.y = ySvg - Math.abs(newNode.y - ySvg) + 200
 
-        await ctr.loadCopiedNode(newNode, callback);
-        SingletonFlowchart.selectedNodes.push(newNode);
+          await ctr.loadCopiedNode(newNode, callback);
+          SingletonFlowchart.selectedNodes.push(newNode);
+        }
       });
 
 

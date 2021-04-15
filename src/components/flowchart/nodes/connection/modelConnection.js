@@ -163,6 +163,12 @@ class Connection extends NodeModel {
         this.path = path.reduce((x,t) => x+"L"+t)
       }
     }
+
+    this.newParent = (node) =>{
+      this.id = + new Date();
+      this.idName = "Connection-"+this.id;
+      this.parentId = node.parentId;
+    }
   }
 }
 

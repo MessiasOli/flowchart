@@ -35,6 +35,11 @@ class ControllerConnection extends ControllerModel {
       this.addNode(conn);
       return conn
     }
+    
+    this.loadCopiedNode = () =>{
+      
+    }
+
   }
 }
 
