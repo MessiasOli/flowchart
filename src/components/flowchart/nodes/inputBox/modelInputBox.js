@@ -45,7 +45,7 @@ class InputBox extends NodeModel {
       this.widthImg = node.widthImg
       this.value = node.value;
       this.widthRect = node.widthRect;
-      this.heightRect = node.widthRect
+      this.heightRect = node.heightRect
     }
 
     this.clone = () => {

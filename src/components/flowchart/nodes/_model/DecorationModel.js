@@ -1,6 +1,6 @@
 import { IDecoration } from "../_interface/IDecoration";
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
-import { BoxSelection } from "../_service/globalDecoration"
+import { BoxSelection } from "./GlobalDecoration"
 import * as d3 from "d3";
 
 export class DecorationModel extends IDecoration {

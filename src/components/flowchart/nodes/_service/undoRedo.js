@@ -1,32 +1,37 @@
 import { SingletonFlowchart } from "./singletonFlowchart";
 import { GetNewController } from "./factoryController"
 
+// Ctrl+z
 export const Undo = function(that) {
   let undoNodes = GetUndo();
-  console.log('undoNodes :>> ', undoNodes);
   loadNodes(undoNodes, that.openDialog)
 }
 
+// Ctrl+y
 export const Redo = function(that) {
   let redoNodes = GetRedo();
-  console.log('redoNodes :>> ', redoNodes);
   loadNodes(redoNodes, that.openDialog)
 }
 
 const GetUndo = function() {
   SingletonFlowchart.Memory.clear();
   let [undo, redo] = getLocalStorage();
-  console.log('undo, redo :>> ', undo, redo);
-  let redoNodes = undo.length > 0 ? undo[undo.length - 1] : undo[0];
+
+  let redoNodes = undo.length > 0 ? undo[undo.length - 1] : undo;
   let nodes = undo.length > 1 ? undo[undo.length - 2] : undo[0];
 
   if(!nodes)
     return
 
-  console.log('undo antes:>> ', undo);
+  console.log('GetUndo antes:>> ', undo);
   undo = undo.slice(0, undo.length -1);
-  console.log('undo depois:>> ', undo);
+  console.log('GetUndo depois:>> ', undo);
   redoNodes && redo.push(redoNodes);
+
+  if(redoNodes.length > 0){
+    redo.push(redoNodes)
+  }
+
   saveLocalStorage(undo, redo);
 
   return nodes;
@@ -35,17 +40,21 @@ const GetUndo = function() {
 const GetRedo = function() {
   SingletonFlowchart.Memory.clear();
   let [undo, redo] = getLocalStorage();
-  let undoNodes = redo.length > 0 ? redo[redo.length - 1] : null;
-  let nodes = redo.length > 1 ? redo[redo.length - 2] : null;
 
-  console.log('nodes :>> ', nodes);
+  let undoNodes = redo.length > 0 ? redo[redo.length - 1] : redo;
+  let nodes = redo.length > 1 ? redo[redo.length - 2] : redo[0];
+
   if(!nodes)
     return;
 
-  console.log('redo antes:>> ', redo);
+  console.log('GetRedo antes:>> ', redo);
   redo = redo.slice(0, undo.length - 1);
-  console.log('redo antes:>> ', redo);
-  undoNodes && undo.push(undoNodes);
+  console.log('GetRedo antes:>> ', redo);
+  
+  if(undoNodes.length > 0){
+    undo.push(undoNodes)
+  }
+
   saveLocalStorage(undo, redo);
 
   return nodes;
@@ -72,7 +81,7 @@ const loadNodes = (nodes, callback) => {
 const saveLocalStorage = (u, r) => {
   let [undo, redo] = getLocalStorage();
 
-  if(u && !r)
+  if(u && !r && u.length > 0)
     undo.push(u)
   else{
     if (u) 
@@ -82,7 +91,9 @@ const saveLocalStorage = (u, r) => {
       redo = r;
   }
 
-  console.log('undo',undo ,'redo :>> ', redo);
+  console.log("ctrl + z", undo)
+  console.log("ctrl + y", redo)
+
   clearStorage();
   localStorage.undoRedo = JSON.stringify({ undo, redo });
 };

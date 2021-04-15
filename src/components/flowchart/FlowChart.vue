@@ -179,9 +179,9 @@ export default {
       RequestSuscess("Não há diagrama para ser exibido");
     },
 
-    loadNodes(data){
+    async loadNodes(data){
       let nodes = JSON.parse(data[0].flowchartStructure)
-      nodes.forEach(node => {
+      await nodes.forEach(node => {
         let ctr = GetNewController(node.type)
         ctr.loadNode(node, this.openDialog)
       });

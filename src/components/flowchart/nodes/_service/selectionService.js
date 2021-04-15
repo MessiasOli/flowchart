@@ -3,7 +3,8 @@ import { GetNewController } from "../_service/factoryController"
 import { SingletonFlowchart } from "./singletonFlowchart";
 import { GetSVGCoordinates } from "../../utils/tools"
 import { Types } from "../../utils/nodeTypes"
-import { RemoveSelectionNodes } from "./globalDecoration"
+import { RemoveSelectionNodes } from "../_model/GlobalDecoration"
+
 export class Selection {
   constructor() {
     this.ctr = new ControllerSelection();

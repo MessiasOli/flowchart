@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { SingletonFlowchart } from "./singletonFlowchart"
+import { SingletonFlowchart } from "../_service/singletonFlowchart"
 import { GetCoordinateDiff } from "../../utils/tools"
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3";
@@ -69,7 +69,6 @@ export class BoxSelection {
         .style("stroke", 'none')
         .attr("cursor", "grab")
     };
-    SingletonFlowchart.SaveStatus();
   }
 }
 
