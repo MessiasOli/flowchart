@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { IController } from "../_interface/IController";
+import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { Box } from "./modelBox";
 
 class ControllerBox extends IController {
@@ -9,6 +10,7 @@ class ControllerBox extends IController {
     this.setNewNode = () => {
       let box = new Box();
       box.decorate();
+      SingletonFlowchart.SaveStatus()
     }
 
     this.loadNode = (node) => {

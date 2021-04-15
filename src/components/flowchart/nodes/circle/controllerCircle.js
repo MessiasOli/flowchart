@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { ControllerModel } from "../_model/ControllerModel";
+import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { Circle } from "./modelCircle";
 
 class ControllerCircle extends ControllerModel {
@@ -9,8 +10,8 @@ class ControllerCircle extends ControllerModel {
     this.setNewNode = () => {
       let circle = new Circle();
       circle.decorate();
-      console.log('circle :>> ', new Circle());
       this.addNode(circle);
+      SingletonFlowchart.SaveStatus()
     }
 
     this.loadNode = (node) => {

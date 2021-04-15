@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { ControllerModel } from "../_model/ControllerModel";
+import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { InputBox } from "./modelInputBox";
 
 class ControllerInputBox extends ControllerModel {
@@ -11,6 +12,7 @@ class ControllerInputBox extends ControllerModel {
       inputBox.decorate(callback);
 
       this.addNode(inputBox);
+      SingletonFlowchart.SaveStatus()
     }
 
     this.loadNode = (node, callback) => {

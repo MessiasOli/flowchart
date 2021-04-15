@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { ControllerModel } from "../_model/ControllerModel";
+import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { Text } from "./modelText";
 
 class ControllerText extends ControllerModel {
@@ -10,6 +11,7 @@ class ControllerText extends ControllerModel {
       let text = new Text();
       text.decorate(callback);
       this.addNode(text);
+      SingletonFlowchart.SaveStatus();
     }
 
     this.loadNode = (node, callback) => {

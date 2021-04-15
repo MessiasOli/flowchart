@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { ControllerModel } from "../_model/ControllerModel";
+import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { PercentageEntry } from "./modelPercentageEntry";
 
 class ControllerPercentageEntry extends ControllerModel {
@@ -10,6 +11,7 @@ class ControllerPercentageEntry extends ControllerModel {
       let percentageEntry = new PercentageEntry();
       percentageEntry.decorate(callback);
       this.addNode(percentageEntry);
+      SingletonFlowchart.SaveStatus();
     }
 
     this.loadNode = (node, callback) => {

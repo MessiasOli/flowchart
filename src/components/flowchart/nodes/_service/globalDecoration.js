@@ -69,6 +69,7 @@ export class BoxSelection {
         .style("stroke", 'none')
         .attr("cursor", "grab")
     };
+    SingletonFlowchart.SaveStatus();
   }
 }
 

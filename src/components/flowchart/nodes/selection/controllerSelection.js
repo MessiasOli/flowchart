@@ -31,8 +31,6 @@ class ControllerSelection extends ControllerModel {
       if(this.isRendered){
         let [ x, y ] = GetSVGCoordinates(event)
         this.selection.SelectTo(x, y)
-      }else{
-        console.log("Elemento")
       }
     }
 
