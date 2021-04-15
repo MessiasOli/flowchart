@@ -148,6 +148,8 @@ class DecorationConnection extends DecorationModel {
       }else{
         d.node.pointOnPath({x: event.x, y: event.y}, dot)
       }
+
+      SingletonFlowchart.SaveStatus();
     }
 
     this.move = async (line) => {

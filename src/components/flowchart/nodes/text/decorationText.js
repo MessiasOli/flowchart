@@ -76,6 +76,8 @@ export class DecorationText extends DecorationModel {
       d3.select(this)
         .style("stroke", 'none')
         .attr("cursor", "pointer")
+
+      SingletonFlowchart.SaveStatus();
     };
 
     this.setTextAndAdjustWidth = () => {

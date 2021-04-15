@@ -35,7 +35,7 @@ class DecorationCircle extends DecorationModel {
         .drag()
         .on("start", that.dragstarted)
         .on("drag", that.dragged)
-        .on("end", (event, d) => that.dragended(d, that));
+        .on("end", that.dragended);
       return drag;
     }
   
@@ -59,11 +59,12 @@ class DecorationCircle extends DecorationModel {
       d3.select(`#${d.idName}`).raise().attr("cx", d.xCircle()).attr("cy", d.yCircle());
     }
   
-    this.dragended = function(d, that) {
-      d3.select(`#${d.idName}`)
+    this.dragended = function() {
+      d3.select(this)
         .style("stroke", "none")
         .attr("cursor", "grab")
-      that.ctr.updateNode(d)
+
+      SingletonFlowchart.SaveStatus();
     }
   }
 }

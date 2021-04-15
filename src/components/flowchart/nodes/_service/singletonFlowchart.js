@@ -16,7 +16,7 @@ export var SingletonFlowchart = {
     copied:  new Array(),
     selectedNodes:  new Array(),
     Memory: new MemoryRepository(),
-    SaveStatus: Save(),
+    SaveStatus: Save,
 
     selectNode: function(idHtml) {
         this.clicked = true
@@ -34,7 +34,7 @@ export var SingletonFlowchart = {
 
     removeNodeSelected: function () {
         if(!this.selectedNodes || this.selectedNodes.length == 0){
-            console.log("Apenas um nó")
+            console.log("Apenas um nó :", this.selectedId)
             this.Memory.removeNode(this.selectedId)
             this.unSelectNode();
         }else{

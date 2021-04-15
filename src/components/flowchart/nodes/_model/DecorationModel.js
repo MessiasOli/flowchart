@@ -30,6 +30,7 @@ export class DecorationModel extends IDecoration {
     this.dragended = function() {
       this.cursor = "grab";
       d3.select(this).style("stroke", "none");
+      SingletonFlowchart.SaveStatus();
     };
 
     this.createConnectionPath = function (node) {

@@ -86,6 +86,8 @@ export class DecorationPercentageEntry extends DecorationModel {
       d3.select(this)
         .attr("stroke", COLORS.Blue)
         .attr("cursor", "grab") 
+        
+      SingletonFlowchart.SaveStatus();
     }
 
     this.setTextAndAdjustWidth = () => {

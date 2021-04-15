@@ -77,6 +77,7 @@ import { GetNewController } from "./nodes/_service/factoryController";
 import { Selection } from "./nodes/_service/selectionService"
 import { ShortCuts } from "./utils/shortCuts"
 import { Types } from "./utils/nodeTypes"
+import { clearStorage } from "./nodes/_service/undoRedo"
 import Dialog from './Dialog.vue';
 import ProgressBarQuery from "../ProgressBarQuery"
 
@@ -152,6 +153,7 @@ export default {
           .attr("id", "board")
 
       SingletonFlowchart.svg = svg;
+      clearStorage();
     },
 
     initializaControllers(){
@@ -185,6 +187,7 @@ export default {
       });
       RequestSuscess("Sistema carregado");
       console.log(`${nodes.length} elementos carregados!`)
+      SingletonFlowchart.SaveStatus();
     },
 
     openToolbar() {

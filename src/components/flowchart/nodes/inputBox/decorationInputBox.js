@@ -162,6 +162,8 @@ export class DecorationInputBox extends DecorationModel {
       d3.select(this)
         .attr("stroke", COLORS.ClearBlue)
         .attr("cursor", "grab") 
+
+      SingletonFlowchart.SaveStatus();
     };
 
     this.setDragCircle = function(node){
@@ -193,6 +195,7 @@ export class DecorationInputBox extends DecorationModel {
     this.dragendedCircle = (event, that, node) =>{
       !that.connected && that.node.connectionPack.push({ conn: that.transientConnection, dot: node.point })
       that.transientConnection = null;
+      SingletonFlowchart.SaveStatus();
     }
 
     this.setTextAndAdjustWidth = () => {

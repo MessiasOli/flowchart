@@ -79,6 +79,7 @@ class DecorationLine extends DecorationModel {
     }
 
     this.dragended = function() {
+      SingletonFlowchart.SaveStatus();
     };
 
     this.move = (line) => {

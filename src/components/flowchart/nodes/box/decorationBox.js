@@ -69,6 +69,7 @@ export class DecorationBox extends DecorationModel {
         .attr("cursor", "grab")
 
       that.ctr.update(d);
+      SingletonFlowchart.SaveStatus();
     };
   }
 }

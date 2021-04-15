@@ -64,7 +64,11 @@ class MemoryRepository {
       })
     }
     
-    this.clear = () => this.memory = new Array();
+    this.clear = async () => {
+      this.memory.forEach(n => n.kill());
+      this.memory = new Array();
+      console.log("Memória limpa.")
+    }
   }
 }
 

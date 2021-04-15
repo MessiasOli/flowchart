@@ -144,6 +144,7 @@ export class DecorationArea extends DecorationModel {
         .style("stroke", "none")
 
         node.decorator.createConnections(node);
+        SingletonFlowchart.SaveStatus();
     }
 
     this.getPointPosition = function(node, point){
@@ -202,6 +203,8 @@ export class DecorationArea extends DecorationModel {
     this.dragendedConnections = (event, that, node) =>{
       !that.connected && that.node.connectionPack.push({ conn: that.transientConnection, dot: node.point })
       that.transientConnection = null;
+
+      SingletonFlowchart.SaveStatus();
     }
 
     this.setTextAndAdjustWidth = () => {

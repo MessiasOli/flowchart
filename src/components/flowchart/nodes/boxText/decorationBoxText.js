@@ -169,12 +169,14 @@ class DecorationBoxText extends DecorationModel {
     this.dragendedConnections = (event, that, node) =>{
       !that.connected && that.node.connectionPack.push({ conn: that.transientConnection, dot: node.point })
       that.transientConnection = null;
+      SingletonFlowchart.SaveStatus();
     }
 
     this.dragended = function(event, node) {
       d3.select(this).attr("cursor", "grab");
       node.y += 20;
       node.decorator.createConnections(node);
+      SingletonFlowchart.SaveStatus();
     };
 
     this.getPointPosition = function(node, point){
@@ -189,9 +191,7 @@ class DecorationBoxText extends DecorationModel {
 
       d3.select(`#BoxText-${this.node.id} > rect`)
         .style("width", this.node.width)
-
     }
-
   }
 }
 

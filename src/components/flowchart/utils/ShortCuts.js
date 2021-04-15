@@ -25,11 +25,11 @@ export const ShortCuts = {
       }
       if (event.ctrlKey && event.key === 'z'){
         console.log("Desfazer")
-        Undo();
+        Undo(that);
       }
       if (event.ctrlKey && event.key === 'y'){
         console.log("Refazer")
-        Redo();
+        Redo(that);
       }
     }
   },
