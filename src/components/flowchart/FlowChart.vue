@@ -75,7 +75,7 @@ import { HttpApiNode,  RequestSuscess, RequestError } from "../../utils/global"
 import { SingletonFlowchart } from "./nodes/_service/singletonFlowchart";
 import { GetNewController } from "./nodes/_service/factoryController";
 import { Selection } from "./nodes/_service/selectionService"
-import { ShortCuts } from "./utils/ShortCuts"
+import { ShortCuts } from "./utils/shortCuts"
 import { Types } from "./utils/nodeTypes"
 import Dialog from './Dialog.vue';
 import ProgressBarQuery from "../ProgressBarQuery"
