@@ -10,9 +10,9 @@ class BoxText extends NodeModel {
     this.connectionPack = new Array();
     this.x = 500;
     this.y = 80;
-    this.width = 100;
     this.boxTextHeight = 20;
     this.boxBodyHeight = 40;
+    this.width = 100;
     this.height = this.boxBodyHeight + this.boxTextHeight;
     this.title = "Caixa de Texto"
     
@@ -22,8 +22,7 @@ class BoxText extends NodeModel {
     
     this.decorate = async function(callback) {
       this.decorator = new DecorationBoxText();
-      this.calback = callback
-      await this.decorator.init(this)
+      await this.decorator.init(this, callback)
     }
 
     this.update = (nodeEdited) => {
@@ -43,6 +42,7 @@ class BoxText extends NodeModel {
       cloned.contador = this.contador
       cloned.x = this.x
       cloned.y = this.y
+      cloned.width = this.width
       cloned.title = this.title
 
       return cloned

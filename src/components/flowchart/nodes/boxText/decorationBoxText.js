@@ -11,7 +11,7 @@ class DecorationBoxText extends DecorationModel {
     this.transientConnection = null;
     this.ctrConnection = new ControllerConnection()
 
-    this.init = async function(newNode) {
+    this.init = async function(newNode, openDialog) {
       let svg = SingletonFlowchart.svg;
       this.node = newNode;
 
@@ -20,12 +20,13 @@ class DecorationBoxText extends DecorationModel {
         .append("g")
         .attr("id", `BoxText-${newNode.id}`)
         .append('rect')
+        .classed("internalRect", true)
         .classed('title', true)
         .attr('stroke','black')
         .attr("x", (d) => d.x)
         .attr("y", (d) => d.y)
         .style("width", newNode.width)
-        .style("height", newNode.boxTextHeight)
+        .style("height", newNode.height)
         .style('fill', 'none')
 
         let g = d3.select(`#BoxText-${newNode.id}`)
@@ -37,10 +38,11 @@ class DecorationBoxText extends DecorationModel {
         .style('cursor', 'pointer')
         .text(newNode.title)
         .attr("text-anchor", "middle")
-        .on('dblclick', () => newNode.openDialog())
+        .on('dblclick', () => openDialog(newNode))
 
         // Body
         g.append("rect")
+        .classed("internalRect", true)
         .classed("BoxText", true)
         .attr("x", (d) => d.x)
         .attr("y", (d) => d.yBoxBody())
@@ -184,13 +186,18 @@ class DecorationBoxText extends DecorationModel {
     }
 
     this.setTextAndAdjustWidth = () => {
-      d3.select(`#BoxText-${this.node.id} > text`)
-        .attr("x", this.node.xText() - 5)
-        .text(this.node.title)
-        .node()
-
-      d3.select(`#BoxText-${this.node.id} > rect`)
-        .style("width", this.node.width)
+      let d = this.node;
+      
+      d3.select(`#BoxText-${d.id} > text`)
+      .attr("x", d.xText() - 5)
+      .text(d.title)
+      .node()
+      
+      d3.selectAll(`#BoxText-${d.id} > rect`)
+      .style("width", d.width)
+      
+      d3.selectAll(`#BoxText-${d.id} > .circleBox`).remove();
+      d.decorator.createConnections(d);
     }
   }
 }
