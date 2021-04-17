@@ -28,6 +28,7 @@ import FormPercentageEntry from "./dialogForm/FormPercentageEntry";
 import FormBoxText from "./dialogForm/FormBoxText";
 import FormText from "./dialogForm/FormText"
 import { Types } from "./utils/nodeTypes"
+import { SingletonFlowchart } from './nodes/_service/singletonFlowchart';
 
 
   export default {
@@ -71,6 +72,7 @@ import { Types } from "./utils/nodeTypes"
     methods: {
       saveNode(){
         this.node.update(this.nodeEdited);
+        SingletonFlowchart.SaveStatus();
         this.showDialog = false;
       },
 

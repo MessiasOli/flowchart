@@ -24,11 +24,9 @@ export const ShortCuts = {
         serviceSelection.cut(that.openDialog);
       }
       if (event.ctrlKey && event.key === 'z'){
-        console.log("Desfazer")
         Undo(that);
       }
       if (event.ctrlKey && event.key === 'y'){
-        console.log("Refazer")
         Redo(that);
       }
     }

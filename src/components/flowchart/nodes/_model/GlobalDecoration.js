@@ -68,6 +68,7 @@ export class BoxSelection {
       d3.selectAll(".SelectionNode")
         .style("stroke", 'none')
         .attr("cursor", "grab")
+      SingletonFlowchart.SaveStatus();
     };
   }
 }

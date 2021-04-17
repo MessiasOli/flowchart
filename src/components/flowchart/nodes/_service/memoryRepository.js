@@ -54,9 +54,6 @@ class MemoryRepository {
 
         let xOk = n.x >= x1 && n.x <= x2
         let yOk = n.y >= y1 && n.y <= y2
-        // console.log('node :>> ', n);
-        // console.log('x1, x2, y1,y2 :>> ', x1, x2, y1,y2);
-        // console.log('xOk, yOk :>> ', xOk, yOk);
 
         if(xOk && yOk)
           return true;
@@ -67,7 +64,6 @@ class MemoryRepository {
     this.clear = async () => {
       this.memory.forEach(n => n.kill());
       this.memory = new Array();
-      console.log("Memória limpa.")
     }
   }
 }

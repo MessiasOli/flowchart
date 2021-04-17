@@ -1,5 +1,6 @@
 import { SingletonFlowchart } from "./singletonFlowchart";
 import { GetNewController } from "./factoryController"
+import { RemoveSelectionNodes } from "../../nodes/_model/GlobalDecoration"
 
 // Ctrl+z
 export const Undo = function(that) {
@@ -15,62 +16,46 @@ export const Redo = function(that) {
 
 const GetUndo = function() {
   SingletonFlowchart.Memory.clear();
-  let [undo, redo] = getLocalStorage();
+  let [undo, redo, cache] = getLocalStorage();
 
-  let redoNodes = undo.length > 0 ? undo[undo.length - 1] : undo;
-  let nodes = undo.length > 1 ? undo[undo.length - 2] : undo[0];
+  let nodes = undo.length > 0 ? undo[undo.length - 1] : undo;
+  if(!nodes || nodes.length == 0) return;
 
-  if(!nodes)
-    return
-
-  console.log('GetUndo antes:>> ', undo);
+  redo.push(nodes);
+  cache && redo.push(cache)
   undo = undo.slice(0, undo.length -1);
-  console.log('GetUndo depois:>> ', undo);
-  redoNodes && redo.push(redoNodes);
-
-  if(redoNodes.length > 0){
-    redo.push(redoNodes)
-  }
 
   saveLocalStorage(undo, redo);
-
   return nodes;
 };
 
 const GetRedo = function() {
   SingletonFlowchart.Memory.clear();
-  let [undo, redo] = getLocalStorage();
+  let [undo, redo, cache] = getLocalStorage();
 
-  let undoNodes = redo.length > 0 ? redo[redo.length - 1] : redo;
-  let nodes = redo.length > 1 ? redo[redo.length - 2] : redo[0];
-
-  if(!nodes)
-    return;
-
-  console.log('GetRedo antes:>> ', redo);
-  redo = redo.slice(0, undo.length - 1);
-  console.log('GetRedo antes:>> ', redo);
+  let nodes = redo.length > 0 ? redo[redo.length - 1] : redo;
   
-  if(undoNodes.length > 0){
-    undo.push(undoNodes)
+  if(!nodes || nodes.length == 0)
+    return;
+  
+  if(redo.length > 1){
+    redo = redo.slice(0, redo.length - 1)
+    let undoNodes = cache ? cache : nodes;
+    undoNodes && undo.push(undoNodes)
   }
 
   saveLocalStorage(undo, redo);
-
   return nodes;
 };
 
 export const Save = function() {
+  console.log("SaveStatus");
   let nodes = SingletonFlowchart.Memory.getNodesToSave();
   saveLocalStorage(nodes, null);
 };
 
-export const clearStorage = function() {
-  localStorage.removeItem("undoRedo");
-}
-
 const loadNodes = (nodes, callback) => {
-  if(nodes){
+  if(nodes && nodes.length > 0){
     nodes.forEach(n => {
       let ctr = new GetNewController(n.type)
       ctr.loadNode(n, callback)
@@ -79,29 +64,39 @@ const loadNodes = (nodes, callback) => {
 }
 
 const saveLocalStorage = (u, r) => {
-  let [undo, redo] = getLocalStorage();
+  let [undo, redo, cache] = getLocalStorage();
+  let saveAltomatic = u && u.length > 0 && !r
 
-  if(u && !r && u.length > 0)
-    undo.push(u)
-  else{
-    if (u) 
-      undo = u;
-    
-    if (r) 
-      redo = r;
+  if(saveAltomatic)
+  {
+    redo.length > 0 && undo.push(redo[redo.length - 1]);
+    cache && undo.push(cache);
+    redo = new Array();
+    cache = u;
+  }
+  else
+  {
+    if (u) undo = u;
+    if (r) redo = r;
+    cache = null;
+    RemoveSelectionNodes();
   }
 
-  console.log("ctrl + z", undo)
-  console.log("ctrl + y", redo)
-
   clearStorage();
-  localStorage.undoRedo = JSON.stringify({ undo, redo });
+  localStorage.undoRedo = JSON.stringify({ undo, redo, cache });
 };
 
-const getLocalStorage = () => {
-  let undoRedo = localStorage.undoRedo ? JSON.parse(localStorage.undoRedo) : {undo: new Array(), redo: new Array()};
-  let undo = undoRedo.undo;
-  let redo = undoRedo.redo;
+export const clearStorage = function() {
+  localStorage.removeItem("undoRedo");
+}
 
-  return [undo, redo];
+const getLocalStorage = () => {
+  let undoRedo =  localStorage.undoRedo ? 
+                  JSON.parse(localStorage.undoRedo) : 
+                  { undo: new Array(), redo: new Array(), cahce: null };
+  return [
+    undoRedo.undo, 
+    undoRedo.redo, 
+    undoRedo.cache
+  ];
 };
