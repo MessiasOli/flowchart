@@ -7,8 +7,8 @@ class _pathBase extends NodeModel {
     super("_pathBase");
     
     this.type = new Types()._pathBase;
-    this.x = 500;
-    this.y = 100;
+    this.x = 0;
+    this.y = 0;
     this.height = 250;
     this.width = 100;
     

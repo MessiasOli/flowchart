@@ -11,6 +11,7 @@ export class Types {
     this.Area = 8
     this.Box = 9
     this.Text = 10
+    this.Triangle = 11
 
     this.Caption = [
       "Base",
@@ -23,7 +24,8 @@ export class Types {
       "Conexão",
       "Area",
       "Caixa",
-      "Texto"
+      "Texto",
+      "Trianglo",
     ];
   }
 }

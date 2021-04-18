@@ -75,13 +75,14 @@ class Line extends NodeModel {
       cloned.y = this.y;
       cloned.path = this.path;
       cloned.r = this.r;
+      // Sempre passar todos os elementos de um objeto ao clonar.
       cloned.points[0].x = this.points[0].x;
       cloned.points[0].y = this.points[0].y;
       cloned.points[0].dot = this.points[0].dot;
       cloned.points[1].x = this.points[1].x;
       cloned.points[1].y = this.points[1].y;
       cloned.points[1].dot = this.points[1].dot;
-      
+
       return cloned;
     }
 

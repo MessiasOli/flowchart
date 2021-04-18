@@ -1,14 +1,14 @@
 import { DecorationModel } from "../_model/DecorationModel";
-import { Controller_pathBase } from "../_pathBase/controller_pathBase"
+import { ControllerTriangle } from "../triangle/controllerTriangle"
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3"
 
-export class Decoration_pathBase extends DecorationModel {
+export class DecorationTriangle extends DecorationModel {
   constructor() {
-    super("Decoration_pathBase")
+    super("DecorationTriangle")
     this.node = null;
-    this.ctr = new Controller_pathBase();
+    this.ctr = new ControllerTriangle();
   
     this.init = async function (newNode) {
       let svg = SingletonFlowchart.svg
@@ -19,7 +19,7 @@ export class Decoration_pathBase extends DecorationModel {
           .append("g")
           .attr("id", `${newNode.idName}`)
           .append("rect")
-          .classed("_pathBase", true)
+          .classed("Triangle", true)
           .attr("x",  d => d.x)
           .attr("y", d => d.y)
           .style("width", newNode.width)
@@ -42,7 +42,7 @@ export class Decoration_pathBase extends DecorationModel {
     }
 
     this.dragstarted = function(event, d) {
-      SingletonFlowchart.selectNode(`${d.idName}`)
+      SingletonFlowchart.selectNode(`Triangle-${d.id}`)
   
       d3.select(this)
         .style("stroke", "black")
@@ -64,7 +64,7 @@ export class Decoration_pathBase extends DecorationModel {
 
     this.dragended = function(d, that) {
       this.cursor = "grab"
-      d3.select(`#${newNode.idName}`)
+      d3.select(`#Triangle-${d.id}`)
         .style("stroke", 'none')
         .attr("cursor", "grab")
 

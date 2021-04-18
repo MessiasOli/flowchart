@@ -66,7 +66,6 @@ export class DecorationArea extends DecorationModel {
     }
 
     this.dragstarted = function(event, d) {
-      SingletonFlowchart.selected && d3.select(`.${SingletonFlowchart.selected}`).attr("stroke",null)
       SingletonFlowchart.selectNode(`Area-${d.id}`);
   
       d3.select(this)

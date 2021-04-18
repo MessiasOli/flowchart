@@ -25,32 +25,58 @@
 
     <div class="toolbar">
 
-      <md-button class="btn-toolbar" @click="() => ctrInputBox.setNewNode(this.openDialog)"><md-icon><img src="../../assets/inputBox.svg" alt="" srcset=""/></md-icon>
+      <md-button class="btn-toolbar" 
+      @click="() => factoryCtr(this.typesNodes.InputBox).setNewNode(this.openDialog)">
+      <md-icon><img src="../../assets/icons/inputBox.svg" alt="" srcset=""/></md-icon>
         Caixa de Insumo
       </md-button>
 
-      <md-button class="btn-toolbar" @click="() => ctrPercentageEntry.setNewNode(this.openDialog)"><md-icon><img src="../../assets/percentageEntry.svg" alt="" srcset=""/></md-icon>
+      <md-button class="btn-toolbar" 
+      @click="() => factoryCtr(this.typesNodes.PercentageEntry).setNewNode(this.openDialog)">
+      <md-icon><img src="../../assets/icons/percentageEntry.svg" alt="" srcset=""/></md-icon>
         Porcentagem de Saída
       </md-button>
 
-      <md-button class="btn-toolbar" @click="() => ctrArea.setNewNode(this.openDialog)"><md-icon><img src="../../assets/area.svg" alt="" srcset=""/></md-icon>
+      <md-button 
+      class="btn-toolbar" 
+      @click="() => factoryCtr(this.typesNodes.Area).setNewNode(this.openDialog)">
+      <md-icon><img src="../../assets/icons/area.svg" alt="" srcset=""/></md-icon>
         Area
       </md-button>
 
-      <md-button class="btn-toolbar" @click="() => ctrCircle.setNewNode()"><md-icon><img src="../../assets/circle.svg" alt="" srcset=""/></md-icon>
+      <md-button 
+      class="btn-toolbar" 
+      @click="() => factoryCtr(this.typesNodes.Circle).setNewNode()">
+      <md-icon><img src="../../assets/icons/circle.svg" alt="" srcset=""/></md-icon>
         Circulo
       </md-button>
 
-      <md-button class="btn-toolbar" @click="() => ctrLine.setNewNode()"><md-icon><img src="../../assets/line.svg" alt="" srcset=""/></md-icon>
+      <md-button 
+      class="btn-toolbar" 
+      @click="() => factoryCtr(this.typesNodes.Line).setNewNode()">
+      <md-icon><img src="../../assets/icons/line.svg" alt="" srcset=""/></md-icon>
         Linha
       </md-button>
 
-      <md-button class="btn-toolbar" @click="() => ctrBoxText.setNewNode(this.openDialog)"><md-icon><img src="../../assets/boxText.svg" alt="" srcset=""/></md-icon>
+      <md-button 
+      class="btn-toolbar" 
+      @click="() => factoryCtr(this.typesNodes.BoxText).setNewNode(this.openDialog)">
+      <md-icon><img src="../../assets/icons/boxText.svg" alt="" srcset=""/></md-icon>
         BoxText
       </md-button>
 
-      <md-button class="btn-toolbar" @click="() => ctrText.setNewNode(this.openDialog)"><md-icon><img src="../../assets/Text.png" alt="" srcset=""/></md-icon>
+      <md-button 
+      class="btn-toolbar" 
+      @click="() => factoryCtr(this.typesNodes.Text).setNewNode(this.openDialog)">
+      <md-icon><img src="../../assets/icons/Text.png" alt="" srcset=""/></md-icon>
         Texto
+      </md-button>
+
+      <md-button 
+      class="btn-toolbar" 
+      @click="() => factoryCtr(this.typesNodes.Triangle).setNewNode(this.openDialog)">
+      <md-icon><img src="../../assets/icons/triangle.png" alt="" srcset=""/></md-icon>
+        Triângulo
       </md-button>
 
     </div>
@@ -93,12 +119,7 @@ export default {
       loading: true,
       showDialog: 0,
       nodeRefToDialog: null,
-      ctrPercentageEntry: null,
-      ctrBoxText: null,
-      ctrCircle: null,
-      ctrLine: null,
-      ctrArea: null,
-      ctrText: null,
+      factoryCtr: GetNewController
     };
   },
   watch: {},
@@ -156,16 +177,6 @@ export default {
       clearStorage();
     },
 
-    initializaControllers(){
-      this.ctrInputBox = GetNewController(this.typesNodes.InputBox);
-      this.ctrPercentageEntry = GetNewController(this.typesNodes.PercentageEntry);
-      this.ctrBoxText = GetNewController(this.typesNodes.BoxText);
-      this.ctrCircle = GetNewController(this.typesNodes.Circle);
-      this.ctrLine = GetNewController(this.typesNodes.Line);
-      this.ctrArea = GetNewController(this.typesNodes.Area);
-      this.ctrText = GetNewController(this.typesNodes.Text);
-    },
-
     loadDatabaseNodes(){
       axios.get(`${HttpApiNode}`).then(this.hasNode).catch(RequestError)
     },
@@ -182,7 +193,7 @@ export default {
     async loadNodes(data){
       let nodes = JSON.parse(data[0].flowchartStructure)
       await nodes.forEach(node => {
-        let ctr = GetNewController(node.type)
+        let ctr = this.factoryCtr(node.type)
         ctr.loadNode(node, this.openDialog)
       });
       RequestSuscess("Sistema carregado");
@@ -205,7 +216,6 @@ export default {
   async mounted() {
     RequestSuscess("Carregando sistema...");
     this.configSVG();
-    await this.initializaControllers();
     await this.loadDatabaseNodes();
     ShortCuts.Init(this);
     this.loading = false
