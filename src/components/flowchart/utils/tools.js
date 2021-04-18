@@ -106,7 +106,26 @@ const GetExtremesCoordinates = async (node) => {
   return ({ min:{x: minX, y: minY}, max: {x: maxX, y: maxY} })
 }
 
+export const GetDimentionsById = (id) => {
+  let svg = document.querySelector("#svg").getBoundingClientRect();
+  let d = document.querySelector(`#${id}`).getBoundingClientRect();
+  let transform = GetTransform();
 
+  let x = d.x
+  let y = d.y
+
+  x -=  (transform.x + svg.left);
+  y -=  (transform.y + svg.top);
+  x /= transform.scale;
+  y /= transform.scale;
+
+  return {
+   width: d.width / transform.scale,
+   height: d.height / transform.scale,
+   x,
+   y
+  }
+}
 
 const GetCoordinatePath = (path) =>{
   let strCoord = path.replace("M", "").split('L')

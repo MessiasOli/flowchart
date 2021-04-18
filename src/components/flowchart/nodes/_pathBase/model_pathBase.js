@@ -16,6 +16,24 @@ class _pathBase extends NodeModel {
       this.decorator = new Decoration_pathBase();
       await this.decorator.init(this)
     };
+
+    /* Métodos para serem implementados */ 
+
+    // this.clone = () => {
+      // Implementar clone para salvar. Obs: não clonar referencia do objetos apenas seus dados.
+      // return null
+    // }
+
+    // this.copyFrom = (node) => {
+      // this.simpleCopyFrom(node);
+      // Implementar copyFrom para carregar o nó com suas particularidades.
+    // }
+
+    // this.update = (node) => {
+      // this.value = node.value;
+      // Implementar copyFrom para carregar o nó com suas particularidades.
+      // this.decorator.update();
+    // }
   }
 }
 

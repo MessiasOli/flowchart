@@ -1,7 +1,6 @@
 import { DecorationModel } from "../_model/DecorationModel";
 import { ControllerTriangle } from "../triangle/controllerTriangle"
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
-import { COLORS } from "../../utils/colors"
 import * as d3 from "d3"
 
 export class DecorationTriangle extends DecorationModel {
@@ -10,24 +9,24 @@ export class DecorationTriangle extends DecorationModel {
     this.node = null;
     this.ctr = new ControllerTriangle();
   
-    this.init = async function (newNode) {
+    this.init = async function (newNode, openDialog) {
       let svg = SingletonFlowchart.svg
       this.node = newNode
   
-       await svg
-          .data([newNode])
-          .append("g")
+      let triangle = d3.symbol().type(d3.symbolTriangle).size(newNode.size);
+      await svg
+        .data([newNode])
+        .append("g")
           .attr("id", `${newNode.idName}`)
-          .append("rect")
-          .classed("Triangle", true)
-          .attr("x",  d => d.x)
-          .attr("y", d => d.y)
-          .style("width", newNode.width)
-          .style("height", newNode.height)
-          .attr("cursor", "grab")
-          .style("fill", COLORS.ClearBlue)
-          .call(this.setDrag)
-      
+          .append("path")
+            .classed("Triangle", true)
+            .attr("cursor", "pointer")
+            .attr("d", triangle)
+            .attr("transform", d => `translate(${d.x}, ${d.y})rotate(${d.rotate})`)
+            .style("fill", d => d.color)
+            .on("dblclick", () => openDialog(newNode))
+            .call(this.setDrag())
+
       return svg
     }
   
@@ -35,40 +34,50 @@ export class DecorationTriangle extends DecorationModel {
       let that = this
       let drag = d3
         .drag()
-        .on("start", that.dragstarted)
-        .on("drag", that.dragged)
-        .on("end", (event, d) => that.dragended(d, that));
+        .on("start", this.dragstarted)
+        .on("drag",(event,d) => this.dragged(event, d, that))
+        .on("end", this.dragended);
       return drag;
     }
 
     this.dragstarted = function(event, d) {
-      SingletonFlowchart.selectNode(`Triangle-${d.id}`)
+      SingletonFlowchart.selectNode(`${d.idName}`)
   
       d3.select(this)
         .style("stroke", "black")
         .attr("cursor", "grabbing")
     }
 
-    /* - to override
-    this.dragged = async function (event, d){
-      
+    this.dragged = function (event, d,that){
       d.x = event.x;
       d.y = event.y;
-
-      d3.select(this)
-        .raise()
-        .attr("x", d.x)
-        .attr("y", d.y)
+      that.move();
     } 
-    */
 
-    this.dragended = function(d, that) {
-      this.cursor = "grab"
-      d3.select(`#Triangle-${d.id}`)
+    this.move = () => {
+      let d = this.node;
+
+      d3.select(`#${d.idName} > path`)
+      .raise()
+      .attr("transform", d => `translate(${d.x}, ${d.y})rotate(${d.rotate})`)
+    }
+
+    this.dragended = function(event, d) {
+      d3.select(`#${d.idName} > path`)
         .style("stroke", 'none')
-        .attr("cursor", "grab")
-
-      that.ctr.update(d);
+        .attr("cursor", "pointer")
     };
+
+    this.update = function() {
+      let d = this.node;
+      let triangle = d3.symbol().type(d3.symbolTriangle).size(d.size);
+
+      d3.select(`#${d.idName} > path`)
+        .style("stroke", 'none')
+        .attr("cursor", "pointer")
+        .attr("d", triangle)
+        .attr("transform", `translate(${d.x}, ${d.y})rotate(${d.rotate})`)
+        .style("fill", d.color)
+    }
   }
 }

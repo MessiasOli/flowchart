@@ -11,6 +11,7 @@
       <FormPercentageEntry v-if="node.type == types.PercentageEntry" :node.sync="nodeEdited" />
       <FormBoxText v-if="node.type == types.BoxText" :node.sync="nodeEdited" />
       <FormText v-if="node.type == types.Text" :node.sync="nodeEdited" />
+      <FormTriangle v-if="node.type == types.Triangle" :node.sync="nodeEdited" />
     </div>
     
     <div class="footer">
@@ -27,6 +28,7 @@ import FormInputBox from "./dialogForm/FormInputBox";
 import FormPercentageEntry from "./dialogForm/FormPercentageEntry";
 import FormBoxText from "./dialogForm/FormBoxText";
 import FormText from "./dialogForm/FormText"
+import FormTriangle from "./dialogForm/FormTriangle"
 import { Types } from "./utils/nodeTypes"
 import { SingletonFlowchart } from './nodes/_service/singletonFlowchart';
 
@@ -38,7 +40,8 @@ import { SingletonFlowchart } from './nodes/_service/singletonFlowchart';
       FormInputBox, 
       FormPercentageEntry, 
       FormBoxText,
-      FormText
+      FormText,
+      FormTriangle
     },
     props: {
       node: {

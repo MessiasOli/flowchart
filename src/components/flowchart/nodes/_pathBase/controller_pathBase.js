@@ -15,10 +15,7 @@ class Controller_pathBase extends ControllerModel {
 
     this.loadNode = (node) => {
       let _pathBase = new _pathBase();
-      _pathBase.simpleCopyFrom(node);
-
-      /* Implementar método copyFrom para contemplar particularidades */
-
+      _pathBase.copyFrom(node);
       _pathBase.decorate();
       this.addNode(_pathBase)
     }

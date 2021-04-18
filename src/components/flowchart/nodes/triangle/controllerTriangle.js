@@ -6,20 +6,17 @@ class ControllerTriangle extends ControllerModel {
   constructor() {
     super("ControllerTriangle");
     
-    this.setNewNode = () => {
+    this.setNewNode = (callBack) => {
       let triangle = new Triangle();
-      triangle.decorate();
+      triangle.decorate(callBack);
 
       this.addNode(triangle);
     }
 
-    this.loadNode = (node) => {
-      let triangle = new triangle();
-      triangle.simpleCopyFrom(node);
-
-      /* Implementar método copyFrom para contemplar particularidades */
-
-      triangle.decorate();
+    this.loadNode = (node, callback) => {
+      let triangle = new Triangle();
+      triangle.copyFrom(node);
+      triangle.decorate(callback);
       this.addNode(triangle)
     }
   }

@@ -1,24 +1,26 @@
 /* eslint-disable no-unused-vars */
 import { SingletonFlowchart } from "../_service/singletonFlowchart"
-import { GetCoordinateDiff } from "../../utils/tools"
+import { GetCoordinateDiff, GetDimentionsById } from "../../utils/tools"
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3";
 
 export class BoxSelection {
   constructor() {
     let svg = SingletonFlowchart.svg
-
+    
     this.initSelection = async function (nodeRef) {
+      let dimention = GetDimentionsById(nodeRef.idName)
+      console.log('dimention :>> ', dimention);
       await svg
           .data([nodeRef])
           .append("g")
           .attr("id", d => `Selected-${d.id}`)
           .classed("SelectionNode", true)
           .append("rect")
-          .attr("x",  d => d.x)
-          .attr("y", d => d.y)
-          .style("width", d => d.width)
-          .style("height", d => d.height)
+          .attr("x",  dimention.x)
+          .attr("y", dimention.y)
+          .style("width", dimention.width)
+          .style("height", dimention.height)
           .attr("cursor", "grab")
           .style("fill", COLORS.ClearBlue50)
           .call(this.setDrag())
@@ -51,10 +53,11 @@ export class BoxSelection {
           d.x += coord.x;
           d.y += coord.y;
           await d.move();
+          let dimention = await GetDimentionsById(d.idName)
           await d3.select(`#Selected-${d.id} > rect`)
             .raise()
-            .attr("x", d.x)
-            .attr("y", d.y)
+            .attr("x", dimention.x)
+            .attr("y", dimention.y)
             .node();
         });
       }

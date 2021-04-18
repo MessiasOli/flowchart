@@ -26,7 +26,7 @@ export class Decoration_pathBase extends DecorationModel {
           .style("height", newNode.height)
           .attr("cursor", "grab")
           .style("fill", COLORS.ClearBlue)
-          .call(this.setDrag)
+          .call(this.setDrag())
       
       return svg
     }
@@ -62,13 +62,10 @@ export class Decoration_pathBase extends DecorationModel {
     } 
     */
 
-    this.dragended = function(d, that) {
-      this.cursor = "grab"
-      d3.select(`#${newNode.idName}`)
+    this.dragended = function(d) {
+      d3.select(`#${d.idName}`)
         .style("stroke", 'none')
         .attr("cursor", "grab")
-
-      that.ctr.update(d);
     };
   }
 }
