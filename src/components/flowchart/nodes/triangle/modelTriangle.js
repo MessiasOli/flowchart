@@ -9,7 +9,7 @@ class Triangle extends NodeModel {
     this.type = new Types().Triangle;
     this.x = 500;
     this.y = 200;
-    this.size = 8000;
+    this.size = 125;
     this.rotate = 90;
     this.color = COLORS.RoyalBlue
     

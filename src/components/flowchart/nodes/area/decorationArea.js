@@ -77,7 +77,7 @@ export class DecorationArea extends DecorationModel {
 
     this.dragged = async function (event, d, that){
       SingletonFlowchart.clicked = false;
-      d.x = event.x + 20;
+      d.x = event.x;
       d.y = event.y;
 
       that.drag();
@@ -124,7 +124,7 @@ export class DecorationArea extends DecorationModel {
 
       if(d.connectionPack.length > 0){
         d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
-        d.connectionPack.forEach(point => {
+        await d.connectionPack.forEach(point => {
           let isSelected = conn.includes(point.conn)
           if(!isSelected){
             let dot = d.decorator.getPointPosition(d, point.dot)
@@ -184,11 +184,15 @@ export class DecorationArea extends DecorationModel {
       let that = this
       let drag = d3
         .drag()
-        .on("start", () => that.connected = true)
+        .on("start", () => that.dragStartConnections(that, node))
         .on("drag", (event) => that.draggedConnections(event, that, node))
         .on("end", (event, node) => that.dragendedConnections(event, that, node));
 
       return drag;
+    }
+
+    this.dragStartConnections = (that) =>{
+      that.connected = true
     }
 
     this.draggedConnections = (event, that, node) =>{

@@ -8,6 +8,7 @@ class Connection extends NodeModel {
     
     this.parentId = parentId || "";
     this.type = new Types().Connection
+    this.idName = `dot-${this.id}` 
     this.contador = 0;
     this.path = '';
     this.x1 = x || 0;
@@ -28,7 +29,7 @@ class Connection extends NodeModel {
     };
 
     this.clone = function(){
-      let cloned = new Connection();
+      let cloned = new Connection(this.x, this.y, this.parentId, this.color);
       cloned.id = this.id;
       cloned.type = this.type;
       cloned.height = this.height;
@@ -47,6 +48,20 @@ class Connection extends NodeModel {
       cloned.qtdInternalPoints = this.qtdInternalPoints;
 
       return cloned;
+    }
+
+    this.copyFrom = (node) => {
+      this.simpleCopyFrom(node);
+      this.color = node.color;
+      this.contador = node.contador;
+      this.path = node.path;
+      this.x1 = node.x1;
+      this.y1 = node.y1;
+      this.x2 = node.x2;
+      this.y2 = node.y2;
+      this.internalPoints = node.internalPoints;
+      this.qtdInternalPoints = node.qtdInternalPoints;
+
     }
 
     this.move = async () => {

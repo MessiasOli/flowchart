@@ -138,24 +138,6 @@ export class DecorationInputBox extends DecorationModel {
             .raise()
             .attr("cx", d.xDot())
             .attr("cy", d.yDot());
-
-      let conn = new Array();
-      await SingletonFlowchart.selectedNodes.forEach(n => {
-        if(this.typeConn == n.type){
-          conn.push(n)
-        }
-      });
-
-      if(d.connectionPack.length > 0){
-        d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
-        d.connectionPack.forEach(point => {
-          let isSelected = conn.includes(point.conn)
-          if(!isSelected){
-            let dot = d.decorator.getPointPosition(d, point.dot)
-            point.conn.moveFirstPoint({x: dot[0].x, y: dot[0].y})
-          }
-        });
-      }
     }
 
     this.dragended = function() {

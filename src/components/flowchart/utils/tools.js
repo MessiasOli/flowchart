@@ -107,8 +107,15 @@ const GetExtremesCoordinates = async (node) => {
 }
 
 export const GetDimentionsById = (id) => {
+  let d = document.querySelector(`#${id}`);
+  d = d ? d.getBoundingClientRect() : null;
+  
+  if (!d){
+    return
+  }
+
   let svg = document.querySelector("#svg").getBoundingClientRect();
-  let d = document.querySelector(`#${id}`).getBoundingClientRect();
+  console.log('id :>> ', id);
   let transform = GetTransform();
 
   let x = d.x

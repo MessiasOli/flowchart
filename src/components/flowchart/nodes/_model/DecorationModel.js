@@ -39,7 +39,7 @@ export class DecorationModel extends IDecoration {
         node.connectionPack = new Array();
 
         objConnections.forEach(obj => {
-          let newConn = this.ctrConnection.loadNode(obj.conn)
+          let newConn = this.ctrConnection.loadNode(obj.conn,null, true)
           node.connectionPack.push({ conn: newConn, dot: obj.dot })
         });
       }

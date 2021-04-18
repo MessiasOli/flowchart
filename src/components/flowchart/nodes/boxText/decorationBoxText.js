@@ -109,7 +109,7 @@ class DecorationBoxText extends DecorationModel {
 
       if(d.connectionPack.length > 0){
         d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
-        d.connectionPack.forEach(point => {
+        await d.connectionPack.forEach(point => {
           let isSelected = conn.includes(point.conn)
           if(!isSelected){
             let dot = d.decorator.getPointPosition(d, point.dot)
@@ -117,7 +117,18 @@ class DecorationBoxText extends DecorationModel {
           }
         });
       }
+
+      d3.selectAll(`#BoxText-${d.id} > .circleBox`).remove();
+      d3.selectAll(`#dot-${d.id}`).remove();
+      this.createConnections(d)
     }
+
+    this.dragended = function(event, node) {
+      d3.select(this).attr("cursor", "grab");
+      node.y += 20;
+      node.decorator.createConnections(node);
+      SingletonFlowchart.SaveStatus();
+    };
 
     this.createConnections = function(node) {
       let connections = GetSixConections(node);
@@ -173,13 +184,6 @@ class DecorationBoxText extends DecorationModel {
       that.transientConnection = null;
       SingletonFlowchart.SaveStatus();
     }
-
-    this.dragended = function(event, node) {
-      d3.select(this).attr("cursor", "grab");
-      node.y += 20;
-      node.decorator.createConnections(node);
-      SingletonFlowchart.SaveStatus();
-    };
 
     this.getPointPosition = function(node, point){
       return GetSixConections(node).filter( dot => dot.point == point)

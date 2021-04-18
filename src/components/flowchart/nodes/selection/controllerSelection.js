@@ -59,7 +59,10 @@ class ControllerSelection extends ControllerModel {
     }
 
     this.hasNodeSelected = () => this.getSelections().length > 0;
-    this.cancelSelection  = () => this.getSelections().forEach(n => n.remove());
+    this.cancelSelection  = () => {
+      this.getSelections().forEach(n => n.remove())
+      SingletonFlowchart.unSelectNode();
+    };
     this.getSelections = () => document.querySelectorAll(".SelectionNode")
   }
 }

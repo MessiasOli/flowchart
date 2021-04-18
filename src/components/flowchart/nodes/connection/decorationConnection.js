@@ -10,19 +10,9 @@ class DecorationConnection extends DecorationModel {
     this.svg
   
     this.init = async function (node) {
-      this.svg = d3.select(node.parentId)
       this.node = node
-
-        this.svg
-          .selectAll(`.circle-${node.id}`)
-          .data([{ x:node.x1, y: node.y1, id: node.id, node: this.node }])
-          .join("circle")
-          .attr("id", `dot-${node.id}`)
-          .attr('cx', d => d.x)
-          .attr('cy', d => d.y)
-          .attr("cursor", "pointer")
-          .attr('r', 4)
-          .node();
+      
+      this.svg = d3.select(node.parentId)
 
       if(node.path){
         this.changePath(node.path)
@@ -102,8 +92,7 @@ class DecorationConnection extends DecorationModel {
     }
 
     this.createBreakPoint = function(event, d, id){
-      SingletonFlowchart.clicked = true
-      SingletonFlowchart.selected = 'dot-'+this.node.id
+      SingletonFlowchart.selectNode(d.idName)
       let connClicked = d.connectionPack.filter(conections => conections.conn.id == id)[0]
       let line = connClicked.conn.path;
       
@@ -167,6 +156,8 @@ class DecorationConnection extends DecorationModel {
       SingletonFlowchart.clicked = false
       d.node.pointOnPath({x: event.x, y: event.y}, dot)
     }
+
+    this.disappear = () => d3.selectAll(`#dot-${this.node.id}`).remove();
   }
 }
 

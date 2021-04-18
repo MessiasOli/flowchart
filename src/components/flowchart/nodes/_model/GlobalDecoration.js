@@ -10,7 +10,8 @@ export class BoxSelection {
     
     this.initSelection = async function (nodeRef) {
       let dimention = GetDimentionsById(nodeRef.idName)
-      console.log('dimention :>> ', dimention);
+      if(!dimention) return
+
       await svg
           .data([nodeRef])
           .append("g")
@@ -47,18 +48,19 @@ export class BoxSelection {
 
     this.dragged = async function (event,n){
       try {
-        let coord = GetCoordinateDiff(event, n)
+        let coord = await GetCoordinateDiff(event, n)
 
         await SingletonFlowchart.selectedNodes.forEach(async d => {
           d.x += coord.x;
           d.y += coord.y;
           await d.move();
           let dimention = await GetDimentionsById(d.idName)
+          if(!dimention) return
           await d3.select(`#Selected-${d.id} > rect`)
-            .raise()
-            .attr("x", dimention.x)
-            .attr("y", dimention.y)
-            .node();
+          .raise()
+          .attr("x", dimention.x)
+          .attr("y", dimention.y)
+          .node();
         });
       }
       catch (e)

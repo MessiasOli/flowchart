@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { ControllerModel } from "../_model/ControllerModel";
 import { Triangle } from "./modelTriangle";
+import { SingletonFlowchart } from "../_service/singletonFlowchart"
 
 class ControllerTriangle extends ControllerModel {
   constructor() {
@@ -11,6 +12,7 @@ class ControllerTriangle extends ControllerModel {
       triangle.decorate(callBack);
 
       this.addNode(triangle);
+      SingletonFlowchart.SaveStatus();
     }
 
     this.loadNode = (node, callback) => {

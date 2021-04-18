@@ -17,23 +17,15 @@ class ControllerConnection extends ControllerModel {
       return document.querySelectorAll("#dot-" + node.id).length ? true : false
     }
 
-    this.loadNode = (node) => {
-      let conn = new Connection()
-      conn.simpleCopyFrom(node);
-      conn.parentId = node.parentId;
-      conn.color = node.color;
-      conn.contador = node.contador;
-      conn.path = node.path;
-      conn.x1 = node.x1;
-      conn.y1 = node.y1;
-      conn.x2 = node.x2;
-      conn.y2 = node.y2;
-      conn.internalPoints = node.internalPoints;
-      conn.qtdInternalPoints = node.qtdInternalPoints;
-
-      conn.decorate();
-      this.addNode(conn);
-      return conn
+    this.loadNode = (node,calback ,createByParent) => {
+      console.log('createByParent :>> ', createByParent);
+      if(createByParent){
+        let conn = new Connection(node.x, node.y, node.parentId, node.color)
+        conn.copyFrom(node);
+        conn.decorate();
+        this.addNode(conn);
+        return conn
+      }
     }
     
     this.loadCopiedNode = () =>{

@@ -66,6 +66,8 @@ export class DecorationTriangle extends DecorationModel {
       d3.select(`#${d.idName} > path`)
         .style("stroke", 'none')
         .attr("cursor", "pointer")
+
+      SingletonFlowchart.SaveStatus()
     };
 
     this.update = function() {
@@ -78,6 +80,8 @@ export class DecorationTriangle extends DecorationModel {
         .attr("d", triangle)
         .attr("transform", `translate(${d.x}, ${d.y})rotate(${d.rotate})`)
         .style("fill", d.color)
+
+      SingletonFlowchart.SaveStatus()
     }
   }
 }

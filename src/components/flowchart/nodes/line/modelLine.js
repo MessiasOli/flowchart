@@ -1,5 +1,6 @@
 import { NodeModel } from "../_model/NodeModel";
 import { Types } from "../../utils/nodeTypes";
+import { COLORS } from "../../utils/colors";
 import { DecorationLine } from "./decorationLine"
 import { SetArea, GetExtremesCoordinates, GetCoordinatePath } from "../../utils/tools"
 
@@ -10,6 +11,7 @@ class Line extends NodeModel {
     this.type = new Types().Line
     this.x = 500;
     this.y = 100;
+    this.color = COLORS.Black
     this.path = `M${this.x},${this.y}L${this.x},${this.y+100}`
     this.points = [{ x: this.x, y: this.y, dot: 'p1' },
                    { x: this.x, y: this.y +100, dot: 'p2' }]
@@ -75,6 +77,7 @@ class Line extends NodeModel {
       cloned.y = this.y;
       cloned.path = this.path;
       cloned.r = this.r;
+      cloned.color = this.color
       // Sempre passar todos os elementos de um objeto ao clonar.
       cloned.points[0].x = this.points[0].x;
       cloned.points[0].y = this.points[0].y;
@@ -90,13 +93,8 @@ class Line extends NodeModel {
       this.simpleCopyFrom(node)
       this.points = node.points;
       this.path = node.path;
-      this.r = node.r;
-
-      this.x = node.x;
-      this.y = node.y;
-      this.height = node.height;
-      this.width = node.width;
-      
+      this.color = node.color;
+      this.r = node.r
     }
   }
 }
