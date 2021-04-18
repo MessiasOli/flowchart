@@ -44,7 +44,6 @@ export class Selection {
     }
 
     this.copy = () => {
-      console.log("Copiar")
       let selected = SingletonFlowchart.selected;
       let arraySelected = SingletonFlowchart.selectedNodes;
 
@@ -63,7 +62,6 @@ export class Selection {
       let [xSvg, ySvg] = GetSVGCoordinates(mouse)
       let selected = SingletonFlowchart.copied
       let avoidingEvenId = 0;
-      console.log("Colar", mouse, selected)
 
       await RemoveSelectionNodes();
       SingletonFlowchart.unSelectNode();
@@ -84,11 +82,10 @@ export class Selection {
           newNode.y = ySvg - Math.abs(newNode.y - ySvg) + 200
 
           await ctr.loadCopiedNode(newNode, callback);
+          console.log('cuted :>> ', newNode, node);
           SingletonFlowchart.selectedNodes.push(newNode);
         }
       });
-
-
     }
   }
 }

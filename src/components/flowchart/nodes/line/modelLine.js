@@ -1,7 +1,7 @@
 import { NodeModel } from "../_model/NodeModel";
 import { Types } from "../../utils/nodeTypes";
-import { SetArea, GetExtremesCoordinates, GetCoordinatePath } from "../../utils/tools"
 import { DecorationLine } from "./decorationLine"
+import { SetArea, GetExtremesCoordinates, GetCoordinatePath } from "../../utils/tools"
 
 class Line extends NodeModel {
   constructor() {
@@ -11,11 +11,9 @@ class Line extends NodeModel {
     this.x = 500;
     this.y = 100;
     this.path = `M${this.x},${this.y}L${this.x},${this.y+100}`
-    this.points = [{ x: this.x, y: this.y, id: this.id, dot: 'p1' },
-                   { x: this.x, y: this.y +100, id: this.id, dot: 'p2' }]
+    this.points = [{ x: this.x, y: this.y, dot: 'p1' },
+                   { x: this.x, y: this.y +100, dot: 'p2' }]
     this.r = 2.5;
-    this.x = 498;
-    this.y = 95;
     this.width = this.r * 2;
     this.height = 105;
 
@@ -27,15 +25,15 @@ class Line extends NodeModel {
     this.setP1 = (x, y) => {
       this.points[0].x = x;
       this.points[0].y = y;
-      this.path = `M${x},${y}L${this.points[1].x},${this.points[1].y}`
-      SetArea(this, this.r * 3)
+      this.path = `M${x},${y}L${this.points[1].x},${this.points[1].y}`;
+      SetArea(this, this.r * 3);
     }
 
     this.setP2 = (x, y) => {
       this.points[1].x = x;
       this.points[1].y = y;
-      this.path = `M${this.points[0].x},${this.points[0].y}L${x},${y}`
-      SetArea(this, this.r * 3)
+      this.path = `M${this.points[0].x},${this.points[0].y}L${x},${y}`;
+      SetArea(this, this.r * 3);
     }
 
     this.move = async () => {
@@ -76,17 +74,28 @@ class Line extends NodeModel {
       cloned.x = this.x;
       cloned.y = this.y;
       cloned.path = this.path;
-      cloned.points = this.points;
       cloned.r = this.r;
-
+      cloned.points[0].x = this.points[0].x;
+      cloned.points[0].y = this.points[0].y;
+      cloned.points[0].dot = this.points[0].dot;
+      cloned.points[1].x = this.points[1].x;
+      cloned.points[1].y = this.points[1].y;
+      cloned.points[1].dot = this.points[1].dot;
+      
       return cloned;
     }
 
     this.copyFrom = (node) => {
       this.simpleCopyFrom(node)
-      this.path = node.path;
       this.points = node.points;
+      this.path = node.path;
       this.r = node.r;
+
+      this.x = node.x;
+      this.y = node.y;
+      this.height = node.height;
+      this.width = node.width;
+      
     }
   }
 }

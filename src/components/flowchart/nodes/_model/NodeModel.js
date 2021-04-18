@@ -4,8 +4,8 @@ export class NodeModel extends INode {
     super(nameClass)
     this.id = + new Date();
     this.idName = `${nameClass}-${this.id}`
-    this.x = 660;
-    this.y = 20;
+    this.x = 0;
+    this.y = 0;
     this.height = 20;
     this.width = 120;
     this.decorator = null;

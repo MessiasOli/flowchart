@@ -9,21 +9,21 @@ export class BoxSelection {
     let svg = SingletonFlowchart.svg
 
     this.initSelection = async function (nodeRef) {
-    await svg
-        .data([nodeRef])
-        .append("g")
-        .attr("id", d => `Selected-${d.id}`)
-        .classed("SelectionNode", true)
-        .append("rect")
-        .attr("x",  d => d.x)
-        .attr("y", d => d.y)
-        .style("width", d => d.width)
-        .style("height", d => d.height)
-        .attr("cursor", "grab")
-        .style("fill", COLORS.ClearBlue50)
-        .call(this.setDrag())
-    
-    return svg
+      await svg
+          .data([nodeRef])
+          .append("g")
+          .attr("id", d => `Selected-${d.id}`)
+          .classed("SelectionNode", true)
+          .append("rect")
+          .attr("x",  d => d.x)
+          .attr("y", d => d.y)
+          .style("width", d => d.width)
+          .style("height", d => d.height)
+          .attr("cursor", "grab")
+          .style("fill", COLORS.ClearBlue50)
+          .call(this.setDrag())
+      
+      return svg
     }
 
     this.setDrag = function() {

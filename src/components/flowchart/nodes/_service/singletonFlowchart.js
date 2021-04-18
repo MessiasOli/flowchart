@@ -33,6 +33,7 @@ export var SingletonFlowchart = {
     },
 
     removeNodeSelected: function () {
+        this.SaveStatus();
         if(!this.selectedNodes || this.selectedNodes.length == 0){
             console.log("Apenas um nó :", this.selectedId)
             this.Memory.removeNode(this.selectedId)

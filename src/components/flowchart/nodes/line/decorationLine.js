@@ -13,54 +13,54 @@ class DecorationLine extends DecorationModel {
 
       await svg.append("g")
         .data([newNode])
-        .classed("Line", true)
-        .attr("id", `Line-${newNode.id}`)
-        .on("click", ()=>{SingletonFlowchart.selectNode(`Line-${newNode.id}`)})
+        .attr("id", `${newNode.idName}`)
 
-        let g = d3.select(`#Line-${newNode.id}`)
+        let g = d3.select(`#${newNode.idName}`)
 
         g.append("path")
-        .classed("Line", true)
-        .attr("d", newNode.path)
-        .attr("stroke", "#444")
-        .attr("stroke-width", 3)
+          .classed("Line", true)
+          .attr("d", newNode.path)
+          .attr("stroke", "#444")
+          .attr("stroke-width", 3)
 
         g.selectAll(`.circle-${newNode.id}`)
-        .data(newNode.points)
-        .join("circle")
-        .classed(`circle-${newNode.id}`, true)
-        .classed(`${newNode.points[0].dot}-${newNode.id}`, d => d.dot == 'p1')
-        .classed(`${newNode.points[1].dot}-${newNode.id}`, d => d.dot == 'p2')
-        .attr('cx', d => d.x)
-        .attr('cy', d => d.y)
-        .attr("cursor", "pointer")
-        .attr('r', newNode.r)
-        .attr('fill', "back")
-        .call(this.setDrag(newNode))
-      
+          .data(newNode.points)
+          .join("circle")
+          .classed(`${newNode.points[0].dot}-${newNode.id}`, d => d.dot == 'p1')
+          .classed(`${newNode.points[1].dot}-${newNode.id}`, d => d.dot == 'p2')
+          .attr('cx', d => d.x)
+          .attr('cy', d => d.y)
+          .attr("cursor", "pointer")
+          .attr('r', newNode.r)
+          .attr('fill', "back")
+          .call(this.setDrag())
+
+          newNode.move();
+
       return svg
     }
   
-    this.setDrag = function(node) {
+    this.setDrag = function() {
       let that = this
       let drag = d3
         .drag()
-        .on("start", that.dragstarted)
-        .on("drag",(event, d) => that.dragged(event, d, node))
+        .on("start", (event, d) => that.dragstarted(d, that))
+        .on("drag", (event, d) => that.dragged(event, d, that))
         .on("end", that.dragended);
       return drag;
     }
 
-    this.dragstarted = function(event, d) {
-      SingletonFlowchart.selectNode(`${d.idName}`);
-      d3.select(this)
+    this.dragstarted = function(d, that) {
+      SingletonFlowchart.selectNode(`${that.node.idName}`);
+      d3.select(`.${d.dot}-${that.node.id}`)
         .attr("stroke", "black")
         .attr("cursor", "pointer")
     }
     
-    this.dragged = function(event, d, node) {
+    this.dragged = async function(event, d, that) {
       SingletonFlowchart.clicked = false
       let i = 0;
+      let node = that.node
 
       if(d.dot.includes('p1')){
         node.setP1(event.x, event.y);
@@ -71,8 +71,8 @@ class DecorationLine extends DecorationModel {
         i = 1;
       }
       
-      d3.select(`#Line-${d.id} > path`).attr("d", node.path).node();
-      d3.select(`#Line-${d.id} > .${d.dot}-${d.id}`)
+      await d3.select(`#${node.idName} > path`).attr("d", node.path).node();
+      await d3.select(`#${node.idName} > .${d.dot}-${node.id}`)
         .raise()
         .attr("cx", node.points[i].x)
         .attr("cy", node.points[i].y);
