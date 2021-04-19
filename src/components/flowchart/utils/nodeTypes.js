@@ -12,6 +12,7 @@ export class Types {
     this.Box = 9
     this.Text = 10
     this.Triangle = 11
+    this.OnOff = 12
 
     this.Caption = [
       "Base",
@@ -26,6 +27,7 @@ export class Types {
       "Caixa",
       "Texto",
       "Trianglo",
+      "Liga/Desliga",
     ];
   }
 }

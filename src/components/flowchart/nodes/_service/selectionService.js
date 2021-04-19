@@ -1,7 +1,7 @@
 import { ControllerSelection } from "../selection/controllerSelection";
 import { GetNewController } from "../_service/factoryController"
 import { SingletonFlowchart } from "./singletonFlowchart";
-import { GetSVGCoordinates } from "../../utils/tools"
+import { GetExclusiveId, GetSVGCoordinates } from "../../utils/tools"
 import { Types } from "../../utils/nodeTypes"
 import { RemoveSelectionNodes } from "../_model/GlobalDecoration"
 
@@ -61,7 +61,6 @@ export class Selection {
       let mouse = SingletonFlowchart.mousePosition
       let [xSvg, ySvg] = GetSVGCoordinates(mouse)
       let selected = SingletonFlowchart.copied
-      let avoidingEvenId = 0;
 
       await RemoveSelectionNodes();
       SingletonFlowchart.unSelectNode();
@@ -75,7 +74,7 @@ export class Selection {
           let ctr = GetNewController(node.type)
           let newNode = await node.clone();
 
-          newNode.id = + new Date() + avoidingEvenId++;
+          newNode.id = GetExclusiveId();
           newNode.idName = `${node.idName.split('-')[0]}-${newNode.id}`
 
           newNode.x = xSvg - Math.abs(newNode.x - xSvg) + 200

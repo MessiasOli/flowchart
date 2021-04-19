@@ -8,5 +8,8 @@ export const COLORS = {
   Black: "#000",
   Black90: "#0009",
   Black95: "#00000095",
-  Black50: "#0005"
+  Black50: "#0005",
+  Gray: "#6e7076",
+  Red: "#ff0000",
+  Green: "#00FF00"
 }

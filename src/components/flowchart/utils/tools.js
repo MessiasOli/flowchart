@@ -1,3 +1,8 @@
+const GetExclusiveId = () => {
+  let id = Math.trunc(+ new Date() * Math.random())
+  return id;
+}
+
 const NumberFormat = (num) => {
   num = (num+"").replace(".", ",")
   num = num.toLocaleString('pt-br', {minimumFractionDigits: 2});
@@ -115,7 +120,6 @@ export const GetDimentionsById = (id) => {
   }
 
   let svg = document.querySelector("#svg").getBoundingClientRect();
-  console.log('id :>> ', id);
   let transform = GetTransform();
 
   let x = d.x
@@ -149,6 +153,7 @@ const GetCoordinatePath = (path) =>{
 }
 
 export { 
+  GetExclusiveId,
   NumberFormat, 
   GetSixConections,
   GetSVGCoordinates,

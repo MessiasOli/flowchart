@@ -6,17 +6,17 @@ class Controller_pathBase extends ControllerModel {
   constructor() {
     super("Controller_pathBase");
     
-    this.setNewNode = () => {
+    this.setNewNode = (callback) => {
       let _pathBase = new _pathBase();
-      _pathBase.decorate();
+      _pathBase.decorate(callback);
 
       this.addNode(_pathBase);
     }
 
-    this.loadNode = (node) => {
+    this.loadNode = (node, callback) => {
       let _pathBase = new _pathBase();
       _pathBase.copyFrom(node);
-      _pathBase.decorate();
+      _pathBase.decorate(callback);
       this.addNode(_pathBase)
     }
   }

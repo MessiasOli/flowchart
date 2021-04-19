@@ -12,9 +12,9 @@ class _pathBase extends NodeModel {
     this.height = 250;
     this.width = 100;
     
-    this.decorate = async function() {
+    this.decorate = async function(callback) {
       this.decorator = new Decoration_pathBase();
-      await this.decorator.init(this)
+      await this.decorator.init(this,callback)
     };
 
     /* Métodos para serem implementados */ 

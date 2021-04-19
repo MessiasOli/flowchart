@@ -10,7 +10,7 @@ export class Decoration_pathBase extends DecorationModel {
     this.node = null;
     this.ctr = new Controller_pathBase();
   
-    this.init = async function (newNode) {
+    this.init = async function (newNode, openDialog) {
       let svg = SingletonFlowchart.svg
       this.node = newNode
   
@@ -25,6 +25,7 @@ export class Decoration_pathBase extends DecorationModel {
           .style("width", newNode.width)
           .style("height", newNode.height)
           .attr("cursor", "grab")
+          .on("dblclick", () => openDialog(newNode))
           .style("fill", COLORS.ClearBlue)
           .call(this.setDrag())
       

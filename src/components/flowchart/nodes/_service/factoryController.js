@@ -9,6 +9,7 @@ import { ControllerArea } from "../area/controllerArea"
 import { ControllerSelection } from "../selection/controllerSelection"
 import { ControllerText } from "../text/controllerText"
 import { ControllerTriangle } from "../triangle/controllerTriangle"
+import { ControllerOnOff } from "../onOff/controllerOnOff"
 
 export let GetNewController = function (type){
   let types = new Types()
@@ -42,6 +43,9 @@ export let GetNewController = function (type){
 
     case types.Triangle:
       return new ControllerTriangle();
+
+    case types.OnOff:
+      return new ControllerOnOff;
 
     default: 
       throw `Factory: Erro - ${type} não é um classe disponível para ser instânciada`

@@ -1,8 +1,9 @@
 import { INode } from "../_interface/INode";
+import { GetExclusiveId } from "../../utils/tools"
 export class NodeModel extends INode {
   constructor(nameClass) {
     super(nameClass)
-    this.id = + new Date();
+    this.id = GetExclusiveId();
     this.idName = `${nameClass}-${this.id}`
     this.x = 0;
     this.y = 0;

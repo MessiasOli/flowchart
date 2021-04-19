@@ -79,6 +79,13 @@
         Triângulo
       </md-button>
 
+      <md-button 
+      class="btn-toolbar" 
+      @click="() => factoryCtr(this.typesNodes.OnOff).setNewNode(this.openDialog)">
+      <md-icon><img src="../../assets/icons/onOff.png" alt="" srcset=""/></md-icon>
+        On-Off
+      </md-button>
+
     </div>
     <div id="canvas"
     @mousedown="selectionArea.start($event)"
@@ -125,6 +132,7 @@ export default {
   watch: {},
   methods: {
     openDialog(node){
+      SingletonFlowchart.unSelectNode();
       this.nodeRefToDialog = node
       this.showDialog++;
     },
@@ -197,6 +205,7 @@ export default {
         ctr.loadNode(node, this.openDialog)
       });
       RequestSuscess("Sistema carregado");
+      console.log('Nodes :>> ', SingletonFlowchart.Memory.memory);
       console.log(`${nodes.length} elementos carregados!`)
       SingletonFlowchart.SaveStatus();
     },

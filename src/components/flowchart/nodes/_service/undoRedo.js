@@ -21,8 +21,8 @@ const GetUndo = function() {
   let nodes = undo.length > 0 ? undo[undo.length - 1] : undo;
   if(!nodes || nodes.length == 0) return;
 
-  redo.push(nodes);
   cache && redo.push(cache)
+  redo.push(nodes);
   undo = undo.slice(0, undo.length -1);
 
   saveLocalStorage(undo, redo);
@@ -93,7 +93,7 @@ export const clearStorage = function() {
 const getLocalStorage = () => {
   let undoRedo =  localStorage.undoRedo ? 
                   JSON.parse(localStorage.undoRedo) : 
-                  { undo: new Array(), redo: new Array(), cahce: null };
+                  { undo: new Array(), redo: new Array(), cahce: null }
   return [
     undoRedo.undo, 
     undoRedo.redo, 

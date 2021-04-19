@@ -25,9 +25,11 @@ export const ShortCuts = {
       }
       if (event.ctrlKey && event.key === 'z'){
         Undo(that);
+        that.unSelected();
       }
       if (event.ctrlKey && event.key === 'y'){
         Redo(that);
+        that.unSelected();
       }
     }
   },
