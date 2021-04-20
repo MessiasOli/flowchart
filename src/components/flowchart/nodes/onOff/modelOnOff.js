@@ -8,8 +8,8 @@ class OnOff extends NodeModel {
     super("OnOff");
     
     this.type = new Types().OnOff;
-    this.x = 0;
-    this.y = 0;
+    this.x = 200;
+    this.y = 300;
     this.description = "Descrição on-off"
     this.height = 30;
     this.width = 120;

@@ -86,6 +86,13 @@
         On-Off
       </md-button>
 
+      <md-button 
+      class="btn-toolbar" 
+      @click="() => factoryCtr(this.typesNodes.TokenValue).setNewNode(this.openDialog)">
+      <md-icon><img src="../../assets/icons/tokenValue.png" alt="" srcset=""/></md-icon>
+        On-Off
+      </md-button>
+
     </div>
     <div id="canvas"
     @mousedown="selectionArea.start($event)"

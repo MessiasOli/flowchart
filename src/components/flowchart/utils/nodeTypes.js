@@ -13,6 +13,8 @@ export class Types {
     this.Text = 10
     this.Triangle = 11
     this.OnOff = 12
+    this.TokenValue = 13
+
 
     this.Caption = [
       "Base",
@@ -28,6 +30,7 @@ export class Types {
       "Texto",
       "Trianglo",
       "Liga/Desliga",
+      "Valor"
     ];
   }
 }

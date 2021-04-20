@@ -18,7 +18,6 @@ class ControllerConnection extends ControllerModel {
     }
 
     this.loadNode = (node,calback ,createByParent) => {
-      console.log('createByParent :>> ', createByParent);
       if(createByParent){
         let conn = new Connection(node.x, node.y, node.parentId, node.color)
         conn.copyFrom(node);
