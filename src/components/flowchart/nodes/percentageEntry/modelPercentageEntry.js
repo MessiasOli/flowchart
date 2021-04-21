@@ -8,7 +8,7 @@ class PercentageEntry extends NodeModel {
     super("PercentageEntry");
     
     this.type = new Types().PercentageEntry
-    this.value = "0,00 %";
+    this.value = "0,00";
     this.x = 500;
     this.xText = () => this.x + (this.width / 2)
     this.y = 100;
@@ -22,7 +22,7 @@ class PercentageEntry extends NodeModel {
     };
 
     this.update = (nodeEdited) => {
-      this.value = NumberFormat(nodeEdited.value) + " %"
+      this.value = NumberFormat(nodeEdited.value)
       let lenghtOfFont = this.value.length * 9
       this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
       this.decorator.setTextAndAdjustWidth()

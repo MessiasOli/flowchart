@@ -4,6 +4,7 @@ import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { COLORS } from "../../utils/colors"
 //import { GetSVGCoordinates } from "../../utils/tools"
 import * as d3 from "d3"
+import { Link } from "../_model/GlobalDecoration";
 
 export class DecorationInputBox extends DecorationModel {
   constructor() {
@@ -11,6 +12,7 @@ export class DecorationInputBox extends DecorationModel {
     this.node = null;
     this.busyConnection = false;
     this.ctrConnection = new ControllerConnection()
+    this.link = null;
   
     this.init = async function (newNode, openDialog) {
       let svg = SingletonFlowchart.svg
@@ -54,6 +56,9 @@ export class DecorationInputBox extends DecorationModel {
           .style("width", newNode.widthRect)
           .style("height", newNode.heightRect)
           .node();
+
+          this.link = new Link();
+          this.link.initSelection({...newNode, x: newNode.xRect() + 4, y:newNode.yRect() + 4})
           
           g.append('circle')
             .attr("cx", newNode.xDot())
@@ -75,7 +80,7 @@ export class DecorationInputBox extends DecorationModel {
       let drag = d3
         .drag()
         .on("start", that.dragstarted)
-        .on("drag", that.dragged)
+        .on("drag", (event, d) => that.dragged(event, d))
         .on("end", that.dragended);
 
       return drag;
@@ -92,25 +97,7 @@ export class DecorationInputBox extends DecorationModel {
       d.y = event.y;
       SingletonFlowchart.clicked = false;
 
-      await d3.select(this)
-              .raise()
-              .attr("x", d.x)
-              .attr("y", d.y);
-
-      await d3.select(`#InputBox-${d.id} > rect`)
-              .raise()
-              .attr("x", d.xRect())
-              .attr("y", d.yRect());
-
-      await d3.select(`#InputBox-${d.id} > text`)
-              .raise()
-              .attr("x", d.xText())
-              .attr("y", d.yText());
-
-      await d3.select(`#InputBox-${d.id} > circle`)
-              .raise()
-              .attr("cx", d.xDot())
-              .attr("cy", d.yDot());
+      this.move();
 
       d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
       d.connectionPack.forEach(point => point.conn.moveFirstPoint({x: d.xDot(), y: d.yDot()}));
@@ -119,25 +106,27 @@ export class DecorationInputBox extends DecorationModel {
     this.move = async () => {
       let d = this.node;
 
-      await d3.select(`#${d.idName} > image`)
+      d3.select(`#${d.idName} > image`)
       .raise()
       .attr("x", d.x)
       .attr("y", d.y);
 
-      await d3.select(`#InputBox-${d.id} > rect`)
+      d3.select(`#InputBox-${d.id} > rect`)
             .raise()
             .attr("x", d.xRect())
             .attr("y", d.yRect());
 
-      await d3.select(`#InputBox-${d.id} > text`)
+      d3.select(`#InputBox-${d.id} > text`)
             .raise()
             .attr("x", d.xText())
             .attr("y", d.yText());
 
-      await d3.select(`#InputBox-${d.id} > circle`)
+      d3.select(`#InputBox-${d.id} > circle`)
             .raise()
             .attr("cx", d.xDot())
             .attr("cy", d.yDot());
+
+      await this.link.move((d.xRect()+ 4), (d.yRect() + 4))
     }
 
     this.dragended = function() {

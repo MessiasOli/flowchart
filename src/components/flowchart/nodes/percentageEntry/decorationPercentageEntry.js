@@ -2,11 +2,13 @@ import { DecorationModel } from "../_model/DecorationModel";
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3"
+import { Link } from "../_model/GlobalDecoration";
 
 export class DecorationPercentageEntry extends DecorationModel {
   constructor() {
     super("DecorationPercentageEntry")
     this.node = null;
+    this.link = null;
   
     this.init = async function (newNode, openDialog) {
       let svg = SingletonFlowchart.svg
@@ -38,9 +40,12 @@ export class DecorationPercentageEntry extends DecorationModel {
           .attr("cursor", "pointer")
           .attr("text-anchor", "middle")
           .style('stoke', COLORS.Black90)
-          .text(newNode.value)
+          .text(newNode.value + "%")
           .on('dblclick', () => openDialog(newNode))
           .node();
+
+          this.link = new Link();
+          this.link.initSelection({...newNode, x: newNode.x + 4, y:newNode.y + 4})
 
       return svg
     }
@@ -73,12 +78,14 @@ export class DecorationPercentageEntry extends DecorationModel {
       d.x = event.x;
       d.y = event.y -5;
       that.move()
+
     }
 
-    this.move = async () => {
+    this.move = () => {
       let d = this.node;
-      await d3.select(`#${d.idName} > rect`).raise().attr("x", d.x).attr("y", d.y);
-      await d3.select(`#${d.idName} > text`).raise().attr("x", (d.xText())).attr("y", (d.y + d.heightText));
+      d3.select(`#${d.idName} > rect`).raise().attr("x", d.x).attr("y", d.y);
+      d3.select(`#${d.idName} > text`).raise().attr("x", (d.xText())).attr("y", (d.y + d.heightText));
+      this.link.move(d.x + 4, d.y + 4)
     }
 
     this.dragended = function() {
@@ -93,7 +100,7 @@ export class DecorationPercentageEntry extends DecorationModel {
     this.setTextAndAdjustWidth = () => {
       d3.select(`#PercentageEntry-${this.node.id} > text`)
         .attr("x", this.node.xText())
-        .text(this.node.value)
+        .text(this.node.value + "%")
         .node()
 
       d3.select(`#PercentageEntry-${this.node.id} > rect`)

@@ -54,10 +54,9 @@ import { COLORS } from "../utils/colors"
     },
 
     watch:{
-      size(){ this.node.size = parseFloat(this.size) * 50 },
-      rotate(){ this.node.rotate = this.rotate > 360 ? 360 : this.rotate },
+      size() { this.node.size = parseFloat(this.size) * 50 },
+      rotate() { this.node.rotate = this.rotate > 360 ? 360 : this.rotate },
       color() { this.node.color = this.color }
-
     },
 
     mounted(){ }

@@ -20,7 +20,7 @@ export class Types {
       "Base",
       "Seleção",
       "Caixa de Insumos",
-      "Percentual de saída",
+      "Caixa percentual",
       "Caixa de Texto",
       "Ciculo",
       "Linha",

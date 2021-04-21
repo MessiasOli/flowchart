@@ -20,7 +20,7 @@
 
     data() {
       return {
-       value: null,
+       value: parseFloat(this.node.value.replace(",",".")),
       }
     },
 

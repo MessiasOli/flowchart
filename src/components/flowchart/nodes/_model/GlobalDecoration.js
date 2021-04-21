@@ -82,3 +82,45 @@ export const RemoveSelectionNodes = () => {
   d3.selectAll(".SelectionNode").remove();
   SingletonFlowchart.unSelectNode();
 }
+
+export class Link{
+  constructor(){
+    let svg = SingletonFlowchart.svg
+
+    this.initSelection = async function (link) {
+      this.node = link
+      console.log('link :>> ', link);
+
+      await svg.select(`#${link.idName}`)
+        .data([link])
+        .append("circle")
+        .attr("id", d => `Link-${d.id}`)
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y)
+        .attr("r", 2.5)
+        .style("width", 8)
+        .style("height", 8)
+        .transition()
+        .duration(1500)
+        .style("fill", d => d.linked ? COLORS.Green : COLORS.Black95)
+        .node();
+
+      SingletonFlowchart.SaveStatus();
+    }
+
+    this.move = (x, y) => {
+      let d = this.node;
+
+      d3.select(`#Link-${d.id}`)
+        .raise()
+        .attr("cx", x)
+        .attr("cy", y)
+        .node();
+    }
+
+    this.kill = function() {
+      d3.selectAll(`#Link-${this.node.id}`).remove()
+      SingletonFlowchart.SaveStatus();
+    };
+  }
+}
