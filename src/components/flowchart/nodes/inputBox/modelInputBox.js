@@ -26,6 +26,7 @@ class InputBox extends NodeModel {
     this.heightImg = 100;
     this.widthImg = 100;
     this.srcImg = require("@/assets/raw-material.png");
+    this.linked = {};
     
     this.decorate = async function(callback) {
       this.decorator = new DecorationInputBox();
@@ -46,6 +47,7 @@ class InputBox extends NodeModel {
       this.value = node.value;
       this.widthRect = node.widthRect;
       this.heightRect = node.heightRect
+      this.linked = node.linked
     }
 
     this.clone = () => {
@@ -60,8 +62,15 @@ class InputBox extends NodeModel {
       cloned.valueRect = this.valueRect;
       cloned.x = this.x;
       cloned.y = this.y;
+      cloned.linked = this.linked;
 
       return cloned
+    }
+
+    this.showConnected = (resultConn) => {
+      this.linked.in = resultConn.in
+      this.linked.out = resultConn.out
+      this.decorator.link.update(this)
     }
   }
 }

@@ -12,6 +12,7 @@ class TokenValue extends NodeModel {
     this.width = 40;
     this.yText = () => this.y + 17;
     this.value = "1.000,55";
+    this.linked = {};
     
     this.decorate = async function(callback) {
       this.decorator = new DecorationTokenValue();
@@ -26,13 +27,14 @@ class TokenValue extends NodeModel {
     }
 
     this.clone = () => {
-      let cloned = new Text();
+      let cloned = new TokenValue();
       cloned.id = this.id;
       cloned.idName = this.idName;
       cloned.type = this.type;
       cloned.x = this.x;
       cloned.y = this.y;
       cloned.value = this.value;
+      cloned.linked = this.linked;
 
       return cloned;
     }
@@ -40,6 +42,13 @@ class TokenValue extends NodeModel {
     this.copyFrom = (node) => {
       this.simpleCopyFrom(node);
       this.value = node.value;
+      this.linked = node.linked;
+    }
+
+    this.showConnected = (resultConn) => {
+      this.linked.in = resultConn.in
+      this.linked.out = resultConn.out
+      this.decorator.link.update(this)
     }
   }
 }

@@ -22,10 +22,13 @@ class Area extends NodeModel {
     }
 
     this.update = (nodeEdited) => {
-      this.nameOfArea = nodeEdited.nameOfArea
-      let lenghtOfFont = this.nameOfArea.length * 9
-      this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
-      this.decorator.setTextAndAdjustWidth()
+      if(this.nameOfArea != nodeEdited.nameOfArea){
+        this.nameOfArea = nodeEdited.nameOfArea
+        let lenghtOfFont = this.nameOfArea.length * 9
+        this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
+        this.decorator.setTextAndAdjustWidth()
+      }
+      this.decorator.establishConnection(nodeEdited.nodesConnected)
     }
 
     this.clone = () => {

@@ -102,7 +102,7 @@ export class Link{
         .style("height", 8)
         .transition()
         .duration(1500)
-        .style("fill", d => d.linked ? COLORS.Green : COLORS.Black95)
+        .style("fill", d => d.linked.in || d.linked.out ? COLORS.Green : COLORS.Black95)
         .node();
 
       SingletonFlowchart.SaveStatus();
@@ -115,6 +115,16 @@ export class Link{
         .raise()
         .attr("cx", x)
         .attr("cy", y)
+        .node();
+    }
+
+    this.update = () => {
+      let d = this.node;
+      console.log('d :>> ', d);
+      d3.select(`#Link-${d.id}`)
+        .transition()
+        .duration(1000)
+        .style("fill", d.linked.in || d.linked.out ? COLORS.Green : COLORS.Black95)
         .node();
     }
 

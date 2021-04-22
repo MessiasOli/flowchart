@@ -11,5 +11,5 @@ export const COLORS = {
   Black50: "#0005",
   Gray: "#6e7076",
   Red: "#ff0000",
-  Green: "#00FF00"
+  Green: "#00e500"
 }

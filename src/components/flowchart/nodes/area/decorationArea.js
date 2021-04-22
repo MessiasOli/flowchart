@@ -219,5 +219,12 @@ export class DecorationArea extends DecorationModel {
       d3.select(`#Area-${this.node.id} > rect`)
         .style("width", this.node.width)
     }
+
+    this.establishConnection = (table) => {
+      table.forEach(c => {
+        let n = SingletonFlowchart.Memory.getNodeById(c.id)[0]
+        n.showConnected({ in: c.in, out: c.out })
+      })
+    }
   }
 }

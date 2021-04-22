@@ -22,7 +22,7 @@
             <md-checkbox v-model="n.in" :disabled="n.out" class="md-primary" />
           </md-table-cell>
           <md-table-cell>
-            <md-checkbox v-model="n.out" :disabled="n.in" class="md-primary" />
+            <md-checkbox v-model="n.out" :disabled="n.in || n.isInputBox" class="md-primary" />
           </md-table-cell>
         </md-table-row>
       </md-table>
@@ -44,7 +44,7 @@ import { Types } from '../utils/nodeTypes';
 
     data() {
       return {
-       title: null,
+       title: this.node.nameOfArea,
        boolean: false,
        table: []
       }
@@ -60,11 +60,12 @@ import { Types } from '../utils/nodeTypes';
           this.table.push({
             id: obj.node.id,
             description: types.Caption[obj.node.type] + ": " + obj.node.value,
-            in: false,
-            out: false
+            in: obj.node.linked.in,
+            out: obj.node.linked.out,
+            isInputBox: types.InputBox == obj.node.type
           })
         })
-        console.log('table :>> ', this.table);
+        this.node.nodesConnected = this.table;
       }
     },
 

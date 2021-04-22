@@ -78,7 +78,7 @@ class MemoryRepository {
         return 0
       })
         return nodesNear
-      }
+    }
   }
 }
 
