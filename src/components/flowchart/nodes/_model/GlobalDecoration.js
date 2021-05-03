@@ -83,13 +83,14 @@ export const RemoveSelectionNodes = () => {
   SingletonFlowchart.unSelectNode();
 }
 
-export class Link{
+export class CircleLink{
   constructor(){
     let svg = SingletonFlowchart.svg
 
-    this.initSelection = async function (link) {
+    this.init = async function (link) {
       this.node = link
-      console.log('link :>> ', link);
+      console.log('CircleLink :>> ', link);
+      let isLinked = link.link.in.length > 0 || link.link.out.length > 0
 
       await svg.select(`#${link.idName}`)
         .data([link])
@@ -102,7 +103,7 @@ export class Link{
         .style("height", 8)
         .transition()
         .duration(1500)
-        .style("fill", d => d.linked.in || d.linked.out ? COLORS.Green : COLORS.Black95)
+        .style("fill", isLinked ? COLORS.Green : COLORS.Black95)
         .node();
 
       SingletonFlowchart.SaveStatus();
@@ -120,11 +121,12 @@ export class Link{
 
     this.update = () => {
       let d = this.node;
-      console.log('d :>> ', d);
+      let isLinked = (d.link.in.length > 0 || d.link.out.length > 0)
+
       d3.select(`#Link-${d.id}`)
         .transition()
         .duration(1000)
-        .style("fill", d.linked.in || d.linked.out ? COLORS.Green : COLORS.Black95)
+        .style("fill", isLinked ? COLORS.Green : COLORS.Black95)
         .node();
     }
 

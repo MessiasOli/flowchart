@@ -2,7 +2,7 @@ import { DecorationModel } from "../_model/DecorationModel";
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3"
-import { Link } from "../_model/GlobalDecoration";
+import { CircleLink } from "../_model/GlobalDecoration";
 
 export class DecorationPercentageEntry extends DecorationModel {
   constructor() {
@@ -44,7 +44,7 @@ export class DecorationPercentageEntry extends DecorationModel {
           .on('dblclick', () => openDialog(newNode))
           .node();
 
-          this.link = new Link();
+          this.link = new CircleLink();
           this.link.initSelection({...newNode, x: newNode.x + 4, y:newNode.y + 4})
 
       return svg
@@ -105,6 +105,15 @@ export class DecorationPercentageEntry extends DecorationModel {
 
       d3.select(`#PercentageEntry-${this.node.id} > rect`)
         .style("width", this.node.width)
+    }
+
+    this.establishConnection = (table) => {
+      console.log('table :>> ', table);
+      table.forEach(c => {
+        console.log('c :>> ', c);
+        let n = SingletonFlowchart.Memory.getNodeById(c.id)[0]
+        n.showConnected({ out: c.out, id: this.node.id })
+      })
     }
   }
 }

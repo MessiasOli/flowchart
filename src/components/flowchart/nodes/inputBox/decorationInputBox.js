@@ -2,9 +2,8 @@ import { DecorationModel } from "../_model/DecorationModel";
 import { ControllerConnection } from "../connection/controllerConnection"
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { COLORS } from "../../utils/colors"
-//import { GetSVGCoordinates } from "../../utils/tools"
 import * as d3 from "d3"
-import { Link } from "../_model/GlobalDecoration";
+import { CircleLink } from "../_model/GlobalDecoration";
 
 export class DecorationInputBox extends DecorationModel {
   constructor() {
@@ -38,27 +37,24 @@ export class DecorationInputBox extends DecorationModel {
             .node();
 
           g.append('text')
-          .attr("y", d => d.yText())
-          .attr("x", d => d.xText())
-          .attr("cursor", "pointer")
-          .attr("text-anchor", "middle")
-          .style('stoke', COLORS.Black90)
-          .text(newNode.value)
-          .on('dblclick', () => openDialog(newNode))
-          .node();
+            .attr("y", d => d.yText())
+            .attr("x", d => d.xText())
+            .attr("cursor", "pointer")
+            .attr("text-anchor", "middle")
+            .style('stoke', COLORS.Black90)
+            .text(newNode.link.value)
+            .on('dblclick', () => openDialog(newNode))
+            .node();
 
           g.append("rect")
-          .classed("InputBox", true)
-          .attr("x", (d) => d.xRect())
-          .attr("y", (d) => d.yRect())
-          .attr("stroke", COLORS.ClearBlue)
-          .style("fill", '#0000')
-          .style("width", newNode.widthRect)
-          .style("height", newNode.heightRect)
-          .node();
-
-          this.link = new Link();
-          this.link.initSelection({...newNode, x: newNode.xRect() + 4, y:newNode.yRect() + 4})
+            .classed("InputBox", true)
+            .attr("x", (d) => d.xRect())
+            .attr("y", (d) => d.yRect())
+            .attr("stroke", COLORS.ClearBlue)
+            .style("fill", '#0000')
+            .style("width", newNode.widthRect)
+            .style("height", newNode.heightRect)
+            .node();
           
           g.append('circle')
             .attr("cx", newNode.xDot())
@@ -69,6 +65,9 @@ export class DecorationInputBox extends DecorationModel {
             .style("fill", COLORS.CornflowerBlue)
             .call(this.setDragCircle(newNode))
             .node();
+          
+          this.link = new CircleLink();
+          this.link.init({...newNode, x: newNode.xRect() + 4, y:newNode.yRect() + 4})
 
           this.createConnectionPath(newNode)
       return svg
@@ -172,7 +171,7 @@ export class DecorationInputBox extends DecorationModel {
     this.setTextAndAdjustWidth = () => {
       d3.select(`#InputBox-${this.node.id} > text`)
         .attr("x", this.node.xText())
-        .text(this.node.value)
+        .text(this.node.link.value)
         .node()
 
       d3.select(`#InputBox-${this.node.id} > rect`)

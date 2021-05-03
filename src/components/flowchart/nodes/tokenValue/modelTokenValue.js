@@ -12,7 +12,7 @@ class TokenValue extends NodeModel {
     this.width = 40;
     this.yText = () => this.y + 17;
     this.value = "1.000,55";
-    this.linked = {};
+    this.linked = {out: false};
     
     this.decorate = async function(callback) {
       this.decorator = new DecorationTokenValue();
@@ -48,6 +48,13 @@ class TokenValue extends NodeModel {
     this.showConnected = (resultConn) => {
       this.linked.in = resultConn.in
       this.linked.out = resultConn.out
+      this.decorator.link.update(this)
+    }
+
+    this.showConnected = (resultConn) => {
+      console.log('resultConn :>> ', resultConn);
+      this.linked.out = resultConn.out
+      this.linked.id = resultConn.id
       this.decorator.link.update(this)
     }
   }

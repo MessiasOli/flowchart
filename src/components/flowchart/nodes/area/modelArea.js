@@ -1,6 +1,7 @@
 import { NodeModel } from "../_model/NodeModel";
 import { DecorationArea } from "./decorationArea"
 import { Types } from "../../utils/nodeTypes"
+import { Link } from "../_model/LinkModel";
 
 class Area extends NodeModel {
   constructor() {
@@ -15,6 +16,7 @@ class Area extends NodeModel {
     this.width = 110;
     this.nameOfArea = "Area"
     this.connectionPack = new Array();
+    this.link = new Link(this.id)
     
     this.decorate = async function(callback) {
       this.decorator = new DecorationArea();
@@ -42,6 +44,7 @@ class Area extends NodeModel {
       cloned.y = this.y
       cloned.nameOfArea = this.nameOfArea
       cloned.connectionPack = this.connectionPack.map(c => ({ conn: c.conn.clone(), dot: c.dot }))
+      cloned.link = this.link.clone();
 
       return cloned
     }
@@ -50,6 +53,7 @@ class Area extends NodeModel {
       this.simpleCopyFrom(node)
       this.connectionPack = node.connectionPack;
       this.nameOfArea = node.nameOfArea;
+      this.link.copyFrom(node.link);
     }
   }
 }

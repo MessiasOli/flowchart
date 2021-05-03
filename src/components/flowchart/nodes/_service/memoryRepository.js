@@ -71,9 +71,9 @@ class MemoryRepository {
         })
       })
       nodesNear.sort((n1, n2) => {
-        if(n1.nearX > n2.nearX && n1.nearY > n2.nearY)
+        if(n1.nearX > n2.nearX && n1.nearY >= n2.nearY)
         return 1;
-        if(n1.nearX < n2.nearX && n1.nearY < n2.nearY)
+        if(n1.nearX < n2.nearX && n1.nearY <= n2.nearY)
         return -1;
         return 0
       })

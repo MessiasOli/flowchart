@@ -4,14 +4,25 @@ const GetExclusiveId = () => {
 }
 
 const NumberFormat = (num) => {
-  num = (num+"").replace(".", ",")
-  num = num.toLocaleString('pt-br', {minimumFractionDigits: 2});
-  if (num.includes(',')) {
-    let decimal = num.split(',')
-    return decimal[1].lenght == 1 ? `${num}0` : num+''
+  if(num == null || num == undefined) return "0,00";
+
+  if((num+"").includes(",") && (num+"").includes(".")){
+    num = (num+"").replace(".", "").replace(",", ".")
   }else{
-    return `${num},00`;
+    num = (num+"").replace(",", ".")
   }
+
+  if(isNaN(num)){
+    try { 
+      return JSON.parse(num.toLocaleLowerCase()); }
+    catch { 
+      console.log('NumberFormat: Falha na converção de valor :>> ', num);
+      return num
+    }
+  }
+  num = parseFloat(num)
+  num = num.toLocaleString('pt-br', {minimumFractionDigits: 2, maximumFractionDigits: 4});
+  return num
 }
 
 const GetSixConections = (node) => {

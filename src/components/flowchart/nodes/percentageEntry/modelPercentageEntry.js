@@ -2,6 +2,7 @@ import { NodeModel } from "../_model/NodeModel";
 import { DecorationPercentageEntry } from "./decorationPercentageEntry"
 import { Types } from "../../utils/nodeTypes"
 import { NumberFormat } from "../../utils/tools"
+import { Link } from "../_model/LinkModel";
 
 class PercentageEntry extends NodeModel {
   constructor() {
@@ -15,7 +16,7 @@ class PercentageEntry extends NodeModel {
     this.height = 20;
     this.heightText = this.height - 5;
     this.width = 70;
-    this.linked = {};
+    this.link = new Link(this.id)
     
     this.decorate = async function(callback) {
       this.decorator = new DecorationPercentageEntry();
@@ -27,6 +28,8 @@ class PercentageEntry extends NodeModel {
       let lenghtOfFont = this.value.length * 9
       this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
       this.decorator.setTextAndAdjustWidth()
+      
+      this.decorator.establishConnection(nodeEdited.nodesConnected)
     }
 
     this.clone = function() {
@@ -37,7 +40,7 @@ class PercentageEntry extends NodeModel {
       cloned.value = this.value;
       cloned.x = this.x;
       cloned.y = this.y;
-      cloned.linked = this.linked;
+      cloned.link = this.link.map(l => l.clone())
 
       return cloned;
     }
@@ -46,12 +49,11 @@ class PercentageEntry extends NodeModel {
       this.simpleCopyFrom(node)
       this.value = node.value
       this.heightText = node.heightText
-      this.linked = node.linked
+      this.link = node.link.map(l => l.clone())
     }
 
     this.showConnected = (resultConn) => {
-      this.linked.in = resultConn.in
-      this.linked.out = resultConn.out
+      this.linked.linked = resultConn.id
       this.decorator.link.update(this)
     }
   }

@@ -223,7 +223,7 @@ export class DecorationArea extends DecorationModel {
     this.establishConnection = (table) => {
       table.forEach(c => {
         let n = SingletonFlowchart.Memory.getNodeById(c.id)[0]
-        n.showConnected({ in: c.in, out: c.out })
+        n.showConnected({ in: c.in, out: c.out, id: this.node.id })
       })
     }
   }

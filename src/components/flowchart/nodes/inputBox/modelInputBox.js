@@ -2,6 +2,7 @@ import { NodeModel } from "../_model/NodeModel";
 import { DecorationInputBox } from "./decorationInputBox"
 import { Types } from "../../utils/nodeTypes"
 import { NumberFormat } from "../../utils/tools"
+import { Link } from "../_model/LinkModel";
 
 class InputBox extends NodeModel {
   constructor() {
@@ -9,7 +10,6 @@ class InputBox extends NodeModel {
     
     this.connectionPack = new Array();
     this.type = new Types().InputBox;
-    this.value = "0,00";
     this.x = 500;
     this.y = 100;
     this.xRect = () => this.x + 12;
@@ -26,7 +26,7 @@ class InputBox extends NodeModel {
     this.heightImg = 100;
     this.widthImg = 100;
     this.srcImg = require("@/assets/raw-material.png");
-    this.linked = {};
+    this.link = new Link(this.id);
     
     this.decorate = async function(callback) {
       this.decorator = new DecorationInputBox();
@@ -34,13 +34,16 @@ class InputBox extends NodeModel {
     };
 
     this.update = (nodeEdited) => {
-      this.value = NumberFormat(nodeEdited.value)
-      let lenghtOfFont = this.value.length * 9
+      console.log('nodeEdited :>> ', nodeEdited);
+      this.link.value = NumberFormat(nodeEdited.link.value)
+      let lenghtOfFont = nodeEdited.link.value.length * 9
       this.widthRect = lenghtOfFont > this.widthRect ? lenghtOfFont : this.widthRect;
       this.decorator.setTextAndAdjustWidth()
+      this.decorator.link.update(this)
     }
 
     this.copyFrom = (node) => {
+      console.log('node :>> ', node);
       this.simpleCopyFrom(node);
       this.connectionPack = node.connectionPack;
       this.widthImg = node.widthImg
@@ -48,6 +51,7 @@ class InputBox extends NodeModel {
       this.widthRect = node.widthRect;
       this.heightRect = node.heightRect
       this.linked = node.linked
+      this.link.copyFrom(node.link)
     }
 
     this.clone = () => {
@@ -63,14 +67,9 @@ class InputBox extends NodeModel {
       cloned.x = this.x;
       cloned.y = this.y;
       cloned.linked = this.linked;
+      cloned.link = this.link.clone()
 
       return cloned
-    }
-
-    this.showConnected = (resultConn) => {
-      this.linked.in = resultConn.in
-      this.linked.out = resultConn.out
-      this.decorator.link.update(this)
     }
   }
 }
