@@ -24,21 +24,22 @@ class Area extends NodeModel {
     }
 
     this.update = (nodeEdited) => {
-      if(this.nameOfArea != nodeEdited.nameOfArea){
-        this.nameOfArea = nodeEdited.nameOfArea
-        let lenghtOfFont = this.nameOfArea.length * 9
-        this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
-        this.decorator.setTextAndAdjustWidth()
+      this.nameOfArea = nodeEdited.nameOfArea
+      let lenghtOfFont = this.nameOfArea.length * 9
+      this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
+      this.decorator.setTextAndAdjustWidth()
+      
+      if(nodeEdited.nodesConnected){
+        nodeEdited.nodesConnected.forEach(link => this.link.addOut(link))
+        this.decorator.updateConnection(nodeEdited.nodesConnected)
+        delete nodeEdited.nodesConnected
       }
-      
-      nodeEdited.nodesConnected.forEach(link => this.link.addOut(link))
-      nodeEdited.nodesDesconnected.forEach(link => this.link.removeOut(link))
 
-      this.decorator.updateConnection(nodeEdited.nodesConnected)
-      this.decorator.updateConnection(nodeEdited.nodesDesconnected)
-      
-      delete nodeEdited.nodesConnected
-      delete nodeEdited.nodesDesconnected
+      if(nodeEdited.nodesDesconnected){
+        nodeEdited.nodesDesconnected.forEach(link => this.link.removeOut(link))
+        this.decorator.updateConnection(nodeEdited.nodesDesconnected)
+        delete nodeEdited.nodesDesconnected
+      }
     }
 
     this.clone = () => {

@@ -3,7 +3,7 @@ import { ControllerTokenValue } from "../tokenValue/controllerTokenValue"
 import { SingletonFlowchart } from "../_service/singletonFlowchart";
 import { COLORS } from "../../utils/colors"
 import * as d3 from "d3"
-import { Link } from "../_model/GlobalDecoration";
+import { CircleLink } from "../_model/GlobalDecoration";
 
 export class DecorationTokenValue extends DecorationModel {
   constructor() {
@@ -30,8 +30,8 @@ export class DecorationTokenValue extends DecorationModel {
           .style("fill", COLORS.Black95)
           .call(this.setDrag())
 
-          this.link = new Link();
-          this.link.initSelection({...newNode, x: newNode.x - 4, y:newNode.y + 12})
+          this.link = new CircleLink();
+          this.link.init({...newNode, x: newNode.x - 4, y:newNode.y + 12})
           
           return svg
     }

@@ -1,6 +1,7 @@
 import { NodeModel } from "../_model/NodeModel";
 import { DecorationTokenValue } from "./decorationTokenValue"
 import { Types } from "../../utils/nodeTypes"
+import { Link } from "../_model/LinkModel";
 
 class TokenValue extends NodeModel {
   constructor() {
@@ -12,7 +13,7 @@ class TokenValue extends NodeModel {
     this.width = 40;
     this.yText = () => this.y + 17;
     this.value = "1.000,55";
-    this.linked = {out: false};
+    this.link = new Link(this.id)
     
     this.decorate = async function(callback) {
       this.decorator = new DecorationTokenValue();
@@ -35,6 +36,7 @@ class TokenValue extends NodeModel {
       cloned.y = this.y;
       cloned.value = this.value;
       cloned.linked = this.linked;
+      cloned.link = this.link.clone()
 
       return cloned;
     }
@@ -43,6 +45,7 @@ class TokenValue extends NodeModel {
       this.simpleCopyFrom(node);
       this.value = node.value;
       this.linked = node.linked;
+      this.link.copyFrom(node.link)
     }
 
     this.showConnected = (resultConn) => {
