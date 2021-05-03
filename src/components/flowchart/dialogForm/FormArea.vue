@@ -12,17 +12,18 @@
         <md-table-row>
           <md-table-head>ID</md-table-head>
           <md-table-head>Conexão</md-table-head>
-          <md-table-head>Entrada</md-table-head>
           <md-table-head>Saida</md-table-head>
         </md-table-row>
         <md-table-row v-for="n in table" :key="n.id">
           <md-table-cell>{{ n.id }}</md-table-cell>
           <md-table-cell>{{ n.description }}</md-table-cell>
           <md-table-cell>
-            <md-checkbox v-model="n.in" :disabled="n.out" class="md-primary" />
-          </md-table-cell>
-          <md-table-cell>
-            <md-checkbox v-model="n.out" :disabled="n.in || n.isInputBox" class="md-primary" />
+            <input 
+              type="checkbox" 
+              class="md-primary"
+              @click="() => { linkNode(n.node, n.linked) }" 
+              v-model="n.linked" 
+            />
           </md-table-cell>
         </md-table-row>
       </md-table>
@@ -51,21 +52,33 @@ import { Types } from '../utils/nodeTypes';
     },
 
     methods: {
+      linkNode(node, link){
+        console.log('this.node :>> ', this.node);
+        if (!this.node.nodesConnected) this.node.nodesConnected = new Array();
+        if (!this.node.nodesDesconnected) this.node.nodesDesconnected = new Array();
+
+        if(!link)
+          this.node.nodesConnected.push(node.link)
+        else{
+          this.node.nodesConnected = this.node.nodesConnected.filter(link => link.id != node.link.id)  
+          this.node.nodesDesconnected.push(node.link);
+        }
+
+        console.log('this.node :>> ', this.node);
+      },
+
       loadNodesNear() {
         let types = new Types();
-        let nodesEntries = [types.InputBox, types.PercentageEntry]
+        let nodesEntries = [types.PercentageEntry]
         let nodesNear = SingletonFlowchart.Memory.getNodesNear(this.node.x, this.node.y)
         nodesNear = nodesNear.filter(obj => nodesEntries.includes(obj.node.type))
         nodesNear.forEach(obj => {
           this.table.push({
-            id: obj.node.id,
             description: types.Caption[obj.node.type] + ": " + obj.node.value,
-            in: obj.node.linked.in,
-            out: obj.node.linked.out,
-            isInputBox: types.InputBox == obj.node.type
+            node: obj.node,
+            linked: this.node.link.out.includes(obj.node.id)
           })
         })
-        this.node.nodesConnected = this.table;
       }
     },
 

@@ -220,10 +220,10 @@ export class DecorationArea extends DecorationModel {
         .style("width", this.node.width)
     }
 
-    this.establishConnection = (table) => {
-      table.forEach(c => {
+    this.updateConnection = (links) => {
+      links.forEach(c => {
         let n = SingletonFlowchart.Memory.getNodeById(c.id)[0]
-        n.showConnected({ in: c.in, out: c.out, id: this.node.id })
+        n.showConnected()
       })
     }
   }

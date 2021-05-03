@@ -69,16 +69,11 @@ import { Types } from '../utils/nodeTypes';
       },
 
       loadNodesNear() {
-        console.log('LoadNodesNear :>> ');
-        console.log('this.node :>> ', this.node);
         let types = new Types();
         let nodesEntries = [types.Area]
         let nodesNear = SingletonFlowchart.Memory.getNodesNear(this.node.x, this.node.y)
         nodesNear = nodesNear.filter(obj => nodesEntries.includes(obj.node.type))
         nodesNear.forEach(obj => {
-          console.log('obj :>> ', obj.node.id);
-          console.log('this.node :>> ', this.node);
-          console.log('this.node.link.out.includes(obj.node.id),  :>> ', this.node.link.out.includes(obj.node.id), );
           this.table.push({
             description: types.Caption[obj.node.type] + ": " + obj.node.nameOfArea,
             node: obj.node,

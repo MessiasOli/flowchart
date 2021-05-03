@@ -40,7 +40,7 @@ class PercentageEntry extends NodeModel {
       cloned.value = this.value;
       cloned.x = this.x;
       cloned.y = this.y;
-      cloned.link = this.link.map(l => l.clone())
+      cloned.link = this.link.clone()
 
       return cloned;
     }
@@ -49,11 +49,10 @@ class PercentageEntry extends NodeModel {
       this.simpleCopyFrom(node)
       this.value = node.value
       this.heightText = node.heightText
-      this.link = node.link.map(l => l.clone())
+      this.link.copyFrom(node.link)
     }
 
-    this.showConnected = (resultConn) => {
-      this.linked.linked = resultConn.id
+    this.showConnected = () => {
       this.decorator.link.update(this)
     }
   }

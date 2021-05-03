@@ -27,13 +27,24 @@ export class Link{
 
     this.addIn = (link) => addLink(this.in, link)
     this.addOut = (link) => addLink(this.out, link)
-    this.removeIn = (link) => {this.in = this.in.filter(id => id != link.id)}
-    this.removeOut = (link) => {this.out = this.out.filter(id => id != link.id)}
+    this.removeIn = (link) => removeLink("in", link)
+    this.removeOut = (link) => removeLink("out", link)
+
+    let removeLink = (array, link) => {
+      if(array == "in"){
+        this.in = this.in.filter(id => id != link.id)  
+      }else{
+        this.out = this.out.filter(id => id != link.id)  
+      }
+      link.in = link.in.filter(id => id != this.id)
+    }
 
     let addLink = (array, link) => {
+      console.log('link :>> ', link);
       if(!array.includes(link.id)){
         array.push(link.id)
-        link.in.push(this.id)
+        if(!link.in.includes(this.id))
+          link.in.push(this.id)
       }
     }
   }

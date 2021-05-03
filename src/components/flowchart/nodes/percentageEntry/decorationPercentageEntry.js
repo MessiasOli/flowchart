@@ -45,7 +45,7 @@ export class DecorationPercentageEntry extends DecorationModel {
           .node();
 
           this.link = new CircleLink();
-          this.link.initSelection({...newNode, x: newNode.x + 4, y:newNode.y + 4})
+          this.link.init({...newNode, x: newNode.x + 4, y:newNode.y + 4})
 
       return svg
     }
