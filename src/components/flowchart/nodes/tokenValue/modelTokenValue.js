@@ -48,16 +48,7 @@ class TokenValue extends NodeModel {
       this.link.copyFrom(node.link)
     }
 
-    this.showConnected = (resultConn) => {
-      this.linked.in = resultConn.in
-      this.linked.out = resultConn.out
-      this.decorator.link.update(this)
-    }
-
-    this.showConnected = (resultConn) => {
-      console.log('resultConn :>> ', resultConn);
-      this.linked.out = resultConn.out
-      this.linked.id = resultConn.id
+    this.showConnected = () => {
       this.decorator.link.update(this)
     }
   }

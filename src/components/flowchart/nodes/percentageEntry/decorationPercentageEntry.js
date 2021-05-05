@@ -65,7 +65,6 @@ export class DecorationPercentageEntry extends DecorationModel {
     this.dragstarted = function(event, d) {
       SingletonFlowchart.clicked = true
       SingletonFlowchart.selectNode(d.idName);
-      console.log('d :>> ', d);
   
       d3.select(this)
         .attr("stroke", "black")
@@ -107,12 +106,10 @@ export class DecorationPercentageEntry extends DecorationModel {
         .style("width", this.node.width)
     }
 
-    this.establishConnection = (table) => {
-      console.log('table :>> ', table);
-      table.forEach(c => {
-        console.log('c :>> ', c);
+    this.updateConnection = (links) => {
+      links.forEach(c => {
         let n = SingletonFlowchart.Memory.getNodeById(c.id)[0]
-        n.showConnected({ out: c.out, id: this.node.id })
+        n.showConnected()
       })
     }
   }

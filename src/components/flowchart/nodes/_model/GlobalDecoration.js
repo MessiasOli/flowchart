@@ -89,7 +89,6 @@ export class CircleLink{
 
     this.init = async function (link) {
       this.node = link
-      console.log('CircleLink :>> ', link);
       let isLinked = link.link.in.length > 0 || link.link.out.length > 0
 
       await svg.select(`#${link.idName}`)

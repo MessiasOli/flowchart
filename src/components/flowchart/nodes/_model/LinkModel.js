@@ -40,12 +40,12 @@ export class Link{
     }
 
     let addLink = (array, link) => {
-      console.log('link :>> ', link);
       if(!array.includes(link.id)){
         array.push(link.id)
         if(!link.in.includes(this.id))
           link.in.push(this.id)
       }
+      console.log('link associado :>> ', link);
     }
   }
 }

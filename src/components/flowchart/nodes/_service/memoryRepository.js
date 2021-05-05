@@ -65,16 +65,15 @@ class MemoryRepository {
       let nodesNear = new Array ();
       this.memory.forEach(n => {
         nodesNear.push({ 
-          nearX: Math.abs(n.x - x),
-          nearY: Math.abs(n.y - y),
+          near: Math.abs(n.x - x) + Math.abs(n.y - y),
           node: n
         })
       })
       nodesNear.sort((n1, n2) => {
-        if(n1.nearX > n2.nearX && n1.nearY >= n2.nearY)
-        return 1;
-        if(n1.nearX < n2.nearX && n1.nearY <= n2.nearY)
-        return -1;
+        if(n1.near > n2.near)
+          return 1;
+        if(n1.near < n2.near)
+          return -1;
         return 0
       })
         return nodesNear

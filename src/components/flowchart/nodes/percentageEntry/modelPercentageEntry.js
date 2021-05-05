@@ -29,7 +29,17 @@ class PercentageEntry extends NodeModel {
       this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
       this.decorator.setTextAndAdjustWidth()
       
-      this.decorator.establishConnection(nodeEdited.nodesConnected)
+      if(nodeEdited.nodesConnected){
+        nodeEdited.nodesConnected.forEach(link => this.link.addOut(link))
+        this.decorator.updateConnection(nodeEdited.nodesConnected)
+        delete nodeEdited.nodesConnected
+      }
+
+      if(nodeEdited.nodesDesconnected){
+        nodeEdited.nodesDesconnected.forEach(link => this.link.removeOut(link))
+        this.decorator.updateConnection(nodeEdited.nodesDesconnected)
+        delete nodeEdited.nodesDesconnected
+      }
     }
 
     this.clone = function() {
