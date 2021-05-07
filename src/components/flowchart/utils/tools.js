@@ -25,6 +25,10 @@ const NumberFormat = (num) => {
   return num
 }
 
+const ParseNumber = (stNum) => {
+  return parseFloat(stNum.replace(".", "").replace(",", "."))
+}
+
 const GetSixConections = (node) => {
   const halfWidth = node.width / 6;
   const halfHeight = (node.height) / 6;
@@ -171,5 +175,6 @@ export {
   GetCoordinateDiff,
   SetArea,
   GetExtremesCoordinates,
-  GetCoordinatePath
+  GetCoordinatePath,
+  ParseNumber
 }

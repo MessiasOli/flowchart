@@ -64,6 +64,8 @@ class Area extends NodeModel {
       this.nameOfArea = node.nameOfArea;
       this.link.copyFrom(node.link);
     }
+
+    this.warn = (warn) => this.decorator.showWarining(warn)
   }
 }
 

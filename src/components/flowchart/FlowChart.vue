@@ -4,23 +4,31 @@
       id="btn-plus1"
       @click="openToolbar()"
       class="md-fab md-mini md-primary"
+      title="Adicionar elemento"
     >
       <md-icon>+</md-icon>
     </md-button>
+
     <md-button
-      id="btn-plus2"
-      @click="removeNode()"
-      class="md-fab md-mini md-accent"
+      id="btn-save"
+      @click="saveFlowchart()"
+      class="md-fab md-mini md-primary"
+      title="Salvar"
     >
-      <md-icon>-</md-icon>
+      <md-icon>
+        <img src="@/assets/icons/save.png" alt="Salvar" />
+      </md-icon>
     </md-button>
 
     <md-button
-      id="btn-plus3"
-      @click="saveFlowchart()"
-      class="md-fab md-mini md-accent"
+      id="btn-play"
+      @click="trySimulation()"
+      class="md-fab md-mini md-plain"
+      title="Calcular" 
     >
-      <md-icon>S</md-icon>
+      <md-icon>
+        <img src="@/assets/icons/play.png" alt="Calcular">
+      </md-icon>
     </md-button>
 
     <div class="toolbar">
@@ -113,6 +121,7 @@ import * as d3 from "d3";
 import axios from "axios";
 import { HttpApiNode,  RequestSuscess, RequestError } from "../../utils/global"
 import { SingletonFlowchart } from "./nodes/_service/singletonFlowchart";
+import { Simulation } from "./nodes/_service/simulation";
 import { GetNewController } from "./nodes/_service/factoryController";
 import { Selection } from "./nodes/_service/selectionService"
 import { ShortCuts } from "./utils/shortCuts"
@@ -138,6 +147,12 @@ export default {
   },
   watch: {},
   methods: {
+    trySimulation(){
+      console.log("Simulando...")
+      let execute = new Simulation()
+      execute.validateFlowsheet();
+    },
+
     openDialog(node){
       SingletonFlowchart.unSelectNode();
       this.nodeRefToDialog = node
@@ -255,18 +270,6 @@ export default {
   border: 3px solid #222;
 }
 
-#btn-plus1 {
-  position: fixed;
-  top: 100px;
-  left: 50px;
-}
-
-#btn-plus3 {
-  position: fixed;
-  top: 150px;
-  left: 50px;
-}
-
 .toolbar {
   display: flex;
   flex-direction: column;
@@ -282,12 +285,25 @@ export default {
   transition-duration: 0.5s;
 }
 
+#btn-plus1 {
+  position: fixed;
+  top: 100px;
+  left: 50px;
+}
+
 #btn-plus2 {
   position: fixed;
   top: 150px;
   left: 58px;
 }
-#btn-plus3 {
+
+#btn-save {
+  position: fixed;
+  top: 150px;
+  left: 58px;
+}
+
+#btn-play {
   position: fixed;
   top: 200px;
   left: 58px;

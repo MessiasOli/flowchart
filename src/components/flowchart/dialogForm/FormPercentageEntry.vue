@@ -74,20 +74,19 @@ import { Types } from '../utils/nodeTypes';
         let types = new Types();
         let nodesEntries = [types.TokenValue]
         let nodesNear = SingletonFlowchart.Memory.getNodesNear(this.node.x, this.node.y)
+
         nodesNear = nodesNear.filter(obj => {
           if(nodesEntries.includes(obj.node.type)){
-            console.log('obj.node :>> ', obj.node);
             if(obj.node.link.in.length == 0){
-              console.log("Entrei 0")
               return true;
             }
             if(obj.node.link.in.includes(this.node.id)){
-              console.log("Entrei id")
               return true;
             }
             return false;
           }
         })
+        
         nodesNear.forEach(obj => {
           this.table.push({
             description: types.Caption[obj.node.type] + ": " + obj.node.value,

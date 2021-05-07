@@ -85,6 +85,7 @@ export class DecorationArea extends DecorationModel {
 
     this.drag = async function() {
       let d = this.node;
+
       await d3.select(`.${d.idName}`)
         .raise()
         .attr("x", (d.x))
@@ -94,6 +95,11 @@ export class DecorationArea extends DecorationModel {
         .raise()
         .attr("x", (d.xText()))
         .attr("y", (d.yText()));
+
+      d3.select(`#${d.idName} > image`)
+        .raise()
+        .attr("x", d.x + d.width - 23)
+        .attr("y", d.y + 2);
 
       d.connectionPack = d.connectionPack.filter(point => d.decorator.ctrConnection.isAlive(point.conn))
       d.connectionPack.forEach(point => {
@@ -114,6 +120,11 @@ export class DecorationArea extends DecorationModel {
         .raise()
         .attr("x", (d.xText()))
         .attr("y", (d.yText()));
+
+      d3.select(`#${d.idName} > image`)
+        .raise()
+        .attr("x", d.x + d.width - 23)
+        .attr("y", d.y + 2);
 
       let conn = new Array();
       await SingletonFlowchart.selectedNodes.forEach(n => {
@@ -225,6 +236,30 @@ export class DecorationArea extends DecorationModel {
         let n = SingletonFlowchart.Memory.getNodeById(c.id)[0]
         n.showConnected()
       })
+    }
+
+    this.showWarining = (result) => {
+      let srcImg = '' 
+
+      if(result < 0){
+        srcImg = require("@/assets/icons/attention.png")
+      }else if(result > 0){
+        srcImg = require("@/assets/icons/error.png")
+      }else{
+        srcImg = require("@/assets/icons/ok.png")
+      }
+
+      let d = this.node;
+      d3.select(`#${d.idName} > image`).remove()
+
+      d3.select(`#${d.idName}`)
+        .append("image")
+        .attr('width', 20)
+        .attr('height', 20)
+        .attr("x", d.x + d.width - 23)
+        .attr("y", d.y + 2)
+        .attr("xlink:href", srcImg)
+        .node();
     }
   }
 }
