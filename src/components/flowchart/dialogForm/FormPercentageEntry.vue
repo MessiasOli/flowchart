@@ -56,7 +56,6 @@ import { Types } from '../utils/nodeTypes';
 
     methods: {
       linkNode(node, link){
-        console.log('this.node :>> ', this.node);
         if (!this.node.nodesConnected) this.node.nodesConnected = new Array();
         if (!this.node.nodesDesconnected) this.node.nodesDesconnected = new Array();
 
@@ -66,8 +65,6 @@ import { Types } from '../utils/nodeTypes';
           this.node.nodesConnected = this.node.nodesConnected.filter(link => link.id != node.link.id)  
           this.node.nodesDesconnected.push(node.link);
         }
-
-        console.log('this.node :>> ', this.node);
       },
 
       loadNodesNear() {
@@ -89,7 +86,7 @@ import { Types } from '../utils/nodeTypes';
         
         nodesNear.forEach(obj => {
           this.table.push({
-            description: types.Caption[obj.node.type] + ": " + obj.node.value,
+            description: types.Caption[obj.node.type] + ": " + obj.node.link.value,
             node: obj.node,
             linked: this.node.link.out.includes(obj.node.id)
           })

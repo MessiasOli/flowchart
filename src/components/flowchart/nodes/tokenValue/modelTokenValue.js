@@ -12,20 +12,15 @@ class TokenValue extends NodeModel {
     this.y = 200;
     this.width = 40;
     this.yText = () => this.y + 17;
-    this.value = "1.000,55";
     this.link = new Link(this.id)
+    this.link.value = "1.000,55";
     
     this.decorate = async function(callback) {
       this.decorator = new DecorationTokenValue();
       await this.decorator.init(this, callback)
     };
 
-    this.update = (nodeEdited) => {
-      this.text = nodeEdited.text
-      let lenghtOfFont = this.text.length * 7
-      this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
-      this.decorator.setTextAndAdjustWidth()
-    }
+    this.updateValue = () => this.decorator.updateValue()
 
     this.clone = () => {
       let cloned = new TokenValue();
@@ -34,7 +29,6 @@ class TokenValue extends NodeModel {
       cloned.type = this.type;
       cloned.x = this.x;
       cloned.y = this.y;
-      cloned.value = this.value;
       cloned.linked = this.linked;
       cloned.link = this.link.clone()
 
@@ -43,7 +37,6 @@ class TokenValue extends NodeModel {
 
     this.copyFrom = (node) => {
       this.simpleCopyFrom(node);
-      this.value = node.value;
       this.linked = node.linked;
       this.link.copyFrom(node.link)
     }

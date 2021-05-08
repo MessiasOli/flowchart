@@ -21,7 +21,7 @@ export class DecorationTokenValue extends DecorationModel {
           .attr("id", `TokenValue-${newNode.id}`)
           .attr("cursor", "grab")
           .append("text")
-          .text(d => d.value)
+          .text(d => d.link.value)
           .classed("TokenValue", true)
           .attr("cursor", "pointer")
           .attr("x",  d => d.x)
@@ -80,9 +80,9 @@ export class DecorationTokenValue extends DecorationModel {
       SingletonFlowchart.SaveStatus();
     };
 
-    this.setTextAndAdjustWidth = () => {
-      d3.select(`#Text-${this.node.id} > text`)
-        .text(this.node.value)
+    this.updateValue = () => {
+      d3.select(`#${this.node.idName} > text`)
+        .text(this.node.link.value)
         .node()
     }
   }
