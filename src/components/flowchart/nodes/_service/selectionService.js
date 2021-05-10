@@ -75,6 +75,7 @@ export class Selection {
           let newNode = await node.clone();
 
           newNode.id = GetExclusiveId();
+          newNode.link.id = newNode.id
           newNode.idName = `${node.idName.split('-')[0]}-${newNode.id}`
 
           newNode.x = xSvg - Math.abs(newNode.x - xSvg) + 200

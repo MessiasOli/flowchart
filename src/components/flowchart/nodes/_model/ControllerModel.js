@@ -18,8 +18,8 @@ export class ControllerModel extends IController {
       }
 
       await node.decorate(callback);
+      
       this.addNode(node)
-
       node.isSelected();
     }
   }

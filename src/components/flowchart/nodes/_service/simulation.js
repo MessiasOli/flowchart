@@ -7,6 +7,11 @@ export class Simulation{
   constructor(){
     let types = new Types()
     let simulationNodes = new Map();
+    let calculatedAreaEntry = new Map();
+    let lastValue = new Map();
+    let sameValue = new Map();
+    let simulationAmount = 0
+    let interactionsLimit = 50
 
     this.validateFlowsheet = () => {
       loadNodesToSitmulation();
@@ -28,13 +33,33 @@ export class Simulation{
     }
 
     let startCalc = () => {
+      simulationAmount++
       simulationNodes.get(types.InputBox).forEach(n => {
         n.link.out.forEach(id => {
+          wasCalculated(id)
           let area = simulationNodes.get(types.Area).filter(n => n.id == id)[0]
           area.link.value += ParseNumber(n.link.value)
+          setValue(area.id, n.link.value)
         })
       })
       calcArea()
+
+      if(!foundSolution()){
+        resetEntries();
+        startCalc()
+      }
+    }
+
+    let foundSolution = () => {
+      if(simulationAmount == interactionsLimit){
+        RequestError(`Solução não encontrada em ${interactionsLimit} interações, tente revisar o planejamento.`)
+        return true
+      }
+
+      if(!checkSameValues()){
+        return false
+      }
+      return true
     }
 
     let calcArea = () => {
@@ -42,7 +67,9 @@ export class Simulation{
         if(n.link.value > 0){
           n.link.out.forEach(id => {
             let percentageEntry = simulationNodes.get(types.PercentageEntry).filter(n => n.id == id)[0]
-            percentageEntry.link.value = n.link.value * (ParseNumber(percentageEntry.value) / 100)
+            let value = n.link.value * (ParseNumber(percentageEntry.value) / 100)
+            percentageEntry.link.value = value
+            setValue(percentageEntry.id, value)
           })
         }
       })
@@ -50,6 +77,7 @@ export class Simulation{
     }
 
     let calcPercentageEntry = () => {
+      let areaChanged = false
       simulationNodes.get(types.PercentageEntry).forEach(n => {
         if(n.link.value > 0){
           n.link.out.forEach(id => {
@@ -62,14 +90,30 @@ export class Simulation{
             else
             {
               let area = simulationNodes.get(types.Area).filter(n => n.id == id)[0]
-              if(area){
-                area.value += n.link.value
-                calcArea()
+              if(area && !wasCalculated(n.id)){
+                area.link.value += n.link.value
+                areaChanged = true
               } 
             }
           })
         }
       })
+
+      if(areaChanged){
+        calcArea()
+      }
+    }
+
+    let setValue = (id, value) => {
+      if(lastValue.get(id) == value){
+        sameValue.delete(id)
+        sameValue.set(id, true)
+      }else{
+        sameValue.delete(id)
+        sameValue.set(id, false)
+        lastValue.delete(id)
+        lastValue.set(id, value)
+      }
     }
 
     let validateOutPutArea = () => {
@@ -110,17 +154,20 @@ export class Simulation{
       let inputBox = new Array();
       let percentageEntry = new Array();
       let tokenValue = new Array();
+      calculatedAreaEntry.clear();
 
       SingletonFlowchart.Memory.memory.forEach(n => {
         if(n.type == types.InputBox){
           inputBox.push(n)
         }
         if(n.type == types.Area){
+          n.link.in.forEach(id => calculatedAreaEntry.set(id, false))
           n.link.value = 0;
           area.push(n)
         }
         if(n.type == types.PercentageEntry){
           percentageEntry.push(n)
+          initMapsValues(n.id)
         }
         if(n.type == types.TokenValue){
           n.link.value = 0;
@@ -133,6 +180,46 @@ export class Simulation{
       simulationNodes.set(types.InputBox, inputBox)
       simulationNodes.set(types.PercentageEntry, percentageEntry)
       simulationNodes.set(types.TokenValue, tokenValue)
+    }
+
+    let wasCalculated = (id) => {
+      if(calculatedAreaEntry.get(id))
+        return true
+
+      calculatedAreaEntry.delete(id)
+      calculatedAreaEntry.set(id, true)
+      return false
+    }
+
+    let initMapsValues = (id) => {
+      if(!lastValue.has(id)){
+        lastValue.set(id, 0)
+        sameValue.set(id, false)
+      }
+    }
+
+    let checkSameValues = () => {
+      let result = true
+      sameValue.forEach( value => {
+        if(!value){
+          result = false;
+        }
+      })
+      console.log("Retorno: ", result)
+      return result
+    }
+
+    let resetEntries = () => {
+      loadNodesToSitmulation();
+      let keys = calculatedAreaEntry.keys()
+      let newMap = new Map()
+      let result;
+      do{
+        result = keys.next()
+        if(!result.done)
+        newMap.set(result.value, false)
+      }while(!result.done)
+      calculatedAreaEntry = newMap
     }
   }
 }

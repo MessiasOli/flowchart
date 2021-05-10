@@ -69,11 +69,10 @@ import { Types } from '../utils/nodeTypes';
 
       loadNodesNear() {
         let types = new Types();
-        let nodesEntries = [types.TokenValue]
         let nodesNear = SingletonFlowchart.Memory.getNodesNear(this.node.x, this.node.y)
 
         nodesNear = nodesNear.filter(obj => {
-          if(nodesEntries.includes(obj.node.type)){
+          if(obj.node.type == types.TokenValue){
             if(obj.node.link.in.length == 0){
               return true;
             }
@@ -82,15 +81,30 @@ import { Types } from '../utils/nodeTypes';
             }
             return false;
           }
+
+          if(obj.node.type == types.Area){
+            if(this.node.link.in.includes(obj.node.id))
+              return false
+
+            if(obj.node.link.in.includes(this.node.id)){
+              return true;
+            }
+            return true;
+          }
         })
         
         nodesNear.forEach(obj => {
           this.table.push({
-            description: types.Caption[obj.node.type] + ": " + obj.node.link.value,
+            description: `${types.Caption[obj.node.type]} 
+                          :  
+                          ${obj.node.type == types.TokenValue ? 
+                          obj.node.link.value : 
+                          obj.node.nameOfArea}`,
             node: obj.node,
             linked: this.node.link.out.includes(obj.node.id)
           })
         })
+          console.log('this.table :>> ', this.table);
       }
     },
 

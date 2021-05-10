@@ -53,7 +53,6 @@ import { Types } from '../utils/nodeTypes';
 
     methods: {
       linkNode(node, link){
-        console.log('this.node :>> ', this.node);
         if (!this.node.nodesConnected) this.node.nodesConnected = new Array();
         if (!this.node.nodesDesconnected) this.node.nodesDesconnected = new Array();
 
@@ -63,15 +62,25 @@ import { Types } from '../utils/nodeTypes';
           this.node.nodesConnected = this.node.nodesConnected.filter(link => link.id != node.link.id)  
           this.node.nodesDesconnected.push(node.link);
         }
-
-        console.log('this.node :>> ', this.node);
       },
 
       loadNodesNear() {
         let types = new Types();
         let nodesEntries = [types.PercentageEntry]
         let nodesNear = SingletonFlowchart.Memory.getNodesNear(this.node.x, this.node.y)
-        nodesNear = nodesNear.filter(obj => nodesEntries.includes(obj.node.type))
+
+        nodesNear = nodesNear.filter(obj => {
+          if(nodesEntries.includes(obj.node.type)){
+            if(obj.node.link.in.length == 0){
+              return true;
+            }
+            if(obj.node.link.in.includes(this.node.id)){
+              return true;
+            }
+            return false;
+          }
+        })
+        console.log('nodesNear :>> ', nodesNear);
         nodesNear.forEach(obj => {
           this.table.push({
             description: types.Caption[obj.node.type] + ": " + obj.node.value,

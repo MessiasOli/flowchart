@@ -52,7 +52,7 @@ class Area extends NodeModel {
       cloned.x = this.x
       cloned.y = this.y
       cloned.nameOfArea = this.nameOfArea
-      cloned.connectionPack = this.connectionPack.map(c => ({ conn: c.conn.clone(), dot: c.dot }))
+      cloned.connectionPack = this.connectionPack.filter(c => c.conn.isAlive()).map(c => ({ conn: c.conn.clone(), dot: c.dot }))
       cloned.link = this.link.clone();
 
       return cloned

@@ -31,6 +31,7 @@
 <script>
 import { SingletonFlowchart } from "../nodes/_service/singletonFlowchart"
 import { Types } from '../utils/nodeTypes';
+import { ParseNumber } from '../utils/tools'
 
   export default {
     props: {
@@ -42,7 +43,7 @@ import { Types } from '../utils/nodeTypes';
 
     data() {
       return {
-       value: parseFloat(this.node.link.value.replace(".", "").replace(",",".")),
+       value: ParseNumber(this.node.link.value),
        table: [],
        checked: true,
       }

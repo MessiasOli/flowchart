@@ -12,10 +12,11 @@ export class NodeModel extends INode {
     this.height = 20;
     this.width = 120;
     this.decorator = null;
-    this.link = [new Link({id: this.id})];
+    this.link = new Link(this.id);
 
     this.simpleCopyFrom = function (node) {
       this.id = node.id;
+      this.link.id = node.id;
       this.idName = node.idName
       this.type = node.type;
       this.x = node.x;

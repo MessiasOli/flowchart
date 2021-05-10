@@ -50,6 +50,8 @@ class Connection extends NodeModel {
       return cloned;
     }
 
+    this.isAlive = () => document.querySelectorAll("#dot-" + this.id).length ? true : false
+
     this.copyFrom = (node) => {
       this.simpleCopyFrom(node);
       this.color = node.color;

@@ -31,13 +31,15 @@ class PercentageEntry extends NodeModel {
       
       if(nodeEdited.nodesConnected){
         nodeEdited.nodesConnected.forEach(link => this.link.addOut(link))
-        this.decorator.updateConnection(nodeEdited.nodesConnected)
+        let tokens = nodeEdited.nodesDesconnected.filter(n => n.type == new Types().TokenValue)
+        this.decorator.updateConnection(tokens)
         delete nodeEdited.nodesConnected
       }
 
       if(nodeEdited.nodesDesconnected){
         nodeEdited.nodesDesconnected.forEach(link => this.link.removeOut(link))
-        this.decorator.updateConnection(nodeEdited.nodesDesconnected)
+        let tokens = nodeEdited.nodesDesconnected.filter(n => n.type == new Types().TokenValue)
+        this.decorator.updateConnection(tokens)
         delete nodeEdited.nodesDesconnected
       }
     }

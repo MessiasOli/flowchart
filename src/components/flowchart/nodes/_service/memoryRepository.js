@@ -12,12 +12,15 @@ class MemoryRepository {
     this.removeNode = async (id) =>{
       this.memory = this.memory.filter(n => {
           if(n.id == id){
-          n.kill();
-          return false;
+            removeLink(id)
+            n.kill();
+            return false;
           }
           return true
       });
     }
+
+    let removeLink = (id) => this.memory.forEach(n => n.link.remove(id))
 
     this.getNodesBetween = (c) => {
       let x1

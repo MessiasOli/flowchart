@@ -30,6 +30,12 @@ export class Link{
     this.removeIn = (link) => removeLink("in", link)
     this.removeOut = (link) => removeLink("out", link)
 
+    this.remove = (removeId) => {
+      console.log('removeId :>> ', removeId);
+      this.in = this.in.filter(id => id != removeId)
+      this.out = this.out.filter(id => id != removeId)
+    }
+
     let removeLink = (array, link) => {
       if(array == "in"){
         this.in = this.in.filter(id => id != link.id)  
