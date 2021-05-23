@@ -8,31 +8,38 @@
 
       <span><hr></span>
 
-      <md-table v-if="table.length > 0" class="table">
-        <md-table-row>
-          <md-table-head>Conexão</md-table-head>
-          <md-table-head>Vincular</md-table-head>
-        </md-table-row>
-        <md-table-row v-for="n in table" :key="n.id">
-          <md-table-cell>{{ n.description }}</md-table-cell>
-          <md-table-cell>
-            <input 
-              type="checkbox" 
-              class="md-primary"
-              @click="() => { linkNode(n.node, n.linked) }" 
-              v-model="n.linked" 
-            />
-          </md-table-cell>
-        </md-table-row>
-      </md-table>
+      <div class="selection" v-if="table.length > 0">
+        <label>Area</label><br>
+        <span class="areas">
+          <Area 
+            v-for="n in table" :key="n.id"
+            class="area"
+            :id= n.node.id
+            :name= n.description
+            :activated= n.linked
+            @click="() => { linkNode(n.node, n.linked) }"
+          />
+        </span>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
+import Area from "../../templates/Area"
 import { SingletonFlowchart } from '../nodes/_service/singletonFlowchart';
 import { Types } from '../utils/nodeTypes';
   export default {
+    components:{
+      Area
+    },
+
+    provide(){
+      return{
+        changeActive : this.changeActive
+      }
+    },
+
     props: {
       node: {
         type: Object,
@@ -55,11 +62,18 @@ import { Types } from '../utils/nodeTypes';
     },
 
     methods: {
+      changeActive(id, linked){
+        console.log(id, linked)
+        let obj =  this.table.find(obj => obj.node.id == id)
+        this.linkNode(obj.node, linked)
+      },
+
       linkNode(node, link){
+        console.log('oi :>> ', this.node);
         if (!this.node.nodesConnected) this.node.nodesConnected = new Array();
         if (!this.node.nodesDesconnected) this.node.nodesDesconnected = new Array();
 
-        if(!link)
+        if(link)
           this.node.nodesConnected.push(node.link)
         else{
           this.node.nodesConnected = this.node.nodesConnected.filter(link => link.id != node.link.id)  
@@ -95,9 +109,7 @@ import { Types } from '../utils/nodeTypes';
         
         nodesNear.forEach(obj => {
           this.table.push({
-            description: `${types.Caption[obj.node.type]} 
-                          :  
-                          ${obj.node.type == types.TokenValue ? 
+            description: `${types.Caption[obj.node.type]}:  ${obj.node.type == types.TokenValue ? 
                           obj.node.link.value : 
                           obj.node.nameOfArea}`,
             node: obj.node,
@@ -121,5 +133,12 @@ form{
   color: #0009;
   display: flex;
   flex-direction: column;
+}
+
+.areas {
+  display: flex;
+  width: 350px;
+  flex-flow: row wrap;
+  justify-content: flex-start;
 }
 </style>

@@ -98,7 +98,6 @@ import { SingletonFlowchart } from './nodes/_service/singletonFlowchart';
       },
 
       updateValuesOtherNodes(){
-        console.log("Aqui", this.nodesValue)
         this.nodesValue.forEach(obj => {
           console.log('obj :>> ', obj.value);
           obj.node.value = obj.value;

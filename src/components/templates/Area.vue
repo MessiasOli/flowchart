@@ -1,8 +1,8 @@
 <template>
   <div class="template-area">
     <label 
-      :class="[{'activated': activated}]"
-      :title="!activated ? 'Vincular' : 'Desvincular'"
+      :class="[{'activated': active}]"
+      :title="!activated ? 'Vincular Area' : 'Desvincular Area'"
       @click= switchActive > 
       {{ name || "Nome da área" }} 
     </label>
@@ -11,26 +11,39 @@
 
 <script>
   export default {
-    props: ["name", "activated"],
     name: "AreaComponente",
+    props: ["id", "name", "activated"],
+    inject: ['changeActive'],
+
     data() {
-      return { }
+      return {
+        active: this.activated,
+      }
     },
     methods: {
       switchActive(){
-        this.activated = !this.activated;
+        this.active = !this.active;
+        this.changeActive(this.id, this.active)
       }
-    }
+    },
+    mounted() {
+      // document.querySelector(".template-area").style.width = this.name.length * 9
+    },
   }
 </script>
 
 <style scoped>
 
+.template-area{
+  height: 20px;
+}
+
 .template-area > label{
   background-color: #4169E1;
-  padding: 3px 5px;
-  margin: 10px 5px;
+  padding: 0px 5px;
+  margin: 0px 5px;
   border-radius: 5px;
+
   font-weight: 500;
   color: black;
   cursor: pointer;

@@ -136,7 +136,6 @@ export class DecorationOnOff extends DecorationModel {
 
     this.update = () => {
       let d = this.node;
-      console.log('cheguei aqui :>> ', d3.select(`#${d.idName} > text`));
       d3.select(`#${d.idName} > text`)
       .text(d.description)
     }
