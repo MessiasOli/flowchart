@@ -3,20 +3,27 @@
     <form novalidate class="md-layout" @submit.prevent="">
       <md-field>
         <label>Nome da área</label>
-        <md-input v-model="title"></md-input>
+        <md-input ref="input" v-model="title"></md-input>
       </md-field>
 
       <span><hr></span>
 
       <md-table v-if="table.length > 0" class="table">
         <md-table-row>
-          <md-table-head>ID</md-table-head>
           <md-table-head>Conexão</md-table-head>
           <md-table-head>Saida</md-table-head>
         </md-table-row>
-        <md-table-row v-for="n in table" :key="n.id">
-          <md-table-cell>{{ n.id }}</md-table-cell>
-          <md-table-cell>{{ n.description }}</md-table-cell>
+        <md-table-row 
+          v-for="n in table" :key="n.id">
+          <md-table-cell
+            @click="() => {idSelected = n.id}">
+            {{ n.description }}: 
+            <Input
+              :data="n.node"
+              :number="n.value" 
+              @edited="percentage = $event"
+              msg="Porcentagem" /> 
+          </md-table-cell>
           <md-table-cell>
             <input 
               type="checkbox" 
@@ -33,21 +40,41 @@
 </template>
 
 <script>
+import Input from "../../templates/Input"
 import { SingletonFlowchart } from '../nodes/_service/singletonFlowchart';
 import { Types } from '../utils/nodeTypes';
+import { ParseNumber } from '../utils/tools'
   export default {
     props: {
       node: {
         type: Object,
         default: null
-      }
+      },
+      action: { type: Function }
+    },
+
+    components: { 
+      Input,
     },
 
     data() {
       return {
        title: this.node.nameOfArea,
        boolean: false,
-       table: []
+       table: [],
+       percentage: 0,
+      }
+    },
+
+    watch:{
+      title(){
+        this.node.nameOfArea = this.title;
+      },
+
+      percentage(obj){
+        let value = obj.value > 100 ? 100 : obj.value
+        value = value < 0 ? 0 : value;
+        this.$emit("action", { node: obj.data, value });
       }
     },
 
@@ -80,10 +107,11 @@ import { Types } from '../utils/nodeTypes';
             return false;
           }
         })
-        console.log('nodesNear :>> ', nodesNear);
         nodesNear.forEach(obj => {
           this.table.push({
-            description: types.Caption[obj.node.type] + ": " + obj.node.value,
+            id: obj.node.id,
+            description: types.Caption[obj.node.type],
+            value: ParseNumber(obj.node.value),
             node: obj.node,
             linked: this.node.link.out.includes(obj.node.id)
           })
@@ -91,14 +119,9 @@ import { Types } from '../utils/nodeTypes';
       }
     },
 
-    watch:{
-      title(){
-        this.node.nameOfArea = this.title;
-      }
-    },
-
     mounted(){ 
       this.loadNodesNear();
+      this.$refs.input.$el.focus();
     }
   }
 </script>
@@ -109,10 +132,6 @@ form{
   color: #0009;
   display: flex;
   flex-direction: column;
-}
-
-.table {
-  
 }
 
 </style>

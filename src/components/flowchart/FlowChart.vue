@@ -260,10 +260,9 @@ export default {
 <style>
 
 #svg {
-  background-color: rgb(218, 232, 233);
   border-radius: 5px;
-  width: 800px;
-  height: 500px;
+  width: 100%;
+  height: 550px;
 }
 
 .selected{

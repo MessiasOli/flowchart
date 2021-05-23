@@ -1,5 +1,6 @@
 export const COLORS = {
   Blue: "#0000FF",
+  BlueMaterial : "#448aff",
   RoyalBlue: "#4169E1",
   CornflowerBlue: "#6495ED",
   ClearBlue: "#41b5e6",
@@ -11,5 +12,6 @@ export const COLORS = {
   Black50: "#0005",
   Gray: "#6e7076",
   Red: "#ff0000",
-  Green: "#00e500"
+  Green: "#00e500",
+  
 }

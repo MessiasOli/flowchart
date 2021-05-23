@@ -3,7 +3,7 @@
     <form novalidate class="md-layout" @submit.prevent="">
       <md-field>
         <label>Título</label>
-        <md-input v-model="title"></md-input>
+        <md-input ref="input" v-model="title"></md-input>
       </md-field>
     </form>
   </div>
@@ -30,7 +30,9 @@
       }
     },
 
-    mounted(){ }
+    mounted(){ 
+      this.$refs.input.$el.focus();
+    }
   }
 </script>
 

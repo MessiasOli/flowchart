@@ -3,7 +3,7 @@
     <form novalidate class="md-layout" @submit.prevent="">
       <md-field>
         <label>Valor desejado</label>
-        <md-input v-model="value" type="number"></md-input>
+        <md-input ref='input' v-model="value" type="number"></md-input>
       </md-field>
       <span><hr></span>
 
@@ -85,7 +85,10 @@ import { ParseNumber } from '../utils/tools'
       }
     },
 
-    mounted(){ this.loadNodesNear() }
+    mounted(){ 
+      this.loadNodesNear();
+      this.$refs.input.$el.focus();
+    }
   }
 </script>
 

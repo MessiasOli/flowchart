@@ -6,7 +6,7 @@
     </div>
 
     <div class="body">
-      <FormArea v-if="node.type == types.Area" :node.sync="nodeEdited" />
+      <FormArea v-if="node.type == types.Area" :node.sync="nodeEdited" @action="editValueOfOtherNode=$event"/>
       <FormInputBox v-if="node.type == types.InputBox" :node.sync="nodeEdited" />
       <FormPercentageEntry v-if="node.type == types.PercentageEntry" :node.sync="nodeEdited" />
       <FormBoxText v-if="node.type == types.BoxText" :node.sync="nodeEdited" />
@@ -63,6 +63,8 @@ import { SingletonFlowchart } from './nodes/_service/singletonFlowchart';
         header: "",
         showDialog: false,
         nodeEdited: null,
+        nodesValue: new Array(),
+        editValueOfOtherNode: {}
       }
     },
 
@@ -70,16 +72,39 @@ import { SingletonFlowchart } from './nodes/_service/singletonFlowchart';
       dialogVisible(){
         this.header = this.types.Caption[this.node.type];
         this.nodeEdited = this.node;
+        this.nodesValue = new Array();
         console.log('this.header :>> ', this.header);
         this.showDialog = true;
-      }
+      },
+
+      editValueOfOtherNode(obj){
+        console.log('obj on dialog :>> ', obj);
+        let hasNode = this.nodesValue.filter(o => o.node.id == obj.node.id)
+        console.log('hasNode :>> ', hasNode);
+        if(hasNode.length > 0){
+          hasNode.value = obj.value
+        }else{
+          this.nodesValue.push({ node: obj.node, value: obj.value })
+        }
+      },
     },
 
     methods: {
       saveNode(){
         this.node.update(this.nodeEdited);
+        this.updateValuesOtherNodes()
         SingletonFlowchart.SaveStatus();
         this.showDialog = false;
+      },
+
+      updateValuesOtherNodes(){
+        console.log("Aqui", this.nodesValue)
+        this.nodesValue.forEach(obj => {
+          console.log('obj :>> ', obj.value);
+          obj.node.value = obj.value;
+          console.log('obj :>> ', obj);
+          obj.node.update()
+        })
       },
 
       closeDialog(){

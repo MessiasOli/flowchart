@@ -3,7 +3,7 @@
     <form novalidate class="md-layout" @submit.prevent="">
       <md-field>
         <label>Valor de desvio (%)</label>
-        <md-input v-model="value" type="number" min="0" max="100"></md-input>
+        <md-input ref="input" v-model="value" type="number" min="0" max="100"></md-input>
       </md-field>
 
       <span><hr></span>
@@ -110,6 +110,7 @@ import { Types } from '../utils/nodeTypes';
 
     mounted(){
       this.loadNodesNear()
+      this.$refs.input.$el.focus();
     }
   }
 </script>

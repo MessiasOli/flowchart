@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <h1 id='title-app'>Flowsheet D3.js</h1>
-    <FlowChart />
+    <Content />
   </div>
 </template>
 
 <script>
-import FlowChart from './components/flowchart/FlowChart'
+import Content from './components/templates/Content'
 
 export default {
   name: 'App',
   components: {
-    FlowChart
+    Content
   },
   
 }
@@ -19,19 +19,21 @@ export default {
 <style>
 
 * {
-  font-family: "Acme", sans-serif;
+  font-family: "Acme", sans-serif !important;
+}
+
+#app{
+  padding-top: 15px !important;
 }
 
 body {
   background-color: #2c3e50;
 }
 
-
-
 #title-app{
   color: antiquewhite;
   border-radius: 2px;
-  margin: 0 30% 15px 30%;
+  margin: 0 30% 5px 30%;
   border-bottom: 3px solid #eee;
   transition-duration: 1.5s;
   text-align: center;

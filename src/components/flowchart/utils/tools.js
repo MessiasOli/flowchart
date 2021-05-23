@@ -26,20 +26,15 @@ const NumberFormat = (num) => {
 }
 
 const ParseNumber = (stNum) => {
-  console.log('stNum :>> ', stNum);
   let value = '';
   do{
     if(!value){
-      console.log("Entrei")
       value = stNum.replace(".", "");
     }else{
       value = value.replace(".", "");
     }
-    console.log('value :>> ', value);
   }while(value.includes("."))
-  console.log('value :>> ', value);
   value = parseFloat(value.replace(",", "."))
-  console.log('value :>> ', value);
   return value
 }
 

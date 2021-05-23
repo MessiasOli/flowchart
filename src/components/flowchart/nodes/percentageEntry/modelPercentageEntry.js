@@ -24,6 +24,9 @@ class PercentageEntry extends NodeModel {
     };
 
     this.update = (nodeEdited) => {
+      if(!nodeEdited) nodeEdited = this
+
+      console.log("Atualizando nó")
       this.value = NumberFormat(nodeEdited.value)
       let lenghtOfFont = this.value.length * 9
       this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
