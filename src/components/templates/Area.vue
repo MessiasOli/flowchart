@@ -13,7 +13,7 @@
   export default {
     name: "AreaComponente",
     props: ["id", "name", "activated"],
-    // inject: ['changeActive'],
+    inject: ['changeActive'],
 
     data() {
       return {
@@ -23,7 +23,7 @@
     methods: {
       switchActive(){
         this.active = !this.active;
-        // this.changeActive(this.id, this.active)
+        this.changeActive(this.id, this.active)
       }
     },
   }

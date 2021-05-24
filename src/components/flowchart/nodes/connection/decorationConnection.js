@@ -84,36 +84,38 @@ class DecorationConnection extends DecorationModel {
         .selectAll(`.any`)
         .data([coordinate])
         .join("circle")
+        .classed("dot", true)
         .attr("id", d => `dot-${d.id}`)
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
+        .style('fill','#0000')
+        .on('mouseover', (event, d) => this.mouseOver(d))
+        .on('mouseout', (event, d) => this.mouseOut(d))
         .attr("cursor", "pointer")
         .attr('r', d => d.node.r)
+    }
+
+    this.mouseOver = function (d) {
+      d3.selectAll(`#dot-${d.id}.dot`)
+        .style('fill', 'rgba(255, 0, 0, 0.705)')
+    }
+
+    this.mouseOut = function (d){
+      d3.selectAll(`#dot-${d.id}.dot`)
+        .style('fill', '#0000')
     }
 
     this.createBreakPoint = function(event, d, id){
       SingletonFlowchart.selectNode(d.idName)
       let connClicked = d.connectionPack.filter(conections => conections.conn.id == id)[0]
-      let line = connClicked.conn.path;
       
       if (connClicked.conn.qtdInternalPoints == 2) 
         return
       
       let [xSvg, ySvg] = GetSVGCoordinates(event)
 
-      ++connClicked.conn.qtdInternalPoints;
-      this.createDot({
-        id: id,
-        x: xSvg, 
-        y: ySvg, 
-        node: this.node 
-      }).call(d3.drag()
-        .on("start", this.dragstarted)
-        .on("drag", (event, d) => this.draggedNewBreakPoint(event, d, connClicked.conn.qtdInternalPoints))
-      )
-        .node()
-
-      connClicked.conn.path = line
+      this.node.pointOnPath({x: xSvg, y: ySvg}, ++connClicked.conn.qtdInternalPoints)
+      connClicked.conn.path = this.node.path
     }
   
     this.setDrag = function() {

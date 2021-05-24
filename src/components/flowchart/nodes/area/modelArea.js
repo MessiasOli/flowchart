@@ -68,6 +68,8 @@ class Area extends NodeModel {
     }
 
     this.warn = (warn) => this.decorator.showWarining(warn)
+
+    this.showConnected = () => 0;
   }
 }
 

@@ -130,6 +130,9 @@ import { ParseNumber, NumberFormat } from '../utils/tools'
       },
 
       decorateTotal(total){
+        if(!this.inputs.length)
+          return
+
         let srcImg = ''
         if(total > 100)
           srcImg = require("@/assets/icons/error.png")

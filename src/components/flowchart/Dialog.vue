@@ -1,11 +1,11 @@
 <template>
-  <div v-if="showDialog" @dragend="dragAndDrop" class="dialog">
+  <div @keyup.enter="saveNode" @keyup.esc="closeDialog" v-if="showDialog" @dragend="dragAndDrop" class="dialog">
     
-    <div draggable="true" class="header">
+    <div @keyup.enter="saveNode" @keyup.esc="closeDialog" draggable="true" class="header">
       <h2>{{ header || "Caixa de dialogo" }}</h2>
     </div>
 
-    <div class="body">
+    <div @keyup.enter="saveNode" @keyup.esc="closeDialog" class="body">
       <FormArea v-if="node.type == types.Area" :node.sync="nodeEdited" @action="editValueOfOtherNode=$event"/>
       <FormInputBox v-if="node.type == types.InputBox" :node.sync="nodeEdited" />
       <FormPercentageEntry v-if="node.type == types.PercentageEntry" :node.sync="nodeEdited" />
@@ -15,7 +15,7 @@
       <FormDialog v-if="node.type == types.OnOff" :node.sync="nodeEdited" />
     </div>
     
-    <div class="footer">
+    <div @keyup.enter="saveNode" @keyup.esc="closeDialog" class="footer">
       <md-button @click="saveNode" class="md-raised md-primary">Aceitar</md-button>
       <md-button @click="closeDialog" class="md-raised md-accent">Cancelar</md-button>
     </div>
