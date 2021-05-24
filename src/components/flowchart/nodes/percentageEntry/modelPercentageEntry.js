@@ -24,8 +24,8 @@ class PercentageEntry extends NodeModel {
     };
 
     this.update = (nodeEdited) => {
-      console.log('nodeEdited :>> ', nodeEdited.nodesConnected);
       if(!nodeEdited) nodeEdited = this
+      console.log('nodeEdited :>> ', nodeEdited.nodesConnected);
 
       this.value = NumberFormat(nodeEdited.value)
       let lenghtOfFont = this.value.length * 9
@@ -34,15 +34,13 @@ class PercentageEntry extends NodeModel {
       
       if(nodeEdited.nodesConnected){
         nodeEdited.nodesConnected.forEach(link => this.link.addOut(link))
-        let tokens = nodeEdited.nodesDesconnected.filter(n => n.type == new Types().TokenValue)
-        this.decorator.updateConnection(tokens)
+        this.decorator.updateConnection(nodeEdited.nodesConnected)
         delete nodeEdited.nodesConnected
       }
 
       if(nodeEdited.nodesDesconnected){
         nodeEdited.nodesDesconnected.forEach(link => this.link.removeOut(link))
-        let tokens = nodeEdited.nodesDesconnected.filter(n => n.type == new Types().TokenValue)
-        this.decorator.updateConnection(tokens)
+        this.decorator.updateConnection(nodeEdited.nodesDesconnected)
         delete nodeEdited.nodesDesconnected
       }
       console.log("Atualizando nó", this)
@@ -69,7 +67,8 @@ class PercentageEntry extends NodeModel {
     }
 
     this.showConnected = () => {
-      this.decorator.link.update(this)
+      console.log('this.decorator.link :>> ', this.decorator.link);
+      this.decorator.link.update()
     }
   }
 }

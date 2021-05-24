@@ -7,43 +7,33 @@
       </md-field>
 
       <span><hr></span>
-
-      <md-table v-if="table.length > 0" class="table">
-        <md-table-row>
-          <md-table-head>Conexão</md-table-head>
-          <md-table-head>Saida</md-table-head>
-        </md-table-row>
-        <md-table-row 
-          v-for="n in table" :key="n.id">
-          <md-table-cell
-            @click="() => {idSelected = n.id}">
-            {{ n.description }}: 
-            <Input
-              :data="n.node"
-              :number="n.value" 
-              @edited="percentage = $event"
-              msg="Porcentagem" /> 
-          </md-table-cell>
-          <md-table-cell>
-            <input 
-              type="checkbox" 
-              class="md-primary"
-              @click="() => { linkNode(n.node, n.linked) }" 
-              v-model="n.linked" 
-            />
-          </md-table-cell>
-        </md-table-row>
-      </md-table>
+      <span  class="input-group" v-if="inputs.length > 0">
+        <label>Entradas</label>
+        <span class="inputs">
+          <InputValue
+            v-for="n in inputs" :key="n.id"
+            :id="n.id"
+            :inputValue="n.value" 
+            :linked="n.linked"
+            @edited="percentage = $event"
+            @switchLink="changeLink = $event"
+          /> 
+        </span>
+        <label>
+          Total: <strong >{{ total || '0,00'}} %</strong>
+          <img id="attention" src="@/assets/icons/ok.png" alt="Status Total">
+        </label>
+      </span>
 
     </form>
   </div>
 </template>
 
 <script>
-import Input from "../../templates/Input"
+import InputValue from '../../templates/inputValue'
 import { SingletonFlowchart } from '../nodes/_service/singletonFlowchart';
 import { Types } from '../utils/nodeTypes';
-import { ParseNumber } from '../utils/tools'
+import { ParseNumber, NumberFormat } from '../utils/tools'
   export default {
     props: {
       node: {
@@ -54,15 +44,17 @@ import { ParseNumber } from '../utils/tools'
     },
 
     components: { 
-      Input,
+      InputValue,
     },
 
     data() {
       return {
        title: this.node.nameOfArea,
        boolean: false,
-       table: [],
+       inputs: [],
        percentage: 0,
+       changeLink: false,
+       total: 0
       }
     },
 
@@ -72,9 +64,17 @@ import { ParseNumber } from '../utils/tools'
       },
 
       percentage(obj){
-        let value = obj.value > 100 ? 100 : obj.value
-        value = value < 0 ? 0 : value;
-        this.$emit("action", { node: obj.data, value });
+        let objSelected = this.inputs.find(n => n.id == obj.id)
+        objSelected.value = obj.value;
+        this.$emit("action", { node: objSelected.node, value: obj.value });
+        this.calculateTotal();
+      },
+
+      changeLink(obj){
+        let objSelected = this.inputs.find(n => n.id == obj.id)
+        objSelected.linked = obj.link
+        this.linkNode(objSelected.node, obj.link)
+        this.calculateTotal();
       }
     },
 
@@ -83,7 +83,7 @@ import { ParseNumber } from '../utils/tools'
         if (!this.node.nodesConnected) this.node.nodesConnected = new Array();
         if (!this.node.nodesDesconnected) this.node.nodesDesconnected = new Array();
 
-        if(!link)
+        if(link)
           this.node.nodesConnected.push(node.link)
         else{
           this.node.nodesConnected = this.node.nodesConnected.filter(link => link.id != node.link.id)  
@@ -108,7 +108,7 @@ import { ParseNumber } from '../utils/tools'
           }
         })
         nodesNear.forEach(obj => {
-          this.table.push({
+          this.inputs.push({
             id: obj.node.id,
             description: types.Caption[obj.node.type],
             value: ParseNumber(obj.node.value),
@@ -116,12 +116,36 @@ import { ParseNumber } from '../utils/tools'
             linked: this.node.link.out.includes(obj.node.id)
           })
         })
+      },
+
+      calculateTotal(){
+        let total = 0.00
+        this.inputs.forEach(obj => {
+          if(obj.linked){
+            total += ParseNumber(obj.value)
+          }
+        })
+        this.total = NumberFormat(total)
+        this.decorateTotal(total)
+      },
+
+      decorateTotal(total){
+        let srcImg = ''
+        if(total > 100)
+          srcImg = require("@/assets/icons/error.png")
+        else if(total < 100)
+          srcImg = require("@/assets/icons/attention.png")
+        else
+          srcImg = require("@/assets/icons/ok.png");
+
+        setTimeout(()=> document.querySelector('#attention').src = srcImg, 50);
       }
     },
 
     mounted(){ 
       this.loadNodesNear();
-      this.$refs.input.$el.focus();
+      this.calculateTotal();
+      this.$refs.input.$el.select();
     }
   }
 </script>
@@ -132,6 +156,26 @@ form{
   color: #0009;
   display: flex;
   flex-direction: column;
+}
+
+.input-group{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.inputs{
+  display: flex;
+  width: 300px;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+#attention{
+  vertical-align: sub;
+  margin-left: 5px;
+  width: 18px;
+  height: 18px;
 }
 
 </style>

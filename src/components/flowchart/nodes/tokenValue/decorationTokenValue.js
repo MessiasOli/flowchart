@@ -9,6 +9,7 @@ export class DecorationTokenValue extends DecorationModel {
   constructor() {
     super("DecorationTokenValue")
     this.node = null;
+    this.link = null;
     this.ctr = new ControllerTokenValue();
   
     this.init = async function (newNode) {

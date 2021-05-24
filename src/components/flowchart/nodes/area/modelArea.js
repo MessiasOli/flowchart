@@ -24,6 +24,7 @@ class Area extends NodeModel {
     }
 
     this.update = (nodeEdited) => {
+      console.log('nodeEdited :>> ', nodeEdited);
       this.nameOfArea = nodeEdited.nameOfArea
       let lenghtOfFont = this.nameOfArea.length * 9
       this.width = lenghtOfFont > this.width ? lenghtOfFont : this.width;
@@ -36,6 +37,7 @@ class Area extends NodeModel {
       }
 
       if(nodeEdited.nodesDesconnected){
+        console.log("Desconectando")
         nodeEdited.nodesDesconnected.forEach(link => this.link.removeOut(link))
         this.decorator.updateConnection(nodeEdited.nodesDesconnected)
         delete nodeEdited.nodesDesconnected

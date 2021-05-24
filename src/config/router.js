@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 
 import Flowchart from '../components/flowchart/FlowChart.vue'
 import Area from '../components/templates/Area.vue'
+import TokenValue from '../components/templates/TokenValue.vue'
+import InputValue from '../components/templates/inputValue.vue'
 
 Vue.use(VueRouter);
 
@@ -20,6 +22,16 @@ const routes = [
     name: 'area',
     path: '/area',
     component: Area
+  },
+  {
+    name: 'tokenValue',
+    path: '/tokenvalue',
+    component: TokenValue
+  },
+  {
+    name: 'InputValue',
+    path: '/InputValue',
+    component: InputValue
   },
 ]
 

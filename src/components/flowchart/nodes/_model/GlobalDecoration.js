@@ -120,7 +120,7 @@ export class CircleLink{
 
     this.update = () => {
       let d = this.node;
-      let isLinked = (d.link.in.length > 0 || d.link.out.length > 0)
+      let isLinked = (d.link.in.length > 0)
 
       d3.select(`#Link-${d.id}`)
         .transition()

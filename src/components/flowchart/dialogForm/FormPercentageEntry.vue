@@ -8,11 +8,28 @@
 
       <span><hr></span>
 
-      <div class="selection" v-if="table.length > 0">
-        <label>Area</label><br>
+      <div class="selection" v-if="values.length > 0">
+        <label>Valores:</label><br>
+        <span class="values">
+          <TokenValue
+            v-for="n in values" :key="n.id"
+            class="value"
+            :id= n.node.id
+            :name= n.description
+            :activated= n.linked
+            @click="() => { linkNode(n.node, n.linked) }"
+          />
+        </span>
+      </div>
+      <div v-else class="else">
+        <label>Valores: </label>
+        <span>Não há valores disponíveis para ser vinculado.</span>
+      </div>
+      <div class="selection" v-if="areas.length > 0">
+        <label>Areas:</label><br>
         <span class="areas">
           <Area 
-            v-for="n in table" :key="n.id"
+            v-for="n in areas" :key="n.id"
             class="area"
             :id= n.node.id
             :name= n.description
@@ -21,17 +38,24 @@
           />
         </span>
       </div>
+      <div v-else class="else">
+        <label>Areas: </label>
+        <span>Não há Areas disponíveis para ser vinculado.</span>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
 import Area from "../../templates/Area"
+import TokenValue from "../../templates/TokenValue"
 import { SingletonFlowchart } from '../nodes/_service/singletonFlowchart';
 import { Types } from '../utils/nodeTypes';
+
   export default {
     components:{
-      Area
+      Area,
+      TokenValue
     },
 
     provide(){
@@ -50,7 +74,8 @@ import { Types } from '../utils/nodeTypes';
     data() {
       return {
        value: this.node.value.replace(",", "."),
-       table: []
+       areas: [],
+       values: [],
       }
     },
 
@@ -64,12 +89,14 @@ import { Types } from '../utils/nodeTypes';
     methods: {
       changeActive(id, linked){
         console.log(id, linked)
-        let obj =  this.table.find(obj => obj.node.id == id)
+        let obj =  this.areas.find(obj => obj.node.id == id)
+        if(!obj) 
+          obj = this.values.find(obj => obj.node.id == id)
         this.linkNode(obj.node, linked)
       },
 
       linkNode(node, link){
-        console.log('oi :>> ', this.node);
+
         if (!this.node.nodesConnected) this.node.nodesConnected = new Array();
         if (!this.node.nodesDesconnected) this.node.nodesDesconnected = new Array();
 
@@ -85,44 +112,45 @@ import { Types } from '../utils/nodeTypes';
         let types = new Types();
         let nodesNear = SingletonFlowchart.Memory.getNodesNear(this.node.x, this.node.y)
 
-        nodesNear = nodesNear.filter(obj => {
+        nodesNear.forEach(obj => {
           if(obj.node.type == types.TokenValue){
             if(obj.node.link.in.length == 0){
-              return true;
+              this.values.push({
+                id: obj.node.id,
+                description: obj.node.link.value,
+                node: obj.node,
+                linked: this.node.link.out.includes(obj.node.id)
+              })
             }
             if(obj.node.link.in.includes(this.node.id)){
-              return true;
+              this.values.push({
+                id: obj.node.id,
+                description: obj.node.link.value,
+                node: obj.node,
+                linked: this.node.link.out.includes(obj.node.id)
+              })
             }
-            return false;
+
           }
 
           if(obj.node.type == types.Area){
-            if(this.node.link.in.includes(obj.node.id))
-              return false
-
-            if(obj.node.link.in.includes(this.node.id)){
-              return true;
+            if(!this.node.link.in.includes(obj.node.id)){
+              this.areas.push({
+                id: obj.node.id,
+                description: obj.node.nameOfArea,
+                node: obj.node,
+                linked: this.node.link.out.includes(obj.node.id)
+              });
             }
-            return true;
           }
         })
-        
-        nodesNear.forEach(obj => {
-          this.table.push({
-            description: `${types.Caption[obj.node.type]}:  ${obj.node.type == types.TokenValue ? 
-                          obj.node.link.value : 
-                          obj.node.nameOfArea}`,
-            node: obj.node,
-            linked: this.node.link.out.includes(obj.node.id)
-          })
-        })
-          console.log('this.table :>> ', this.table);
+          console.log('this.areas :>> ', this.areas);
       }
     },
 
     mounted(){
       this.loadNodesNear()
-      this.$refs.input.$el.focus();
+      this.$refs.input.$el.select();
     }
   }
 </script>
@@ -135,10 +163,25 @@ form{
   flex-direction: column;
 }
 
-.areas {
+.selection>label{
+  float: left;
+}
+
+.areas, .values {
   display: flex;
   width: 350px;
   flex-flow: row wrap;
   justify-content: flex-start;
 }
+
+.else{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.else>span{
+  margin: 5px;
+}
+
 </style>

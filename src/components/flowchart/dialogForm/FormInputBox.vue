@@ -7,33 +7,33 @@
       </md-field>
       <span><hr></span>
 
-      <md-table v-if="table.length > 0" class="table">
-        <md-table-row>
-          <md-table-head>Conexão</md-table-head>
-          <md-table-head>Vincular</md-table-head>
-        </md-table-row>
-        <md-table-row v-for="n in table" :key="n.id">
-          <md-table-cell>{{ n.description }}</md-table-cell>
-          <md-table-cell>
-            <input 
-              type="checkbox" 
-              class="md-primary"
-              @click="() => { linkNode(n.node, n.linked) }" 
-              v-model="n.linked" 
-            />
-          </md-table-cell>
-        </md-table-row>
-      </md-table>
+      <div class="selection" v-if="areas.length > 0">
+        <label>Areas:</label><br>
+        <span class="areas">
+          <Area 
+            v-for="n in areas" :key="n.id"
+            class="area"
+            :id= n.node.id
+            :name= n.description
+            :activated= n.linked
+            @click="() => { linkNode(n.node, n.linked) }"
+          />
+        </span>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
+import Area from "../../templates/Area"
 import { SingletonFlowchart } from "../nodes/_service/singletonFlowchart"
 import { Types } from '../utils/nodeTypes';
 import { ParseNumber } from '../utils/tools'
 
   export default {
+    components:{
+      Area,
+    },
     props: {
       node: {
         type: Object,
@@ -44,7 +44,7 @@ import { ParseNumber } from '../utils/tools'
     data() {
       return {
        value: ParseNumber(this.node.link.value),
-       table: [],
+       areas: [],
        checked: true,
       }
     },
@@ -57,7 +57,6 @@ import { ParseNumber } from '../utils/tools'
 
     methods: {
       linkNode(node, link){
-        console.log('link :>> ', link);
         if(!link)
         {
           this.node.link.addOut(node.link)
@@ -66,7 +65,6 @@ import { ParseNumber } from '../utils/tools'
         {
           this.node.link.removeOut(node.link)  
         }
-        console.log('this.node :>> ', this.node);
       },
 
       loadNodesNear() {
@@ -75,19 +73,19 @@ import { ParseNumber } from '../utils/tools'
         let nodesNear = SingletonFlowchart.Memory.getNodesNear(this.node.x, this.node.y)
         nodesNear = nodesNear.filter(obj => nodesEntries.includes(obj.node.type))
         nodesNear.forEach(obj => {
-          this.table.push({
-            description: types.Caption[obj.node.type] + ": " + obj.node.nameOfArea,
+          this.areas.push({
+            description: obj.node.nameOfArea,
             node: obj.node,
             linked: this.node.link.out.includes(obj.node.id)
           })
         })
-        this.node.nodesConnected = this.table;
+        this.node.nodesConnected = this.areas;
       }
     },
 
     mounted(){ 
       this.loadNodesNear();
-      this.$refs.input.$el.focus();
+      this.$refs.input.$el.select();
     }
   }
 </script>
@@ -96,5 +94,28 @@ import { ParseNumber } from '../utils/tools'
 form{
   padding: 10px;
   color: #0009;
+  display: flex;
+  flex-direction: column;
+}
+
+.selection>label{
+  float: left;
+}
+
+.areas, .values {
+  display: flex;
+  width: 350px;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+.else{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.else>span{
+  margin: 5px;
 }
 </style>

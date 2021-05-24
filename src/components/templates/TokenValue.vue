@@ -11,9 +11,9 @@
 
 <script>
   export default {
-    name: "AreaComponente",
+    name: "TokenValueComponent",
     props: ["id", "name", "activated"],
-    // inject: ['changeActive'],
+    inject: ['changeActive'],
 
     data() {
       return {
@@ -23,7 +23,7 @@
     methods: {
       switchActive(){
         this.active = !this.active;
-        // this.changeActive(this.id, this.active)
+        this.changeActive(this.id, this.active)
       }
     },
   }
@@ -36,7 +36,7 @@
 }
 
 .template-area > label{
-  background-color: #4169E1;
+  background-color: #fa3000;
   padding: 0px 5px;
   margin: 0px 5px;
   border-radius: 5px;
@@ -46,13 +46,13 @@
 }
 
 .template-area > label:hover{
-  background-color: #6495ED;
+  background-color: #ff6f00;
 }
 
 label.activated{
-  background-color: #6495ED;
-  border: solid 1px #0000FF;
+  background-color: #ff6f00;
   font-weight: 500;
+  border: solid 1px #ee0979;
   color: white;
 }
 

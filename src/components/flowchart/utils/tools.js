@@ -27,6 +27,9 @@ const NumberFormat = (num) => {
 
 const ParseNumber = (stNum) => {
   let value = '';
+  if(!isNaN(stNum))
+    return parseFloat(stNum)
+
   do{
     if(!value){
       value = stNum.replace(".", "");

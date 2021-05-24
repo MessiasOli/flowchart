@@ -31,7 +31,7 @@
     },
 
     mounted(){ 
-      this.$refs.input.$el.focus();
+      this.$refs.input.$el.select();
     }
   }
 </script>
