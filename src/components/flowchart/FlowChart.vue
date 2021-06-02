@@ -1,15 +1,15 @@
 <template>
   <div>
-    <md-button
+    <!-- <md-button
       id="btn-plus1"
       @click="openToolbar()"
       class="md-fab md-mini md-primary"
       title="Adicionar elemento"
     >
       <md-icon>+</md-icon>
-    </md-button>
+    </md-button> -->
 
-    <md-button
+    <!-- <md-button
       id="btn-save"
       @click="saveFlowchart()"
       class="md-fab md-mini md-primary"
@@ -18,9 +18,9 @@
       <md-icon>
         <img src="@/assets/icons/save.png" alt="Salvar" />
       </md-icon>
-    </md-button>
+    </md-button> -->
 
-    <md-button
+    <!-- <md-button
       id="btn-play"
       @click="trySimulation()"
       class="md-fab md-mini md-plain"
@@ -29,7 +29,7 @@
       <md-icon>
         <img src="@/assets/icons/play.png" alt="Calcular">
       </md-icon>
-    </md-button>
+    </md-button> -->
 
     <div class="toolbar">
 
@@ -100,8 +100,8 @@
       <md-icon><img src="../../assets/icons/tokenValue.png" alt="" srcset=""/></md-icon>
         Valores
       </md-button>
-
     </div>
+    
     <div id="canvas"
     @mousedown="selectionArea.start($event)"
     @mousemove="selectionArea.move($event)"
@@ -112,7 +112,6 @@
       :dialogVisible="showDialog"
       :node="nodeRefToDialog"
     />
-    <ProgressBarQuery v-if="loading"/>
   </div>
 </template>
 
@@ -128,12 +127,11 @@ import { ShortCuts } from "./utils/shortCuts"
 import { Types } from "./utils/nodeTypes"
 import { clearStorage } from "./nodes/_service/undoRedo"
 import Dialog from './Dialog.vue';
-import ProgressBarQuery from "../ProgressBarQuery"
 
 export default {
   name: "FlowChart",
-  components: { Dialog, ProgressBarQuery },
-
+  components: { Dialog},
+  inject: ['switchBar'],
   data() {
     return {
       typesNodes: new Types(),
@@ -229,6 +227,7 @@ export default {
       RequestSuscess("Sistema carregado");
       console.log('Nodes :>> ', SingletonFlowchart.Memory.memory);
       console.log(`${nodes.length} elementos carregados!`)
+      this.switchBar();
       SingletonFlowchart.SaveStatus();
     },
 
@@ -245,11 +244,10 @@ export default {
   },
 
   async mounted() {
-    RequestSuscess("Carregando sistema...");
+    this.switchBar();
     this.configSVG();
     await this.loadDatabaseNodes();
     ShortCuts.Init(this);
-    this.loading = false
   }
 };
 </script>
@@ -262,7 +260,7 @@ export default {
 #svg {
   border-radius: 5px;
   width: 100%;
-  height: 550px;
+  height: 520px;
 }
 
 .selected{

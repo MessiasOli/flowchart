@@ -36,7 +36,7 @@
 }
 
 .template-area > label{
-  background-color: #fa3000;
+  background-color: #5d26c1;
   padding: 0px 5px;
   margin: 0px 5px;
   border-radius: 5px;
@@ -46,13 +46,13 @@
 }
 
 .template-area > label:hover{
-  background-color: #ff6f00;
+  background-color: #a17fe0;
 }
 
 label.activated{
-  background-color: #ff6f00;
+  background-color: #a17fe0;
   font-weight: 500;
-  border: solid 1px #ee0979;
+  border: solid 1px #59c173;
   color: white;
 }
 

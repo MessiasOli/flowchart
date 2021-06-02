@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from 'vue-router';
 
+import Home from '../components/templates/Home.vue'
 import Flowchart from '../components/flowchart/FlowChart.vue'
 import Area from '../components/templates/Area.vue'
 import TokenValue from '../components/templates/TokenValue.vue'
@@ -12,11 +13,16 @@ const routes = [
   {
     name: 'home',
     path: '/',
-    component: Flowchart
+    component: Home
   },
   {
     path: "*",
     redirect: "/"
+  },
+  {
+    name: 'flowchart',
+    path: '/flowchart',
+    component: Flowchart
   },
   {
     name: 'area',
@@ -32,7 +38,7 @@ const routes = [
     name: 'InputValue',
     path: '/InputValue',
     component: InputValue
-  },
+  }
 ]
 
 const router = new VueRouter({

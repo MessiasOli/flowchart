@@ -1,51 +1,56 @@
 <template>
   <div id="app">
-    <h1 id='title-app'>Flowsheet D3.js</h1>
+    <Header />
     <Content />
+    <Footer :switchBar = activeBar />
   </div>
 </template>
 
 <script>
+import Header from "./components/templates/Header"
+import Footer from "./components/templates/Footer"
 import Content from './components/templates/Content'
 
 export default {
   name: 'App',
+
   components: {
-    Content
+    Content,
+    Header,
+    Footer
   },
-  
+
+  provide(){
+    return {
+      switchBar: this.switch
+    }
+  },
+
+  data() {
+    return {
+      activeBar: 0,
+    }
+  },
+
+  methods: {
+   switch(){ 
+     this.activeBar++ 
+    }
+  },
 }
 </script>
 <style>
-
+@import url("https://fonts.googleapis.com/css?family=Material+Icons");
 * {
   font-family: "Acme", sans-serif !important;
 }
 
 #app{
-  padding-top: 15px !important;
+  padding-top: 0px !important;
 }
 
 body {
-  background-color: #2c3e50;
-}
-
-#title-app{
-  color: antiquewhite;
-  border-radius: 2px;
-  margin: 0 30% 5px 30%;
-  border-bottom: 3px solid #eee;
-  transition-duration: 1.5s;
-  text-align: center;
-  padding: 10px;
-}
-
-#title-app:hover{
-  cursor: none;
-  color: aquamarine;
-  background-color: #577ea530;
-  border-radius: 10px;
-  box-shadow: 2px 2px 3px #fff;
+  background-color: #dae8e9;
 }
 
 #app {
