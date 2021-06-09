@@ -3,9 +3,7 @@ import VueRouter from 'vue-router';
 
 import Home from '../components/templates/Home.vue'
 import Flowchart from '../components/flowchart/FlowChart.vue'
-import Area from '../components/templates/Area.vue'
-import TokenValue from '../components/templates/TokenValue.vue'
-import InputValue from '../components/templates/inputValue.vue'
+import RegisterInput from '../components/RegisterInput.vue'
 
 Vue.use(VueRouter);
 
@@ -25,20 +23,10 @@ const routes = [
     component: Flowchart
   },
   {
-    name: 'area',
-    path: '/area',
-    component: Area
+    name: 'registerInput',
+    path: '/registerInput',
+    component: RegisterInput
   },
-  {
-    name: 'tokenValue',
-    path: '/tokenvalue',
-    component: TokenValue
-  },
-  {
-    name: 'InputValue',
-    path: '/InputValue',
-    component: InputValue
-  }
 ]
 
 const router = new VueRouter({

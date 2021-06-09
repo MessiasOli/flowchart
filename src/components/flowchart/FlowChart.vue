@@ -1,107 +1,104 @@
 <template>
-  <div>
-    <!-- <md-button
-      id="btn-plus1"
-      @click="openToolbar()"
-      class="md-fab md-mini md-primary"
-      title="Adicionar elemento"
-    >
-      <md-icon>+</md-icon>
-    </md-button> -->
-
-    <!-- <md-button
-      id="btn-save"
+  <div class="flowchart">
+  
+    <div class="menu-header">
+      <button class="btn-toolbar"
       @click="saveFlowchart()"
-      class="md-fab md-mini md-primary"
-      title="Salvar"
-    >
+      title="Salvar">
       <md-icon>
         <img src="@/assets/icons/save.png" alt="Salvar" />
       </md-icon>
-    </md-button> -->
+    </button>
 
-    <!-- <md-button
-      id="btn-play"
+    <button class="btn-toolbar"
       @click="trySimulation()"
-      class="md-fab md-mini md-plain"
-      title="Calcular" 
-    >
+      title="Calcular" >
       <md-icon>
         <img src="@/assets/icons/play.png" alt="Calcular">
       </md-icon>
-    </md-button> -->
+    </button>
 
-    <div class="toolbar">
+    <span class="menu-divisor">|</span>
 
-      <md-button class="btn-toolbar" 
+      <button class="btn-toolbar" 
+      title="Caixa de Insumo"
       @click="() => factoryCtr(this.typesNodes.InputBox).setNewNode(this.openDialog)">
       <md-icon><img src="../../assets/icons/inputBox.svg" alt="" srcset=""/></md-icon>
-        Caixa de Insumo
-      </md-button>
+        
+      </button>
 
-      <md-button class="btn-toolbar" 
+      <button class="btn-toolbar" 
+      title="Porcentagem de Saída"
       @click="() => factoryCtr(this.typesNodes.PercentageEntry).setNewNode(this.openDialog)">
-      <md-icon><img src="../../assets/icons/percentageEntry.svg" alt="" srcset=""/></md-icon>
-        Porcentagem de Saída
-      </md-button>
+        <md-icon><img src="../../assets/icons/percentageEntry.svg" alt="" srcset=""/></md-icon>
+        
+      </button>
 
-      <md-button 
+      <button 
       class="btn-toolbar" 
+      title="Area"
       @click="() => factoryCtr(this.typesNodes.Area).setNewNode(this.openDialog)">
       <md-icon><img src="../../assets/icons/area.svg" alt="" srcset=""/></md-icon>
-        Area
-      </md-button>
+        
+      </button>
 
-      <md-button 
+      <button 
       class="btn-toolbar" 
+      title="Circulo"
       @click="() => factoryCtr(this.typesNodes.Circle).setNewNode()">
       <md-icon><img src="../../assets/icons/circle.svg" alt="" srcset=""/></md-icon>
-        Circulo
-      </md-button>
+        
+      </button>
 
-      <md-button 
+      <button 
       class="btn-toolbar" 
+      title="Linha"
       @click="() => factoryCtr(this.typesNodes.Line).setNewNode()">
       <md-icon><img src="../../assets/icons/line.svg" alt="" srcset=""/></md-icon>
-        Linha
-      </md-button>
+        
+      </button>
 
-      <md-button 
+      <button 
       class="btn-toolbar" 
+      title="Caixa de Texto"
       @click="() => factoryCtr(this.typesNodes.BoxText).setNewNode(this.openDialog)">
       <md-icon><img src="../../assets/icons/boxText.svg" alt="" srcset=""/></md-icon>
-        Caixa de Texto
-      </md-button>
+        
+      </button>
 
-      <md-button 
+      <button 
       class="btn-toolbar" 
+      title="Texto"
       @click="() => factoryCtr(this.typesNodes.Text).setNewNode(this.openDialog)">
       <md-icon><img src="../../assets/icons/Text.png" alt="" srcset=""/></md-icon>
-        Texto
-      </md-button>
+        
+      </button>
 
-      <md-button 
+      <button 
       class="btn-toolbar" 
+      title="Triângulo"
       @click="() => factoryCtr(this.typesNodes.Triangle).setNewNode(this.openDialog)">
       <md-icon><img src="../../assets/icons/triangle.png" alt="" srcset=""/></md-icon>
-        Triângulo
-      </md-button>
+        
+      </button>
 
-      <md-button 
+      <button 
       class="btn-toolbar" 
+      title="On-Off"
       @click="() => factoryCtr(this.typesNodes.OnOff).setNewNode(this.openDialog)">
       <md-icon><img src="../../assets/icons/onOff.png" alt="" srcset=""/></md-icon>
-        On-Off
-      </md-button>
+        
+      </button>
 
-      <md-button 
+      <button 
       class="btn-toolbar" 
+      title="Valores"
       @click="() => factoryCtr(this.typesNodes.TokenValue).setNewNode(this.openDialog)">
       <md-icon><img src="../../assets/icons/tokenValue.png" alt="" srcset=""/></md-icon>
-        Valores
-      </md-button>
+        
+      </button>
     </div>
-    
+
     <div id="canvas"
     @mousedown="selectionArea.start($event)"
     @mousemove="selectionArea.move($event)"
@@ -130,8 +127,14 @@ import Dialog from './Dialog.vue';
 
 export default {
   name: "FlowChart",
-  components: { Dialog},
+
+  components: { Dialog },
+  
   inject: ['switchBar'],
+  provide(){
+    return {}
+  },
+
   data() {
     return {
       typesNodes: new Types(),
@@ -205,8 +208,10 @@ export default {
       clearStorage();
     },
 
-    loadDatabaseNodes(){
-      axios.get(`${HttpApiNode}`).then(this.hasNode).catch(RequestError)
+    async loadDatabaseNodes(){
+      await axios.get(`${HttpApiNode}`).then(this.hasNode).catch(RequestError);
+      this.switchBar();
+      this.showMenu = true;
     },
 
     hasNode(res){
@@ -227,7 +232,6 @@ export default {
       RequestSuscess("Sistema carregado");
       console.log('Nodes :>> ', SingletonFlowchart.Memory.memory);
       console.log(`${nodes.length} elementos carregados!`)
-      this.switchBar();
       SingletonFlowchart.SaveStatus();
     },
 
@@ -256,6 +260,28 @@ export default {
 <style src="./nodes/connection/connection.css"></style>
 
 <style>
+
+.flowchart {
+  display: grid;
+  grid-template-rows: 30px 1fr;
+
+}
+
+#menu-header {
+  grid-row-start: 1;
+  background-color: blue;
+  height: 80px;
+  width: 100%;
+}
+
+.menu-divisor{
+  padding: 0 3px 0 5px;
+  font-size: 1.8rem;
+}
+
+#canvas {
+  grid-row-start: 2;
+}
 
 #svg {
   border-radius: 5px;
@@ -319,8 +345,9 @@ export default {
   font-weight: 700;
 }
 
-.toolbar >.md-button.btn-toolbar>.md-ripple {
+.btn-toolbar{
   justify-content: start;
+  margin: 0 0 0 2px;
 }
 
 .toolbar > button {

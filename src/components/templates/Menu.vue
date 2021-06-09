@@ -15,7 +15,7 @@
       <span>Relatórios</span>
     </md-button>
 
-    <md-button to="/flowchart" id="icon-button">
+    <md-button to="/registerInput" id="icon-button">
       <img class="icon" src="@/assets/icons/register.svg" alt="Resgistrar produtos">
       <span>Cadastrar Insumos</span>
     </md-button>

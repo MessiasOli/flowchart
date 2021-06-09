@@ -4,6 +4,7 @@ import App from './App.vue'
 import './config/material'
 import './config/snackbar'
 import './config/axios'
+import './config/cheetah-grid'
 import router from './config/router'
 
 Vue.config.productionTip = false
