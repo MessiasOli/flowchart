@@ -37,7 +37,7 @@ import Menu from "./Menu"
 
 .router{
   grid-column-start: 2;
-  margin: 8px;
+  margin: 2px 2px 2px 2px;
 }
 
 </style>

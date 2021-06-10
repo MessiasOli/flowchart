@@ -3,99 +3,85 @@
   
     <div class="menu-header">
       <button class="btn-toolbar"
-      @click="saveFlowchart()"
-      title="Salvar">
-      <md-icon>
+        @click="saveFlowchart()"
+        title="Salvar">
         <img src="@/assets/icons/save.png" alt="Salvar" />
-      </md-icon>
-    </button>
+      </button>
 
-    <button class="btn-toolbar"
-      @click="trySimulation()"
-      title="Calcular" >
-      <md-icon>
+      <button class="btn-toolbar"
+        @click="trySimulation()"
+        title="Calcular" >
         <img src="@/assets/icons/play.png" alt="Calcular">
-      </md-icon>
-    </button>
+      </button>
 
-    <span class="menu-divisor">|</span>
+      <span class="menu-divisor"></span>
 
       <button class="btn-toolbar" 
-      title="Caixa de Insumo"
-      @click="() => factoryCtr(this.typesNodes.InputBox).setNewNode(this.openDialog)">
-      <md-icon><img src="../../assets/icons/inputBox.svg" alt="" srcset=""/></md-icon>
-        
+        title="Caixa de Insumo"
+        @click="() => factoryCtr(this.typesNodes.InputBox).setNewNode(this.openDialog)">
+        <img src="../../assets/icons/inputBox.svg" alt="" srcset=""/>
       </button>
 
       <button class="btn-toolbar" 
-      title="Porcentagem de Saída"
-      @click="() => factoryCtr(this.typesNodes.PercentageEntry).setNewNode(this.openDialog)">
-        <md-icon><img src="../../assets/icons/percentageEntry.svg" alt="" srcset=""/></md-icon>
-        
+        title="Porcentagem de Saída"
+        @click="() => factoryCtr(this.typesNodes.PercentageEntry).setNewNode(this.openDialog)">
+        <img src="../../assets/icons/percentageEntry.svg" alt="" srcset=""/>
       </button>
 
       <button 
-      class="btn-toolbar" 
-      title="Area"
-      @click="() => factoryCtr(this.typesNodes.Area).setNewNode(this.openDialog)">
-      <md-icon><img src="../../assets/icons/area.svg" alt="" srcset=""/></md-icon>
-        
+        class="btn-toolbar" 
+        title="Area"
+        @click="() => factoryCtr(this.typesNodes.Area).setNewNode(this.openDialog)">
+        <img src="../../assets/icons/area.svg" alt="" srcset=""/>
       </button>
 
       <button 
-      class="btn-toolbar" 
-      title="Circulo"
-      @click="() => factoryCtr(this.typesNodes.Circle).setNewNode()">
-      <md-icon><img src="../../assets/icons/circle.svg" alt="" srcset=""/></md-icon>
-        
+        class="btn-toolbar" 
+        title="Circulo"
+        @click="() => factoryCtr(this.typesNodes.Circle).setNewNode()">
+        <img src="../../assets/icons/circle.svg" alt="" srcset=""/>
       </button>
 
       <button 
-      class="btn-toolbar" 
-      title="Linha"
-      @click="() => factoryCtr(this.typesNodes.Line).setNewNode()">
-      <md-icon><img src="../../assets/icons/line.svg" alt="" srcset=""/></md-icon>
-        
+        class="btn-toolbar" 
+        title="Linha"
+        @click="() => factoryCtr(this.typesNodes.Line).setNewNode()">
+        <img src="../../assets/icons/line.svg" alt="" srcset=""/>
       </button>
 
       <button 
-      class="btn-toolbar" 
-      title="Caixa de Texto"
-      @click="() => factoryCtr(this.typesNodes.BoxText).setNewNode(this.openDialog)">
-      <md-icon><img src="../../assets/icons/boxText.svg" alt="" srcset=""/></md-icon>
-        
+        class="btn-toolbar" 
+        title="Caixa de Texto"
+        @click="() => factoryCtr(this.typesNodes.BoxText).setNewNode(this.openDialog)">
+        <img src="../../assets/icons/boxText.svg" alt="" srcset=""/>
       </button>
 
       <button 
-      class="btn-toolbar" 
-      title="Texto"
-      @click="() => factoryCtr(this.typesNodes.Text).setNewNode(this.openDialog)">
-      <md-icon><img src="../../assets/icons/Text.png" alt="" srcset=""/></md-icon>
-        
+        class="btn-toolbar" 
+        title="Texto"
+        @click="() => factoryCtr(this.typesNodes.Text).setNewNode(this.openDialog)">
+        <img src="../../assets/icons/Text.png" alt="" srcset=""/>
       </button>
 
       <button 
-      class="btn-toolbar" 
-      title="Triângulo"
-      @click="() => factoryCtr(this.typesNodes.Triangle).setNewNode(this.openDialog)">
-      <md-icon><img src="../../assets/icons/triangle.png" alt="" srcset=""/></md-icon>
-        
+        class="btn-toolbar" 
+        title="Triângulo"
+        @click="() => factoryCtr(this.typesNodes.Triangle).setNewNode(this.openDialog)">
+        <img src="../../assets/icons/triangle.png" alt="" srcset=""/>
       </button>
 
       <button 
-      class="btn-toolbar" 
-      title="On-Off"
-      @click="() => factoryCtr(this.typesNodes.OnOff).setNewNode(this.openDialog)">
-      <md-icon><img src="../../assets/icons/onOff.png" alt="" srcset=""/></md-icon>
-        
+        class="btn-toolbar" 
+        title="On-Off"
+        @click="() => factoryCtr(this.typesNodes.OnOff).setNewNode(this.openDialog)">
+        <img src="../../assets/icons/onOff.png" alt="" srcset=""/>
       </button>
 
       <button 
-      class="btn-toolbar" 
-      title="Valores"
-      @click="() => factoryCtr(this.typesNodes.TokenValue).setNewNode(this.openDialog)">
-      <md-icon><img src="../../assets/icons/tokenValue.png" alt="" srcset=""/></md-icon>
-        
+        class="btn-toolbar" 
+        title="Valores"
+        @click="() => factoryCtr(this.typesNodes.TokenValue).setNewNode(this.openDialog)">
+        <img src="../../assets/icons/tokenValue.png" alt="" srcset=""/>
       </button>
     </div>
 
@@ -162,6 +148,11 @@ export default {
 
     saveFlowchart(){
       let nodes = SingletonFlowchart.Memory.getNodesToSave();
+      let areas = new Array()
+      nodes.forEach(n => {
+        if(n.type == this.typesNodes.Area)
+          areas.push({ id: n.idName, nameOfArea: n.nameOfArea });
+      });
       console.log('Salvar :>> ', nodes);
 
       let flowchart = {
@@ -170,8 +161,12 @@ export default {
       }
     
       console.log('nodes :>> ', flowchart);
+      console.log('nodes :>> ', areas);
       axios.post(`${HttpApiNode}`, flowchart)
         .then(() => RequestSuscess("Elementos salvos com sucesso!"))
+        .catch(() => RequestError("Ops aconteceu algo!"))
+
+      axios.post(`${HttpApiNode}/addareas`, areas)
         .catch(() => RequestError("Ops aconteceu algo!"))
     },
 
@@ -267,16 +262,16 @@ export default {
 
 }
 
-#menu-header {
+.menu-header {
   grid-row-start: 1;
-  background-color: blue;
-  height: 80px;
-  width: 100%;
+  justify-self: flex-start;
 }
 
 .menu-divisor{
-  padding: 0 3px 0 5px;
-  font-size: 1.8rem;
+  margin: 0 2px 0 4px;
+  border-right: 2px solid #0009;
+  vertical-align: middle;
+  font-size: 1.55rem;
 }
 
 #canvas {
@@ -291,21 +286,6 @@ export default {
 
 .selected{
   border: 3px solid #222;
-}
-
-.toolbar {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background-color: rgb(240, 240, 240);
-  position: absolute;
-  top: 120px;
-  left: 100px;
-  border-radius: 5px;
-  box-shadow: 1px 1px 1px #2228;
-  max-width: 0;
-  max-height: 0;
-  transition-duration: 0.5s;
 }
 
 #btn-plus1 {
@@ -340,25 +320,16 @@ export default {
   box-shadow: 1px 1px 1px #fff;
 }
 
-.toolbar div {
-  color: #222;
-  font-weight: 700;
-}
-
 .btn-toolbar{
   justify-content: start;
+  border-radius: 4px;
+  background-color:dodgerblue;
   margin: 0 0 0 2px;
+  cursor: pointer;
 }
 
-.toolbar > button {
-  margin: 0;
-  width: 100%;
-  padding: 0 10px 0 5px;
-  font-size: 10px;
+.btn-toolbar > img{
+  width: 20px;
 }
 
-.toolbar > button:hover {
-  background-image: linear-gradient(to right, #2c3e3a30, white);
-  border-bottom: 1px solid #2c3e3a;
-}
 </style>
