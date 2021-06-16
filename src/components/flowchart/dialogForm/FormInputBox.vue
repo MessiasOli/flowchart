@@ -5,6 +5,12 @@
         <label>Valor desejado</label>
         <md-input ref='input' v-model="value" type="number"></md-input>
       </md-field>
+
+      <md-field>
+        <label>Unidade de medida</label>
+        <md-input ref="input" v-model="unitmensurement"></md-input>
+      </md-field>
+
       <span><hr></span>
 
       <div class="selection" v-if="areas.length > 0">
@@ -26,6 +32,7 @@
 
 <script>
 import Area from "../../templates/Area"
+import FormMixin from "./_FormMixin"
 import { SingletonFlowchart } from "../nodes/_service/singletonFlowchart"
 import { Types } from '../utils/nodeTypes';
 import { ParseNumber } from '../utils/tools'
@@ -34,6 +41,9 @@ import { ParseNumber } from '../utils/tools'
     components:{
       Area,
     },
+
+    mixins: [ FormMixin ],
+
     props: {
       node: {
         type: Object,
@@ -44,6 +54,7 @@ import { ParseNumber } from '../utils/tools'
     data() {
       return {
        value: ParseNumber(this.node.link.value),
+       unitmensurement: this.node.unitmensurement,
        areas: [],
        checked: true,
       }
@@ -52,6 +63,10 @@ import { ParseNumber } from '../utils/tools'
     watch:{
       value(){
         this.node.link.value = this.value;
+      },
+
+      unitmensurement(){
+        this.node.unitmensurement = this.unitmensurement;
       },
     },
 

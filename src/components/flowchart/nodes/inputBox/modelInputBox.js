@@ -26,6 +26,7 @@ class InputBox extends NodeModel {
     this.heightImg = 100;
     this.widthImg = 100;
     this.srcImg = require("@/assets/raw-material.png");
+    this.unitmensurement = "ton"
     this.link = new Link(this.id);
     
     this.decorate = async function(callback) {
@@ -35,6 +36,7 @@ class InputBox extends NodeModel {
 
     this.update = (nodeEdited) => {
       console.log('nodeEdited :>> ', nodeEdited);
+      this.unitmensurement = nodeEdited.unitmensurement
       this.link.value = NumberFormat(nodeEdited.link.value)
       let lenghtOfFont = nodeEdited.link.value.length * 9
       this.widthRect = lenghtOfFont > this.widthRect ? lenghtOfFont : this.widthRect;
@@ -48,6 +50,7 @@ class InputBox extends NodeModel {
       this.connectionPack = node.connectionPack;
       this.widthImg = node.widthImg
       this.value = node.value;
+      this.unitmensurement = node.unitmensurement
       this.widthRect = node.widthRect;
       this.heightRect = node.heightRect
       this.linked = node.linked
@@ -62,6 +65,7 @@ class InputBox extends NodeModel {
       cloned.connectionPack = this.connectionPack.map(c => ({ conn: c.conn.clone(), dot: c.dot }));
       cloned.width = this.width;
       cloned.value = this.value;
+      cloned.unitmensurement = this.unitmensurement
       cloned.widthRect = this.widthRect;
       cloned.valueRect = this.valueRect;
       cloned.x = this.x;

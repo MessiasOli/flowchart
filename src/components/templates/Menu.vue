@@ -1,39 +1,59 @@
 <template>
-  <div class="menu">
-    <md-button to="/" id="icon-button">
-      <img class="icon" src="@/assets/icons/home.svg" alt="Inicio">
-      <span>Home</span>
-    </md-button>
+  <nav class="menu">
+    <ul>
+      <li @click="selected('home')" :class="{ 'icon-button': true, 'selected': buttons.home}">
+        <router-link class='link' active to="/" >
+          <span><img class="icon" src="@/assets/icons/home.svg" alt="Inicio"> Inicio</span>
+        </router-link>
+      </li>
 
-    <md-button to="/flowchart" id="icon-button">
-      <img class="icon" src="@/assets/icons/flowchart.svg" alt="Diagrama">
-      <span>Diagrama</span>
-    </md-button>
+      <li @click="selected('flowchart')" :class="{ 'icon-button': true, 'selected': buttons.flowchart}">
+        <router-link class='link'  to="/flowchart">
+          <img class="icon" src="@/assets/icons/flowchart.svg" alt="Diagrama">
+          <span>Diagrama</span>
+        </router-link>
+      </li>
 
-    <md-button to="/flowchart" id="icon-button">
-      <img class="icon" src="@/assets/icons/list.svg" alt="Relatórios">
-      <span>Relatórios</span>
-    </md-button>
+      <li @click="selected('registerInput')" :class="{ 'icon-button': true, 'selected': buttons.registerInput}">
+        <router-link class='link'  to="/registerInput">
+          <img class="icon" src="@/assets/icons/register.svg" alt="Resgistrar produtos">
+          <span>Registrar produtos</span>
+        </router-link>
+      </li>
 
-    <md-button to="/registerInput" id="icon-button">
-      <img class="icon" src="@/assets/icons/register.svg" alt="Resgistrar produtos">
-      <span>Cadastrar Insumos</span>
-    </md-button>
-  </div>
+      <li @click="selected('billofmaterial')" :class="{ 'icon-button': true, 'selected': buttons.billofmaterial}">
+        <router-link class='link'  to="/billofmaterial">
+          <img class="icon" src="@/assets/icons/list.svg" alt="Lista técnica">
+          <span>Lista técnica</span>
+        </router-link>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
   export default {
-    
+    name:"Menu",
+    data() {
+      return {
+        buttons:{
+          home: true,
+          flowchart: false,
+          registerInput: false,
+          billofmaterial: false
+        }
+      }
+    },
+
+    methods: {
+      selected(caption){
+        Object.keys(this.buttons).forEach(cap => {
+          this.buttons[cap] = cap == caption
+        })
+      }
+    },
   }
 </script>
-
-<style >
-  
-#icon-button .md-ripple{
-  justify-content: start;
-}
-</style>
 
 <style scoped>
 
@@ -42,25 +62,46 @@
   height: 100%;
 }
 
-#icon-button{
+.menu>ul {
   margin: 0;
-  width: 100%;
-  min-height: 48px;
+  padding: 0;
+  list-style-type: none;
 }
 
-
-#icon-button .md-button-content>span{
+.icon-button{
+  display: flex;
+  height: 40px;
   width: 100%;
-  margin-right: 5px; 
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 5px;
+  transition-duration: 300ms;
+}
+
+.icon-button:hover{
+  box-shadow: 2px 2px 2px #0003;
+}
+
+.link:hover {
+  text-decoration: none;
+}
+
+.icon-button span{
   font-weight: 500;
   color: #fff;
+  font-size: 1.05rem;
 }
 
-#icon-button img{
+.selected{
+  border: none;
+  background-image: linear-gradient(to right,#8A2387 , #5D26C1);
+  box-shadow: 2px 2px 2px #0003;
+}
+
+.icon-button img{
   width: 25px;
   height: 25px;
   margin-right: 5px; 
-  color: #fff;
 }
 
 .content {

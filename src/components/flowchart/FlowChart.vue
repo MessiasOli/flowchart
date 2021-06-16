@@ -146,12 +146,20 @@ export default {
       this.showDialog++;
     },
 
-    saveFlowchart(){
+    async saveFlowchart(){
+      this.switchBar();
       let nodes = SingletonFlowchart.Memory.getNodesToSave();
       let areas = new Array()
+      let input = nodes.find(n => n.type == this.typesNodes.InputBox);
+
       nodes.forEach(n => {
         if(n.type == this.typesNodes.Area)
-          areas.push({ id: n.idName, nameOfArea: n.nameOfArea });
+          areas.push({ 
+            id: n.idName, 
+            nameOfArea: n.nameOfArea, 
+            value: n.link.value,
+            unitmensurement: input.unitmensurement
+          });
       });
       console.log('Salvar :>> ', nodes);
 
@@ -159,15 +167,23 @@ export default {
         id: 1050,
         flowchartStructure: JSON.stringify(nodes)
       }
-    
-      console.log('nodes :>> ', flowchart);
-      console.log('nodes :>> ', areas);
-      axios.post(`${HttpApiNode}`, flowchart)
-        .then(() => RequestSuscess("Elementos salvos com sucesso!"))
-        .catch(() => RequestError("Ops aconteceu algo!"))
 
-      axios.post(`${HttpApiNode}/addareas`, areas)
-        .catch(() => RequestError("Ops aconteceu algo!"))
+      let susccess = true;
+
+      console.log('FlowChart :>> ', flowchart);
+      console.log('Areas :>> ', areas);
+      await axios.post(`${HttpApiNode}`, flowchart)
+        .catch(() => { susccess = false })
+
+      await axios.post(`${HttpApiNode}/addareas`, areas)
+        .catch(() => { susccess = false })
+
+      if(susccess)
+        RequestSuscess("Sucesso na incersão!")
+      else
+        RequestError("Ops... Aconteceu alguma coisa ao inserir os dados.")
+        
+      this.switchBar();
     },
 
     removeNode() {

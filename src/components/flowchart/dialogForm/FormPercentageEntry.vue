@@ -48,6 +48,7 @@
 
 <script>
 import Area from "../../templates/Area"
+import FormMixin from "./_FormMixin"
 import TokenValue from "../../templates/TokenValue"
 import { SingletonFlowchart } from '../nodes/_service/singletonFlowchart';
 import { Types } from '../utils/nodeTypes';
@@ -58,11 +59,7 @@ import { Types } from '../utils/nodeTypes';
       TokenValue
     },
 
-    provide(){
-      return{
-        changeActive : this.changeActive
-      }
-    },
+    mixins: [ FormMixin ],
 
     props: {
       node: {
@@ -87,14 +84,6 @@ import { Types } from '../utils/nodeTypes';
     },
 
     methods: {
-      changeActive(id, linked){
-        console.log(id, linked)
-        let obj =  this.areas.find(obj => obj.node.id == id)
-        console.log('obj :>> ', obj);
-        if(!obj) 
-          obj = this.values.find(obj => obj.node.id == id)
-        this.linkNode(obj.node, linked)
-      },
 
       linkNode(node, link){
 

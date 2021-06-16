@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import Home from '../components/templates/Home.vue'
 import Flowchart from '../components/flowchart/FlowChart.vue'
 import RegisterInput from '../components/RegisterInput.vue'
+import BillOfMaterial from "../components/BillOfMaterial.vue"
 
 Vue.use(VueRouter);
 
@@ -26,6 +27,11 @@ const routes = [
     name: 'registerInput',
     path: '/registerInput',
     component: RegisterInput
+  },
+  {
+    name:"BillOfMaterial",
+    path:"/billofmaterial",
+    component: BillOfMaterial
   },
 ]
 
