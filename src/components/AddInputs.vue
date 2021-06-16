@@ -145,7 +145,7 @@
 
       saveMaterial () {
         let obj = {...this.form}
-        console.log('form :>> ', obj);
+        //console.log('form :>> ', obj);
         
         this.$emit("register", obj);
         this.clearForm();

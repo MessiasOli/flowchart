@@ -161,7 +161,7 @@ export default {
             unitmensurement: input.unitmensurement
           });
       });
-      console.log('Salvar :>> ', nodes);
+      //console.log('Salvar :>> ', nodes);
 
       let flowchart = {
         id: 1050,
@@ -170,8 +170,8 @@ export default {
 
       let susccess = true;
 
-      console.log('FlowChart :>> ', flowchart);
-      console.log('Areas :>> ', areas);
+      //console.log('FlowChart :>> ', flowchart);
+      //console.log('Areas :>> ', areas);
       await axios.post(`${HttpApiNode}`, flowchart)
         .catch(() => { susccess = false })
 
@@ -241,7 +241,7 @@ export default {
         ctr.loadNode(node, this.openDialog)
       });
       RequestSuscess("Sistema carregado");
-      console.log('Nodes :>> ', SingletonFlowchart.Memory.memory);
+      //console.log('Nodes :>> ', SingletonFlowchart.Memory.memory);
       console.log(`${nodes.length} elementos carregados!`)
       SingletonFlowchart.SaveStatus();
     },

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header />
+    <Header :changeMsg = currentPage />
     <Content />
     <Footer :switchBar = activeBar />
   </div>
@@ -22,19 +22,25 @@ export default {
 
   provide(){
     return {
-      switchBar: this.switch
+      switchBar: this.switch,
+      changeMsg: this.changeHeaderMessage,
+      version: "v0.01"
     }
   },
 
   data() {
     return {
       activeBar: 0,
+      currentPage: "home",
     }
   },
 
   methods: {
    switch(){ 
      this.activeBar++ 
+    }, 
+    changeHeaderMessage(param){
+      this.currentPage = param;
     }
   },
 }

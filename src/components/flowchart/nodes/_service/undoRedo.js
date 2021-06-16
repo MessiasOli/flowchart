@@ -49,7 +49,7 @@ const GetRedo = function() {
 };
 
 export const Save = function() {
-  console.log("SaveStatus");
+  //console.log("SaveStatus");
   let nodes = SingletonFlowchart.Memory.getNodesToSave();
   saveLocalStorage(nodes, null);
 };

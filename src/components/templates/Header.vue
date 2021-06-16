@@ -4,7 +4,7 @@
       <img src="@/assets/logo2.png" alt="Logo">
       <div class="header-title">
         <h1><span class="inverted">P</span>rodução e <span>P</span>lanejamento</h1>
-        <h2>Construa sua lista técnica dinamicamente.</h2>
+        <h2>Construa sua lista técnica dinâmicamente.</h2>
       </div>
     </span>
     <span class="msg">
@@ -15,27 +15,31 @@
 
 <script>
   export default {
+    props:["changeMsg"],
+
     data() {
       return {
         msg: {
           home: "O encontro da preparação com a oportunidade gera o que chamamos de sorte!",
           flowchart: "Seja criativo, invente, faça diferente porque o óbvio, todos fazem.",
-          register: "Não importa o tamanho do problema, o importante é encará-lo com bom humor!",
-          report: "A melhor preparação para amanhã é fazendo o seu melhor hoje.",
+          registerInput: "Não importa o tamanho do problema, o importante é encará-lo com bom humor!",
+          billofmaterial: "A melhor preparação para amanhã é fazendo o seu melhor hoje.",
         },
         currentMessage: "O encontro da preparação com a oportunidade gera o que chamamos de sorte!",
+      }
+    },
+
+    watch:{
+      changeMsg(param){
+        this.currentMessage = this.msg[param];
       }
     },
   }
 </script>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
-  
-</style>
-
-<style scoped>
 
 
 .header{
@@ -56,7 +60,7 @@
   width: 40px;
   height: 40px;
   border-radius: 30px;
-  margin: 0 5px 0 16px;
+  margin: 0 5px 0 30px;
 }
 
 .header-title{
@@ -91,8 +95,8 @@ h2{
   display: flex;
   justify-content: flex-end;
   width: 50%;
-  transition-duration: 600ms;
-
+  transition-duration: 1000ms;
+  margin-right: 30px;
 }
 
 .msg>p{

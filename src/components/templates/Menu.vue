@@ -34,6 +34,9 @@
 <script>
   export default {
     name:"Menu",
+
+    inject: ["changeMsg"],
+
     data() {
       return {
         buttons:{
@@ -47,6 +50,7 @@
 
     methods: {
       selected(caption){
+        this.changeMsg(caption);
         Object.keys(this.buttons).forEach(cap => {
           this.buttons[cap] = cap == caption
         })
@@ -80,6 +84,14 @@
 
 .icon-button:hover{
   box-shadow: 2px 2px 2px #0003;
+}
+
+.link{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .link:hover {

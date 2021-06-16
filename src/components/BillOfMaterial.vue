@@ -77,13 +77,10 @@ export default {
 
   methods: {
     async loadReportView(){
-      console.log('area selecionada :>> ', this.selectedArea);
       let area = this.areas.find(a => a.nameOfArea == this.selectedArea);
-      console.log('area :>> ', area, this.selectedArea);
       await axios.get(`${HttpApiNode}/getreportview/${area.id}`)
         .then((res) => res.data)
         .then(data => {
-          console.log('data :>> ', data);
           this.areaValue = {...data.area};
           this.reportView = data.report;
         })

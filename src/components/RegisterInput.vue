@@ -109,7 +109,7 @@ export default {
   watch: {
     async selectedArea() {
       this.switchBar();
-      console.log("Area selecionada:", this.selectedArea);
+      //console.log("Area selecionada:", this.selectedArea);
 
       await this.loadMaterials();
 
@@ -118,7 +118,7 @@ export default {
 
     async saveMaterial(mat) {
       this.switchBar();
-      console.log("Salvar Material: ", mat);
+      //console.log("Salvar Material: ", mat);
       mat.idarea = this.getSelectedIdArea();
 
       await axios.post(`${HttpApiNode}/material`, mat).catch(RequestError);

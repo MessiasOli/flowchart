@@ -45,7 +45,6 @@ class InputBox extends NodeModel {
     }
 
     this.copyFrom = (node) => {
-      console.log('node :>> ', node);
       this.simpleCopyFrom(node);
       this.connectionPack = node.connectionPack;
       this.widthImg = node.widthImg

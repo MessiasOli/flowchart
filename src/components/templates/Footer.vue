@@ -3,6 +3,9 @@
   <md-progress-bar v-if="activeBar" id="progress-bar" class="md-accent" md-mode="query"></md-progress-bar>
   <md-toolbar class="footer md-dense">
     <span>
+      {{version}}
+    </span>
+    <span>
       Desenvolvido por Messias Oliveira
     </span>
   </md-toolbar>
@@ -11,6 +14,9 @@
 
 <script>
   export default {
+    name:"footer",
+    inject: ["version"],
+
     props: ["switchBar"],
 
     data() {
@@ -32,7 +38,7 @@
 
 #progress-bar{
   margin-left: 200px;
-  bottom: 5px;
+  bottom: 25px;
 }
 
 .progress-bar-off{
@@ -51,7 +57,7 @@
   width: 100%;
 
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-content: center;
   background-color: #5D26C1;
 }

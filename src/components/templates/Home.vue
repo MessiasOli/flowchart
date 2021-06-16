@@ -1,8 +1,8 @@
 <template>
   <div>
-    <md-card>
+    <md-card class="card">
       <md-card-header>
-        <md-card-header-text>
+        <md-card-header-text class="title">
           <div class="md-title">{{title}}</div>
           <div class="md-subhead">{{subtitle}}</div>
         </md-card-header-text>
@@ -27,5 +27,9 @@
 
 <style scoped>
 
+.card{
+  width: 100%;
+  height: 100%;
+}
 
 </style>
