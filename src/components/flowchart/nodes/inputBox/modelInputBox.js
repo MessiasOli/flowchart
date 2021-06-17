@@ -40,8 +40,21 @@ class InputBox extends NodeModel {
       this.link.value = NumberFormat(nodeEdited.link.value)
       let lenghtOfFont = nodeEdited.link.value.length * 9
       this.widthRect = lenghtOfFont > this.widthRect ? lenghtOfFont : this.widthRect;
+
+      if(nodeEdited.nodesConnected){
+        console.log('nodeEdited.nodesConnected :>> ', nodeEdited.nodesConnected);
+        nodeEdited.nodesConnected.forEach(link => this.link.addOut(link))
+        this.decorator.updateConnection(nodeEdited.nodesConnected)
+        delete nodeEdited.nodesConnected
+      }
+
+      if(nodeEdited.nodesDesconnected){
+        nodeEdited.nodesDesconnected.forEach(link => this.link.removeOut(link))
+        this.decorator.updateConnection(nodeEdited.nodesDesconnected)
+        delete nodeEdited.nodesDesconnected
+      }
+
       this.decorator.setTextAndAdjustWidth()
-      this.decorator.link.update(this)
     }
 
     this.copyFrom = (node) => {

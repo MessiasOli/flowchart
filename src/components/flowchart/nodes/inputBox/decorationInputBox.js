@@ -177,5 +177,12 @@ export class DecorationInputBox extends DecorationModel {
       d3.select(`#InputBox-${this.node.id} > rect`)
         .style("width", this.node.widthRect)
     }
+
+    this.updateConnection = (links) => {
+      links.forEach(c => {
+        let n = SingletonFlowchart.Memory.getNodeById(c.id)[0]
+        n.showConnected()
+      })
+    }
   }
 }

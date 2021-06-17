@@ -72,13 +72,17 @@ import { ParseNumber } from '../utils/tools'
 
     methods: {
       linkNode(node, link){
-        if(!link)
-        {
-          this.node.link.addOut(node.link)
-        }
-        else
-        {
-          this.node.link.removeOut(node.link)  
+        console.log('link :>> ', link);
+        if (!this.node.nodesConnected) this.node.nodesConnected = new Array();
+        if (!this.node.nodesDesconnected) this.node.nodesDesconnected = new Array();
+
+        if(link){
+          console.log(true)
+          this.node.nodesConnected.push(node.link)
+        }else{
+          console.log(false)
+          this.node.nodesConnected = this.node.nodesConnected.filter(link => link.id != node.link.id)  
+          this.node.nodesDesconnected.push(node.link);
         }
       },
 
@@ -89,12 +93,12 @@ import { ParseNumber } from '../utils/tools'
         nodesNear = nodesNear.filter(obj => nodesEntries.includes(obj.node.type))
         nodesNear.forEach(obj => {
           this.areas.push({
+            id: obj.node.id,
             description: obj.node.nameOfArea,
             node: obj.node,
             linked: this.node.link.out.includes(obj.node.id)
           })
         })
-        this.node.nodesConnected = this.areas;
       }
     },
 
