@@ -2,13 +2,13 @@
   <div class="flowchart">
   
     <div class="menu-header">
-      <button class="btn-toolbar"
+      <button class="btn-toolbar unic"
         @click="saveFlowchart()"
         title="Salvar">
         <img src="@/assets/icons/save.png" alt="Salvar" />
       </button>
 
-      <button class="btn-toolbar"
+      <button class="btn-toolbar unic"
         @click="trySimulation()"
         title="Calcular" >
         <img src="@/assets/icons/play.png" alt="Calcular">
@@ -342,6 +342,10 @@ export default {
   background-color:dodgerblue;
   margin: 0 0 0 2px;
   cursor: pointer;
+}
+
+.unic{
+  background-color:#0ff;
 }
 
 .btn-toolbar > img{
