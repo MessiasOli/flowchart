@@ -2,7 +2,7 @@
   <nav class="menu">
     <ul>
       <li @click="selected('home')" :class="{ 'icon-button': true, 'selected': buttons.home}">
-        <router-link class='link' active to="/" >
+        <router-link class='link' active to="/home" >
           <span><img class="icon" src="@/assets/icons/home.svg" alt="Inicio"> Inicio</span>
         </router-link>
       </li>
@@ -56,6 +56,14 @@
         })
       }
     },
+
+    mounted() {
+      let html = window.location.href.split("/")
+      if(html.length == 1){
+        html[0] = "home"
+      }
+      this.selected(html[html.length-1])
+    }
   }
 </script>
 
